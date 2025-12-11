@@ -1,0 +1,47 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  plugins:
+    - custom_lint
+
+linter:
+  rules:
+    avoid_print: true                    # ✅ All print() usage will show as warning
+    always_declare_return_types: true   # ✅ All functions must have return type
+    prefer_final_locals: true           # ✅ Encourage using final if variable doesn't change
+    use_key_in_widget_constructors: true # ✅ Force key usage in Stateless/StatefulWidget
+    unnecessary_this: true              # ✅ Avoid using this unnecessarily
+    avoid_unnecessary_containers: true  # ✅ Reduce redundant widget nesting
+    no_duplicate_case_values: true      # ✅ Prevent switch-case duplication
+    sized_box_for_whitespace: true      # ✅ Suggest SizedBox over Container for spacing
+    sort_child_properties_last: true    # ✅ Clean widget tree ordering
+    prefer_const_constructors: true     # ✅ Use const wherever possible
+    avoid_returning_null_for_future: true # ✅ Ensure futures always complete with value
+    avoid_init_to_null: true       # memory footprint কমাতে
+    cancel_subscriptions: true     # subscription বন্ধ না করলে leak হয়
+    deprecated_member_use_from_same_package: true # ✅ একই প্যাকেজের deprecated মেথড ব্যাবহার না করতে বলে
+    avoid_redundant_argument_values: true # ✅ default value গুলো আবারও না পাঠাতে বলে
+
+    # ✅ Readability & maintainability
+    #    avoid_classes_with_only_static_members: true # শুধুই static থাকলে class এর দরকার নেই
+    avoid_field_initializers_in_const_classes: true # const class এ field initialize করা ঠিক না
+    avoid_function_literals_in_foreach_calls: true # forEach এ lambda না দিয়ে function use করো
+    cascade_invocations: true                    # multiple method call হলে cascade ব্যবহার করো
+    prefer_expression_function_bodies: true      # ছোট function হলে => ব্যবহার করো
+    use_super_parameters: true                   # super parameter shorthand ব্যবহার করো
+
+    # ✅ Flutter specific
+    prefer_const_literals_to_create_immutables: true # const List/Map/Set ব্যবহার করো
+    #    avoid_positional_boolean_parameters: true        # true/false argument বুঝতে অসুবিধা হয়
+    prefer_single_quotes: true                       # single quotes ব্যবহার করো (style consistency)
+
+    # ✅ Code safety
+    #    type_annotate_public_apis: true       # public method/property গুলোর type দেওয়া দরকার
+    unnecessary_null_checks: true         # null check যেখানে প্রয়োজন নেই, সেখানে বাদ দাও
+    #    use_setters_to_change_properties: true # property directly না change করে setter ব্যবহার করো
+    #    avoid_dynamic_calls: true             # dynamic call করলে runtime error হতে পারে
+
+    close_sinks: true                           # ✅ Close controllers/sinks like StreamController
+
+custom_lint:
+  enable_all_lint_rules: true           # ✅ Enable all community lint rules

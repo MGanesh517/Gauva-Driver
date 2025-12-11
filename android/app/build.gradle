@@ -1,0 +1,94 @@
+plugins {
+    id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+import java.util.Properties
+
+// Load key.properties for signing
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    println "key.properties file not found!"
+}
+
+def getEnvVar(String key, String defaultValue = "") {
+    def envFile = rootProject.file('../.env')
+    if (!envFile.exists()) {
+        println ".env file not found at ${envFile}"
+        return defaultValue
+    }
+
+    def envProps = new Properties()
+    envFile.withInputStream { stream ->
+        envProps.load(stream)
+    }
+
+    return envProps.getProperty(key, defaultValue)
+}
+
+android {
+    namespace = "com.gauva.driverapp"
+    compileSdk = 36
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    defaultConfig {
+        applicationId "com.gauva.driverapp"
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+
+        // Google Maps API Key
+        def mapsApiKey = getEnvVar("GOOGLE_MAPS_API_KEY", "DUMMY")
+        resValue "string", "google_maps_api_key", "\"${mapsApiKey}\""
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
+    implementation "androidx.activity:activity:1.9.3"
+
+}

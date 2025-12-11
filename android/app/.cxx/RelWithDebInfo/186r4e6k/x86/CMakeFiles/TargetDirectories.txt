@@ -1,0 +1,2 @@
+/Users/mdhabiburrahman/driver-app/android/app/.cxx/RelWithDebInfo/186r4e6k/x86/CMakeFiles/edit_cache.dir
+/Users/mdhabiburrahman/driver-app/android/app/.cxx/RelWithDebInfo/186r4e6k/x86/CMakeFiles/rebuild_cache.dir

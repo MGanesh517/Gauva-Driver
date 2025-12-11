@@ -1,0 +1,9 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.35.4",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": "pubspec.lock,pubspec_overrides.yaml,.packages,.flutter-plugins,.flutter-plugins-dependencies,.metadata",
+    "*.dart": "${capture}.g.dart,${capture}.freezed.dart,${capture}.prod.dart,${capture}.test.dart,${capture}.dev.dart,${capture}.gr.dart,${capture}.mock.dart,${capture}.staging.dart,${capture}.desktop.dart,${capture}.mobile.dart,${capture}.event.dart,${capture}.state.dart,${capture}.extensions.dart,${capture}.models.dart,${capture}.*.dart"
+  },
+  "dart.lineLength": 121
+}
