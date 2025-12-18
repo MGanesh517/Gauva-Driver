@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:gauva_driver/core/utils/helpers.dart';
 import 'package:gauva_driver/data/models/driver_details_response/driver_details_response.dart';
@@ -94,7 +95,11 @@ class DriverDetailsViewModel extends StateNotifier<AppState<DriverDetailsRespons
         state = AppState.error(failure);
         showNotification(message: failure.message);
       },
-      (data) {
+      (data) async {
+        if (data.data?.user != null) {
+          print('💾 Profile Notifier: Saving fetched driver profile to storage...');
+          await LocalStorageService().saveUser(data: data.data!.user!.toJson());
+        }
         state = AppState.success(data);
       },
     );

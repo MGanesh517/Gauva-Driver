@@ -156,7 +156,7 @@ class _VerifyOtpPageState extends ConsumerState<VerifyOtpPage> {
 
     return AuthBottomButtons(
       isLoading: false, // Always false for design testing
-      title: '${localize(context).confirm} OTP',
+      title: localize(context).verify_otp_action,
       onTap: () {
         // API call commented out for design testing - direct navigation
         // final String mobile = loginResponse?.data?.mobile ?? '1234567890';

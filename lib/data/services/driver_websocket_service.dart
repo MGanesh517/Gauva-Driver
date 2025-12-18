@@ -8,70 +8,99 @@ class DriverWebSocketService extends WebSocketService {
   StreamSubscription<Position>? _positionSubscription;
   bool _isLocationTrackingActive = false;
 
+  bool _isInitializing = false;
+
+  /// Initialize and connect for driver
   /// Initialize and connect for driver
   Future<void> initializeDriver({required String jwtToken, required int driverId}) async {
+    // Prevent multiple initialization attempts
+    if (_isInitializing) {
+      print('⚠️ Driver WebSocket: Already initializing, skipping...');
+      return;
+    }
+
+    if (isConnected && this.driverId == driverId.toString()) {
+      print('⚠️ Driver WebSocket: Already connected for driver $driverId, skipping...');
+      return;
+    }
+
+    _isInitializing = true;
     this.driverId = driverId.toString();
 
-    // PRIMARY: Connect to STOMP (works on Azure)
-    await connectStomp(jwtToken);
+    try {
+      // Connect to Raw WebSocket
+      await connect(jwtToken);
 
-    // OPTIONAL: Try Socket.IO (may not work on Azure - that's OK)
-    connectSocketIO(jwtToken).catchError((error) {
-      print('⚠️ Socket.IO connection failed (expected on Azure): $error');
-      print('✅ Continuing with STOMP only');
-    });
+      // Wait for connection with verification
+      print('⏳ Driver WebSocket: Waiting for connection to establish...');
+      await Future.delayed(const Duration(seconds: 1));
 
-    // Wait for STOMP connection
-    await Future.delayed(const Duration(seconds: 2));
+      if (!isConnected) {
+        print('⏳ Driver WebSocket: Connection not ready, waiting 2 more seconds...');
+        await Future.delayed(const Duration(seconds: 2));
+        if (!isConnected) {
+          _isInitializing = false;
+          throw Exception('Failed to connect to WebSocket after retries');
+        }
+      }
 
-    if (!isStompConnected) {
-      throw Exception('Failed to connect to STOMP WebSocket');
+      print('✅ Driver WebSocket: Connection verified - isConnected: $isConnected');
+
+      // Identify/Join driver room
+      print('🚪 Driver WebSocket: Joining driver room (driver:$driverId)...');
+      joinRoom('driver', driverId.toString());
+      await Future.delayed(const Duration(milliseconds: 500)); // Small delay between joins
+
+      // Join available drivers room to receive requests
+      print('🚪 Driver WebSocket: Joining available drivers room (drivers:available) to receive ride requests...');
+      joinRoom('drivers', 'available');
+      print('✅ Driver WebSocket: Both rooms joined - ready to receive ride requests');
+      print('✅ Driver WebSocket: Listening continuously for "new_ride_request" events');
+
+      // Listen for auto-reconnection to re-join
+      onReconnected.listen((_) {
+        print('🔄 Driver WebSocket: Re-joining rooms after reconnect...');
+        if (this.driverId != null) {
+          joinRoom('driver', this.driverId!);
+          joinRoom('drivers', 'available');
+        }
+        if (currentRideId != null) {
+          print('🔄 Driver WebSocket: Re-joining active ride $currentRideId...');
+          joinRoom('ride', currentRideId.toString());
+        }
+      });
+
+      _isInitializing = false;
+      print('✅ Driver WebSocket initialized (Connected: $isConnected)');
+    } catch (e) {
+      _isInitializing = false;
+      print('❌ Driver WebSocket: Error during initialization: $e');
+      rethrow;
     }
+  }
 
-    // Join driver room and available drivers room via Socket.IO (if available)
-    if (isSocketIOConnected) {
-      joinRoom('driver', driverId);
-      joinRoom('drivers', null); // Available drivers room
-    }
+  /// Helper to join any room
+  void joinRoom(String type, String id) {
+    print('🚪 Driver WebSocket: Joining room - type: $type, id: $id');
+    sendMessage('join', {'type': type, 'id': id});
+    print('✅ Driver WebSocket: Join message sent for room $type:$id');
+  }
 
-    print('✅ Driver WebSocket initialized (STOMP: $isStompConnected, Socket.IO: $isSocketIOConnected)');
+  /// Helper to leave any room
+  void leaveRoom(String type, String id) {
+    sendMessage('leave', {'type': type, 'id': id});
   }
 
   /// Join ride room (when ride is accepted)
   void joinRideRoom(int rideId) {
     currentRideId = rideId;
-
-    // Join via Socket.IO (for ride_status, driver_location, chat_message)
-    joinRoom('ride', rideId);
-
-    // Also join driver room for ride_status and wallet_update
-    if (driverId != null) {
-      joinRoom('driver', int.tryParse(driverId!));
-    }
-
-    // Subscribe to STOMP topics for this ride
-    // STOMP is used for location tracking and chat
-    subscribeToStompTopic(
-      '/topic/ride/$rideId/location', // Actual backend topic
-      (data) {
-        print('📍 STOMP Driver Location: $data');
-        addToDriverLocationStream(data);
-      },
-    );
-
-    subscribeToStompTopic(
-      '/topic/chat/ride/$rideId', // Actual backend topic
-      (data) {
-        print('💬 STOMP Chat Message: $data');
-        addToChatMessageStream(data);
-      },
-    );
+    joinRoom('ride', rideId.toString());
   }
 
   /// Leave ride room (when ride ends)
   void leaveRideRoom() {
     if (currentRideId != null) {
-      leaveRoom('ride', currentRideId);
+      leaveRoom('ride', currentRideId.toString());
       stopLocationTracking();
       currentRideId = null;
     }
@@ -88,32 +117,21 @@ class DriverWebSocketService extends WebSocketService {
 
     final locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 5, // meters
+      distanceFilter: 10, // meters
     );
 
     // Use position stream for continuous updates
     _positionSubscription = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
       (position) {
-        // Send location via Socket.IO
-        sendLocationUpdate(
-          rideId: rideId,
-          driverId: int.tryParse(driverId ?? '0'),
-          lat: position.latitude,
-          lng: position.longitude,
-          heading: position.heading,
-        );
-
-        // Also send via STOMP (actual backend endpoint)
-        sendStompMessage(
-          '/app/ride/$rideId/location', // Actual backend MessageMapping
-          {
-            'lat': position.latitude,
-            'lng': position.longitude,
-            'heading': position.heading,
-            'speed': position.speed,
-            'ts': DateTime.now().millisecondsSinceEpoch ~/ 1000,
-          },
-        );
+        // Send via WebSocket (event: location)
+        sendMessage('location', {
+          'rideId': rideId,
+          'driverId': driverId,
+          'lat': position.latitude,
+          'lng': position.longitude,
+          'heading': position.heading,
+          // 'speed': position.speed, // Optional based on doc, but good to have if server accepts
+        });
       },
       onError: (error) {
         print('Error getting location: $error');
@@ -129,17 +147,22 @@ class DriverWebSocketService extends WebSocketService {
   }
 
   /// Update driver online/offline status
+  /// Note: The doc mentions 'driver_status' as Server->Client.
+  /// For Client->Server to update status, usually it's an HTTP API call or a specific event.
+  /// Assuming 'driver_status_update' usage persists or using 'driver' room join implies online.
+  /// For now keeping this as is or if there is a specific 'status' event.
+  /// The doc doesn't explicitly list a Client->Server status update event,
+  /// implying it might be done via HTTP or by joining/leaving 'available' room.
   void updateDriverStatus({required bool isOnline, double? latitude, double? longitude}) {
-    // This would typically call your REST API
-    // But you can also emit via Socket.IO if server supports it
-    if (isSocketIOConnected) {
-      socketIO!.emit('driver_status', {
-        'driverId': driverId,
-        'isOnline': isOnline,
-        'latitude': latitude,
-        'longitude': longitude,
-      });
+    // If going online, ensure we are in 'drivers:available'
+    if (isOnline) {
+      joinRoom('drivers', 'available');
+    } else {
+      leaveRoom('drivers', 'available');
     }
+    // Also sending legacy/explicit message if backend relies on it,
+    // but based on room logic, joining 'drivers:available' is key.
+    sendMessage('driver_status_update', {'driverId': driverId, 'isOnline': isOnline, 'lat': latitude, 'lng': longitude});
   }
 
   /// Send chat message to rider
@@ -149,30 +172,13 @@ class DriverWebSocketService extends WebSocketService {
     required String senderName,
     required String riderId,
   }) {
-    final messageId = DateTime.now().millisecondsSinceEpoch.toString();
-
-    // Send via Socket.IO
-    sendChatMessage(
-      rideId: rideId,
-      senderId: driverId!,
-      senderName: senderName,
-      receiverId: riderId,
-      message: message,
-      messageId: messageId,
-    );
-
-    // Also send via STOMP
-    sendStompMessage(
-      '/app/chat/send', // Actual backend endpoint
-      {
-        'rideId': rideId,
-        'senderId': driverId,
-        'senderName': senderName,
-        'receiverId': riderId,
-        'message': message,
-        'messageId': messageId,
-        'timestamp': DateTime.now().toIso8601String(),
-      },
-    );
+    // Send via WebSocket (event: chat)
+    sendMessage('chat', {
+      'rideId': rideId,
+      'senderId': driverId,
+      'senderName': senderName,
+      'receiverId': riderId,
+      'message': message,
+    });
   }
 }

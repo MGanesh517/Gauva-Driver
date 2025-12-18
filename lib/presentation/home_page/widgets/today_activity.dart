@@ -6,7 +6,7 @@ import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/core/widgets/error_view.dart';
 import 'package:gauva_driver/presentation/home_page/widgets/activity_builder.dart';
 import 'package:gauva_driver/presentation/home_page/widgets/activity_top.dart';
-import 'package:gauva_driver/presentation/ride_history/provider/ride_history_provider.dart';
+import 'package:gauva_driver/presentation/home_page/provider/home_notifier_provider.dart';
 
 Widget todayActivity(BuildContext context) => Padding(
   padding: EdgeInsets.symmetric(vertical: 9.0.h),
@@ -16,11 +16,18 @@ Widget todayActivity(BuildContext context) => Padding(
       Expanded(
         child: Consumer(
           builder: (context, ref, _) {
-            final state = ref.watch(rideHistoryProvider);
+            final state = ref.watch(homeProvider);
             return state.when(
-              initial: () => Text(localize(context).initializing),
+              initial: () => Center(child: Text(localize(context).initializing)),
               loading: () => const LoadingView(),
-              success: (data) => activityBuilder(context, orderList: data),
+              success: (data) {
+                if (data?.rides == null || data!.rides!.isEmpty) {
+                  return Center(
+                    child: Text(localize(context).no_rides_today, style: Theme.of(context).textTheme.bodyMedium),
+                  );
+                }
+                return activityBuilder(context, orderList: data!.rides!, showPrice: true);
+              },
               error: (e) => ErrorView(message: e.message),
             );
           },

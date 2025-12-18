@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
+import 'package:gauva_driver/gen/assets.gen.dart';
 
 import '../../../core/theme/color_palette.dart';
 import '../../../core/utils/is_dark_mode.dart';
 import '../../../core/widgets/buttons/app_back_button.dart';
-import '../../../gen/assets.gen.dart';
 import '../../account_page/view/account_page.dart';
 
 class AuthAppBar extends StatelessWidget {
@@ -34,13 +34,13 @@ class AuthAppBar extends StatelessWidget {
           height: 180.h,
           width: double.infinity,
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Color(0xFF397098), Color(0xFF942FAF)],
             ),
-            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
           ),
           child: hideTop
               ? const SizedBox.shrink()
@@ -61,19 +61,20 @@ class AuthAppBar extends StatelessWidget {
                                   maxLines: 1,
                                   style: context.bodyMedium?.copyWith(
                                     fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                              countrySelector(showDecoration: true),
+                              // countrySelector(showDecoration: true),
                             ],
                           )
                         : Row(
                             children: [
+                              // Image.asset("assets/gauv.png", height: 48.h, width: 79.w, fit: BoxFit.fill),
                               Assets.images.rideIn.image(height: 48.h, width: 79.w, fit: BoxFit.fill),
-                              const Spacer(),
-                              countrySelector(showDecoration: true),
+                              // const Spacer(),
+                              // countrySelector(showDecoration: true),
                             ],
                           ),
                     Gap(showLeading ? 0 : 24.h),

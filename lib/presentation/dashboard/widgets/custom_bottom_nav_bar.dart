@@ -35,7 +35,7 @@ class CustomBottomNavBar extends ConsumerWidget {
               children: [
                 Expanded(child: _buildNavItem(0, localize(context).home, Assets.icons.home, isDarkMode)),
                 SizedBox(width: 4.w),
-                Expanded(child: _buildNavItem(1, localize(context).wallet, Assets.icons.wallet, isDarkMode)),
+                Expanded(child: _buildNavItem(1, localize(context).intercityLabel, Assets.images.route, isDarkMode)),
                 SizedBox(width: 4.w),
                 Expanded(child: _buildNavItem(2, localize(context).ride_history, Assets.icons.rideHistory, isDarkMode)),
                 SizedBox(width: 4.w),

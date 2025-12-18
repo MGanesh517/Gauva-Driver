@@ -11,6 +11,7 @@ import '../../../data/models/order_response/order_model/order/order.dart';
 import '../../../data/services/local_storage_service.dart';
 import '../../splash/provider/app_flow_providers.dart';
 import '../provider/driver_providers.dart';
+import '../../../data/models/common_response.dart';
 
 class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
   final IRideRepo rideRepo;
@@ -66,6 +67,132 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
         if (onSuccess != null) {
           onSuccess(data.data);
         }
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
+  Future<void> acceptRide({
+    required int orderId,
+    required int otp,
+    Function(Order? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'accepted';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.acceptRide(rideId: orderId, otp: otp);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message, isSuccess: true);
+        state = AppStateOrder.success(data.data);
+        if (onSuccess != null) onSuccess(data.data);
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
+  Future<void> declineRide({
+    required int orderId,
+    Function(CommonResponse? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'rejected';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.declineRide(rideId: orderId);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message ?? 'Ride declined', isSuccess: true);
+        if (onSuccess != null) onSuccess(data);
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
+  Future<void> startRide({
+    required int orderId,
+    required int otp,
+    Function(Order? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'started';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.startRide(rideId: orderId, otp: otp);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message, isSuccess: true);
+        state = AppStateOrder.success(data.data);
+        if (onSuccess != null) onSuccess(data.data);
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
+  Future<void> completeRide({
+    required int orderId,
+    Function(Order? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'completed';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.completeRide(rideId: orderId);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message, isSuccess: true);
+        state = AppStateOrder.success(data.data);
+        if (onSuccess != null) onSuccess(data.data);
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
+  Future<void> goToPickup({
+    required int orderId,
+    Function(Order? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'go_to_pickup';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.goToPickup(orderId: orderId);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message ?? 'Going to pickup location', isSuccess: true);
+        state = AppStateOrder.success(data.data);
+        if (onSuccess != null) onSuccess(data.data);
       },
     );
     loadingNotifier.stopLoading();

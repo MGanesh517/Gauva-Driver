@@ -92,6 +92,7 @@ class BookingState {
 class BookingNotifier extends StateNotifier<BookingState> {
   final Ref ref;
   final IGeoLocationManager geoLocationManager;
+  bool _isDisposed = false;
 
   BookingNotifier(this.geoLocationManager, this.ref, {GoogleMapController? controller}) : super(BookingState.empty()) {
     initialize();
@@ -110,6 +111,7 @@ class BookingNotifier extends StateNotifier<BookingState> {
 
   /// Initialize user location and set marker
   Future<void> initialize() async {
+    _isDisposed = false; // Reset disposed flag on initialization
     final LatLng? location = await geoLocationManager.getUserLocation();
 
     final markerIcon = await getMarkerIcon();
@@ -212,40 +214,47 @@ class BookingNotifier extends StateNotifier<BookingState> {
 
     if (state.mapController != null && state.currentLocation != null) {
       try {
-        state.mapController?.animateCamera(
+        await state.mapController?.animateCamera(
           CameraUpdate.newLatLngZoom(state.currentLocation!, getZoomLevel(state.radius * 1000)),
         );
       } catch (e) {
         print('⚠️ Error updating radius map zoom: $e');
+        // Map controller might be disposed or channel disconnected
       }
     }
   }
 
-  void updateMapZoom({LatLng? location}) async {
+  Future<void> updateMapZoom({LatLng? location}) async {
     if (state.currentLocation == null) {
       await initialize();
     }
     if (state.mapController != null && (location != null || state.currentLocation != null)) {
       try {
-        state.mapController?.animateCamera(
+        await state.mapController?.animateCamera(
           CameraUpdate.newLatLngZoom(location ?? state.currentLocation!, location == null ? 13 : 15.5),
         );
       } catch (e) {
         print('⚠️ Error updating map zoom: $e');
+        // Map controller might be disposed or channel disconnected
       }
     }
   }
 
-  void mapZoomForPickedUp({required GoogleMapController? controller}) {
-    if (controller != null) {
-      controller.animateCamera(CameraUpdate.newLatLngZoom(state.currentLocation!, 16));
+  Future<void> mapZoomForPickedUp({required GoogleMapController? controller}) async {
+    if (controller != null && state.currentLocation != null) {
+      try {
+        await controller.animateCamera(CameraUpdate.newLatLngZoom(state.currentLocation!, 16));
+      } catch (e) {
+        print('⚠️ Error zooming for pickup: $e');
+        // Map controller might be disposed or channel disconnected
+      }
     }
   }
 
-  void resetMapZoom() {
+  Future<void> resetMapZoom() async {
     if (state.mapController != null && state.currentLocation != null) {
       try {
-        state.mapController?.animateCamera(
+        await state.mapController?.animateCamera(
           CameraUpdate.newLatLngZoom(state.currentLocation!, getZoomLevel(state.radius * 1000)),
         );
       } catch (e) {
@@ -303,11 +312,12 @@ class BookingNotifier extends StateNotifier<BookingState> {
 
     if (state.mapController != null) {
       // Animate camera to fit bounds with padding
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 300), () async {
         try {
-          state.mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 80));
+          await state.mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 80));
         } catch (e) {
           print('⚠️ Error fitting bounds: $e');
+          // Map controller might be disposed or channel disconnected
         }
       });
     }
@@ -317,9 +327,10 @@ class BookingNotifier extends StateNotifier<BookingState> {
     updateMarkerForOrder(mode: MovementMode.towardsPickup);
     if (state.mapController != null) {
       try {
-        state.mapController?.animateCamera(CameraUpdate.zoomIn());
+        await state.mapController?.animateCamera(CameraUpdate.zoomIn());
       } catch (e) {
         print('⚠️ Error zooming in towards pickup: $e');
+        // Map controller might be disposed or channel disconnected
       }
     }
     await startLocationStream(mode: MovementMode.towardsPickup);
@@ -329,9 +340,10 @@ class BookingNotifier extends StateNotifier<BookingState> {
     updateMarkerForOrder(mode: MovementMode.towardsDestination);
     if (state.mapController != null) {
       try {
-        state.mapController?.animateCamera(CameraUpdate.zoomIn());
+        await state.mapController?.animateCamera(CameraUpdate.zoomIn());
       } catch (e) {
         print('⚠️ Error zooming in towards destination: $e');
+        // Map controller might be disposed or channel disconnected
       }
     }
     await startLocationStream(mode: MovementMode.towardsDestination);
@@ -411,40 +423,77 @@ class BookingNotifier extends StateNotifier<BookingState> {
             if (mode != null) {
               switch (mode) {
                 case MovementMode.orderAccept:
+                  // Check if required locations are not null
+                  final currentLoc = state.currentLocation;
+                  final pickup = pickupPos;
+                  final drop = dropPos;
+
+                  if (currentLoc == null || pickup == null || drop == null) {
+                    print('⚠️ BookingNotifier: Cannot update route (orderAccept) - missing location data');
+                    print('⚠️ currentLocation: $currentLoc, pickupPos: $pickup, dropPos: $drop');
+                    break;
+                  }
+
                   await ref
                       .read(routeNotifierProvider.notifier)
                       .fetchRoutesDetail(
                         Points(
-                          pickupLocation: [state.currentLocation!.latitude, state.currentLocation!.longitude],
-                          dropLocation: [pickupPos!.latitude, pickupPos.longitude],
+                          pickupLocation: [currentLoc.latitude, currentLoc.longitude],
+                          dropLocation: [pickup.latitude, pickup.longitude],
                         ),
                       );
-                  _fitBoundsToPickupAndDropOff(pickupPos, dropPos!);
+                  _fitBoundsToPickupAndDropOff(pickup, drop);
                   break;
 
                 case MovementMode.towardsPickup:
+                  // Check if currentLocation and pickupPos are not null before using
+                  final currentLoc = state.currentLocation;
+                  final pickup = pickupPos;
+
+                  if (currentLoc == null || pickup == null) {
+                    print(
+                      '⚠️ BookingNotifier: Cannot update route (towardsPickup) - currentLocation or pickupPos is null',
+                    );
+                    print('⚠️ currentLocation: $currentLoc');
+                    print('⚠️ pickupPos: $pickup');
+                    break;
+                  }
+
                   await ref
                       .read(routeNotifierProvider.notifier)
                       .fetchRoutesDetail(
                         Points(
-                          pickupLocation: [state.currentLocation!.latitude, state.currentLocation!.longitude],
-                          dropLocation: [pickupPos!.latitude, pickupPos.longitude],
+                          pickupLocation: [currentLoc.latitude, currentLoc.longitude],
+                          dropLocation: [pickup.latitude, pickup.longitude],
                         ),
                       );
-                  _fitBoundsToPickupAndDropOff(state.currentLocation!, pickupPos);
+                  _fitBoundsToPickupAndDropOff(currentLoc, pickup);
 
                   break;
 
                 case MovementMode.towardsDestination:
+                  // Check if currentLocation and dropPos are not null before using
+                  final currentLoc = state.currentLocation;
+                  final drop = dropPos;
+
+                  if (currentLoc == null || drop == null) {
+                    print(
+                      '⚠️ BookingNotifier: Cannot update route (towardsDestination) - currentLocation or dropPos is null',
+                    );
+                    print('⚠️ currentLocation: $currentLoc');
+                    print('⚠️ dropPos: $drop');
+                    break;
+                  }
+
                   await ref
                       .read(routeNotifierProvider.notifier)
                       .fetchRoutesDetail(
                         Points(
-                          pickupLocation: [state.currentLocation!.latitude, state.currentLocation!.longitude],
-                          dropLocation: [dropPos!.latitude, dropPos.longitude],
+                          pickupLocation: [currentLoc.latitude, currentLoc.longitude],
+                          dropLocation: [drop.latitude, drop.longitude],
                         ),
                       );
-                  _fitBoundsToPickupAndDropOff(state.currentLocation!, dropPos);
+                  _fitBoundsToPickupAndDropOff(currentLoc, drop);
                   break;
               }
             }
@@ -470,6 +519,7 @@ class BookingNotifier extends StateNotifier<BookingState> {
   }
 
   void resetToInitial({bool enablePusher = true}) {
+    _isDisposed = false; // Reset disposed flag when reinitializing
     state = state.copyWith(hasAnimatedCamera: false);
     initialize();
     ref.read(ontripStatusNotifier.notifier).resetState();
@@ -483,8 +533,16 @@ class BookingNotifier extends StateNotifier<BookingState> {
   }
 
   Future<void> resetState() async {
+    _isDisposed = true;
     state.mapController?.dispose();
     state = BookingState.empty();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    state.mapController?.dispose();
+    super.dispose();
   }
 
   double getZoomLevel(int radius) {
@@ -526,6 +584,12 @@ class BookingNotifier extends StateNotifier<BookingState> {
           .read(locationNotifierProvider.notifier)
           .startTracking(
             onUpdate: (location) async {
+              // Check if notifier is disposed before accessing state
+              if (_isDisposed) {
+                print('⚠️ BookingNotifier: Ignoring location update - notifier is disposed');
+                return;
+              }
+
               if (mode == MovementMode.towardsDestination) {
                 final double distance = _calculateDistance(
                   location.latitude,
@@ -534,9 +598,14 @@ class BookingNotifier extends StateNotifier<BookingState> {
                   dropLatLng?.longitude ?? 0,
                 );
                 if (distance <= 50) {
-                  ref.read(ontripStatusNotifier.notifier).updateOnTripStatus(status: BookingStatus.reachedDestination);
+                  if (!_isDisposed) {
+                    ref.read(ontripStatusNotifier.notifier).updateOnTripStatus(status: BookingStatus.reachedDestination);
+                  }
                 }
               }
+
+              if (_isDisposed) return;
+
               await ref
                   .read(routeNotifierProvider.notifier)
                   .fetchRoutesDetail(
@@ -548,6 +617,12 @@ class BookingNotifier extends StateNotifier<BookingState> {
                     pickUpPoint: pickupLatLng,
                     orderId: orderId,
                   );
+
+              // Check again before accessing state
+              if (_isDisposed) return;
+
+              // Check again before accessing state
+              if (_isDisposed) return;
 
               // Update marker rotation based on closest segment
               double bearing = 0;
@@ -561,6 +636,9 @@ class BookingNotifier extends StateNotifier<BookingState> {
                 }
               }
 
+              // Final check before accessing mapController
+              if (_isDisposed) return;
+
               if (state.mapController != null) {
                 try {
                   await state.mapController?.animateCamera(
@@ -568,6 +646,7 @@ class BookingNotifier extends StateNotifier<BookingState> {
                   );
                 } catch (e) {
                   print('⚠️ Error animating camera during location update: $e');
+                  // Map controller might be disposed or channel disconnected
                 }
               }
             },

@@ -1,61 +1,36 @@
 import '../order_response/order_model/order/order.dart';
 
 class RideHistoryModel {
-  RideHistoryModel({
-      this.success, 
-      this.message, 
-      this.data,});
+  List<Order>? content;
+  int? totalElements;
+  int? totalPages;
+  int? size;
+  int? number;
+
+  RideHistoryModel({this.content, this.totalElements, this.totalPages, this.size, this.number});
 
   RideHistoryModel.fromJson(dynamic json) {
-    success = json['success'];
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-  }
-  bool? success;
-  String? message;
-  Data? data;
-RideHistoryModel copyWith({  bool? success,
-  String? message,
-  Data? data,
-}) => RideHistoryModel(  success: success ?? this.success,
-  message: message ?? this.message,
-  data: data ?? this.data,
-);
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['success'] = success;
-    map['message'] = message;
-    if (data != null) {
-      map['data'] = data?.toJson();
-    }
-    return map;
-  }
-
-}
-
-class Data {
-  Data({
-      this.orders,});
-
-  Data.fromJson(dynamic json) {
-    if (json['orders'] != null) {
-      orders = [];
-      json['orders'].forEach((v) {
-        orders?.add(Order.fromJson(v));
+    if (json['content'] != null) {
+      content = [];
+      json['content'].forEach((v) {
+        content?.add(Order.fromJson(v));
       });
     }
+    totalElements = json['totalElements'];
+    totalPages = json['totalPages'];
+    size = json['size'];
+    number = json['number'];
   }
-  List<Order>? orders;
-Data copyWith({  List<Order>? orders,
-}) => Data(  orders: orders ?? this.orders,
-);
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (orders != null) {
-      map['orders'] = orders?.map((v) => v.toJson()).toList();
+    if (content != null) {
+      map['content'] = content?.map((v) => v.toJson()).toList();
     }
+    map['totalElements'] = totalElements;
+    map['totalPages'] = totalPages;
+    map['size'] = size;
+    map['number'] = number;
     return map;
   }
-
 }
-

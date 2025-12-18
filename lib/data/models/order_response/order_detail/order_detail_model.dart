@@ -10,7 +10,15 @@ class OrderDetailModel {
   OrderDetailModel.fromJson(dynamic json) {
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? Order.fromJson(json['data']) : null;
+    // Handle both wrapped response {success, message, data} and direct Order object
+    if (json['data'] != null) {
+      data = Order.fromJson(json['data']);
+    } else if (json['id'] != null) {
+      // Direct Order object (not wrapped)
+      data = Order.fromJson(json);
+    } else {
+      data = null;
+    }
   }
   bool? success;
   String? message;

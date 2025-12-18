@@ -26,6 +26,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(msg) => "Error: ${msg}";
 
+  static String m8(error) => "Error: ${error}";
+
+  static String m9(error) => "Verification Failed: ${error}";
+
   static String m3(length) => "Must be at least ${length} characters";
 
   static String m4(secondsRemaining) => "Resend code in 00:${secondsRemaining}";
@@ -38,12 +42,37 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m7(amount) =>
       "Success! You\'ve requested ${amount} withdrawal. Funds will be transferred to your selected account shortly.";
 
-  static String m8(msg) => "Write ${msg}";
+  static String m10(msg) => "Write ${msg}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "aadhaar_back": MessageLookupByLibrary.simpleMessage("Aadhaar Back"),
+    "aadhaar_front": MessageLookupByLibrary.simpleMessage("Aadhaar Front"),
+    "aadhaar_length_error": MessageLookupByLibrary.simpleMessage(
+      "Aadhaar number must be exactly 12 digits",
+    ),
+    "aadhaar_number": MessageLookupByLibrary.simpleMessage("Aadhaar Number"),
+    "aadhaar_number_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter 12-digit Aadhaar number",
+    ),
     "accept_ride": MessageLookupByLibrary.simpleMessage("Accept Ride"),
     "account": MessageLookupByLibrary.simpleMessage("Account"),
+    "account_holder_name": MessageLookupByLibrary.simpleMessage(
+      "Account Holder Name",
+    ),
+    "account_holder_name_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter account holder name as per bank records",
+    ),
+    "account_number": MessageLookupByLibrary.simpleMessage("Account Number"),
+    "account_number_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter bank account number (9-18 digits, numbers only)",
+    ),
+    "account_number_length_error": MessageLookupByLibrary.simpleMessage(
+      "Account number must be between 9 and 18 digits",
+    ),
+    "account_number_numeric_error": MessageLookupByLibrary.simpleMessage(
+      "Account number must contain only numbers",
+    ),
     "activity": MessageLookupByLibrary.simpleMessage("Activity"),
     "add_balance_to_your_wallet": MessageLookupByLibrary.simpleMessage(
       "Add Balance to Your Wallet",
@@ -78,10 +107,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "You’ve Arrived at the Pickup Point",
     ),
     "average_rating": MessageLookupByLibrary.simpleMessage("Average Rating"),
+    "back": MessageLookupByLibrary.simpleMessage("Back"),
     "bad_certificate_with_api_server": MessageLookupByLibrary.simpleMessage(
       "Bad certificate with API server",
     ),
     "bad_request": MessageLookupByLibrary.simpleMessage("Bad request"),
+    "bank_name": MessageLookupByLibrary.simpleMessage("Bank Name"),
+    "bank_name_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter bank name (e.g., State Bank of India)",
+    ),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cancel_ride": MessageLookupByLibrary.simpleMessage("Cancel Ride"),
     "cancel_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -129,6 +163,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "destination": MessageLookupByLibrary.simpleMessage("Destination"),
     "details": MessageLookupByLibrary.simpleMessage("Details"),
     "discount": MessageLookupByLibrary.simpleMessage("Discount"),
+    "dont_have_account": MessageLookupByLibrary.simpleMessage(
+      "Don\'t have an account? ",
+    ),
     "double_check_rider": MessageLookupByLibrary.simpleMessage(
       "Double-check the rider’s name and verify their destination before proceeding.",
     ),
@@ -144,6 +181,10 @@ class MessageLookup extends MessageLookupByLibrary {
           "Either phone number is null or password is empty",
         ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "email_hint": MessageLookupByLibrary.simpleMessage("Enter your email"),
+    "email_hint_example": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address (e.g., name@example.com)",
+    ),
     "email_label": MessageLookupByLibrary.simpleMessage("Email"),
     "emergency_phone": MessageLookupByLibrary.simpleMessage("Emergency Phone"),
     "enterPhoneDes": MessageLookupByLibrary.simpleMessage(
@@ -158,15 +199,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_a_valid_amount": MessageLookupByLibrary.simpleMessage(
       "Enter a valid amount",
     ),
+    "enter_aadhaar_number_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter Aadhaar number",
+    ),
+    "enter_account_holder_name_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter account holder name",
+    ),
+    "enter_account_number_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter account number",
+    ),
     "enter_amount": MessageLookupByLibrary.simpleMessage("Enter Amount"),
+    "enter_bank_name_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter bank name",
+    ),
     "enter_cardholder_name": MessageLookupByLibrary.simpleMessage(
       "Enter cardholder name",
     ),
     "enter_details_complete_profile": MessageLookupByLibrary.simpleMessage(
       "Enter your details to complete your profile and enhance your experience.",
     ),
+    "enter_email_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter your email",
+    ),
     "enter_experience": MessageLookupByLibrary.simpleMessage(
       "Enter your Experience!",
+    ),
+    "enter_full_name_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter your full name",
+    ),
+    "enter_ifsc_code_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter IFSC code",
+    ),
+    "enter_license_number_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter license number",
     ),
     "enter_password": MessageLookupByLibrary.simpleMessage(
       "Enter your Password",
@@ -174,14 +239,50 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_password_description": MessageLookupByLibrary.simpleMessage(
       "Please enter your account password to continue.",
     ),
+    "enter_password_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter your password",
+    ),
+    "enter_phone_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter phone number",
+    ),
     "enter_plate_number": MessageLookupByLibrary.simpleMessage(
       "Enter plate no",
+    ),
+    "enter_rc_number_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter RC number",
+    ),
+    "enter_upi_id_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter UPI ID",
     ),
     "enter_valid_card_number": MessageLookupByLibrary.simpleMessage(
       "Enter valid card number",
     ),
+    "enter_valid_email_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid email address",
+    ),
+    "enter_valid_ifsc_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid IFSC code (e.g., ABCD0123456)",
+    ),
+    "enter_valid_phone_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid 10-digit phone number",
+    ),
+    "enter_valid_upi_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid UPI ID (e.g., name@paytm)",
+    ),
+    "enter_vehicle_color_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter vehicle color",
+    ),
+    "enter_vehicle_model_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter vehicle model",
+    ),
     "enter_vehicle_name": MessageLookupByLibrary.simpleMessage(
       "Enter vehicle name",
+    ),
+    "enter_vehicle_number_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter vehicle number",
+    ),
+    "enter_vehicle_type_error": MessageLookupByLibrary.simpleMessage(
+      "Please enter vehicle type",
     ),
     "error_with_msg": m2,
     "estimated_time": MessageLookupByLibrary.simpleMessage("Estimated Time"),
@@ -207,6 +308,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Form is not valid",
     ),
     "full_name": MessageLookupByLibrary.simpleMessage("Full Name"),
+    "full_name_hint": MessageLookupByLibrary.simpleMessage(
+      "Full name as per ID proof",
+    ),
     "gender": MessageLookupByLibrary.simpleMessage("Gender"),
     "gender_female": MessageLookupByLibrary.simpleMessage("Female"),
     "gender_label": MessageLookupByLibrary.simpleMessage("Gender"),
@@ -227,10 +331,178 @@ class MessageLookup extends MessageLookupByLibrary {
     "helloText": MessageLookupByLibrary.simpleMessage("Hello..."),
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "id": MessageLookupByLibrary.simpleMessage("ID: "),
+    "ifsc_code": MessageLookupByLibrary.simpleMessage("IFSC Code"),
+    "ifsc_code_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter IFSC code (e.g., SBIN0001234)",
+    ),
     "initializing": MessageLookupByLibrary.simpleMessage("Initializing..."),
     "insertAllData": MessageLookupByLibrary.simpleMessage(
       "Please insert all Data",
     ),
+    "intercityActionAccept": MessageLookupByLibrary.simpleMessage("Accept"),
+    "intercityActionReject": MessageLookupByLibrary.simpleMessage("Reject"),
+    "intercityActionRetry": MessageLookupByLibrary.simpleMessage("Retry"),
+    "intercityBookingType": MessageLookupByLibrary.simpleMessage(
+      "Booking Type",
+    ),
+    "intercityBookings": MessageLookupByLibrary.simpleMessage("Bookings"),
+    "intercityCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "intercityCar": MessageLookupByLibrary.simpleMessage("Car"),
+    "intercityComplete": MessageLookupByLibrary.simpleMessage("Complete"),
+    "intercityCreateNewTrip": MessageLookupByLibrary.simpleMessage(
+      "Create New Trip",
+    ),
+    "intercityDepartureTime": MessageLookupByLibrary.simpleMessage(
+      "Departure Time",
+    ),
+    "intercityDistance": MessageLookupByLibrary.simpleMessage("Distance (km)"),
+    "intercityDriverTitle": MessageLookupByLibrary.simpleMessage(
+      "Intercity Driver",
+    ),
+    "intercityDropAddress": MessageLookupByLibrary.simpleMessage(
+      "Drop Address (Edit if needed)",
+    ),
+    "intercityDropLat": MessageLookupByLibrary.simpleMessage("Drop Lat"),
+    "intercityDropLng": MessageLookupByLibrary.simpleMessage("Drop Lng"),
+    "intercityEnterOtpDialog": MessageLookupByLibrary.simpleMessage(
+      "Enter OTP",
+    ),
+    "intercityError": m8,
+    "intercityFromCity": MessageLookupByLibrary.simpleMessage(
+      "From City/Area (Search)",
+    ),
+    "intercityLabel": MessageLookupByLibrary.simpleMessage("Intercity"),
+    "intercityLabelAmount": MessageLookupByLibrary.simpleMessage("Amount"),
+    "intercityLabelPayment": MessageLookupByLibrary.simpleMessage("Payment"),
+    "intercityLabelSeats": MessageLookupByLibrary.simpleMessage("Seats"),
+    "intercityLocationsCoords": MessageLookupByLibrary.simpleMessage(
+      "Locations & Coords",
+    ),
+    "intercityMap": MessageLookupByLibrary.simpleMessage("Map"),
+    "intercityMapLaunchError": MessageLookupByLibrary.simpleMessage(
+      "Could not launch map",
+    ),
+    "intercityMsgBookingAccepted": MessageLookupByLibrary.simpleMessage(
+      "Booking accepted",
+    ),
+    "intercityMsgBookingRejected": MessageLookupByLibrary.simpleMessage(
+      "Booking rejected",
+    ),
+    "intercityMyTrips": MessageLookupByLibrary.simpleMessage("My Trips"),
+    "intercityNightFare": MessageLookupByLibrary.simpleMessage("Night Fare"),
+    "intercityNightFareMultiplier": MessageLookupByLibrary.simpleMessage(
+      "Night Fare Multiplier",
+    ),
+    "intercityNoBookings": MessageLookupByLibrary.simpleMessage(
+      "No bookings for this trip",
+    ),
+    "intercityNoPendingBookings": MessageLookupByLibrary.simpleMessage(
+      "No pending bookings.",
+    ),
+    "intercityNoPublishedTrips": MessageLookupByLibrary.simpleMessage(
+      "No published trips found.",
+    ),
+    "intercityOnboarded": MessageLookupByLibrary.simpleMessage("Onboarded"),
+    "intercityOnboardedLabel": MessageLookupByLibrary.simpleMessage(
+      "Onboarded: ",
+    ),
+    "intercityOtpHint": MessageLookupByLibrary.simpleMessage("6-Digit OTP"),
+    "intercityOtpVerifiedSuccess": MessageLookupByLibrary.simpleMessage(
+      "OTP Verified Successfully",
+    ),
+    "intercityPassengers": MessageLookupByLibrary.simpleMessage("Passengers"),
+    "intercityPaymentCash": MessageLookupByLibrary.simpleMessage("CASH"),
+    "intercityPickupAddress": MessageLookupByLibrary.simpleMessage(
+      "Pickup Address (Edit if needed)",
+    ),
+    "intercityPickupLat": MessageLookupByLibrary.simpleMessage("Pickup Lat"),
+    "intercityPickupLng": MessageLookupByLibrary.simpleMessage("Pickup Lng"),
+    "intercityPrivate": MessageLookupByLibrary.simpleMessage("Private"),
+    "intercityPublishTrip": MessageLookupByLibrary.simpleMessage(
+      "PUBLISH TRIP",
+    ),
+    "intercityRequiredError": MessageLookupByLibrary.simpleMessage("Required"),
+    "intercityReturnDeparture": MessageLookupByLibrary.simpleMessage(
+      "Return Departure",
+    ),
+    "intercityReturnTrip": MessageLookupByLibrary.simpleMessage("Return Trip"),
+    "intercityRouteSelection": MessageLookupByLibrary.simpleMessage(
+      "Route Selection",
+    ),
+    "intercityScheduleFare": MessageLookupByLibrary.simpleMessage(
+      "Schedule & Fare",
+    ),
+    "intercitySeats": MessageLookupByLibrary.simpleMessage("Seats"),
+    "intercitySelectDateTime": MessageLookupByLibrary.simpleMessage(
+      "Select Date & Time",
+    ),
+    "intercitySelectDepartureTimeError": MessageLookupByLibrary.simpleMessage(
+      "Please select departure time",
+    ),
+    "intercitySharePool": MessageLookupByLibrary.simpleMessage("Share Pool"),
+    "intercityStartTrip": MessageLookupByLibrary.simpleMessage("Start Trip"),
+    "intercityStatusCancelled": MessageLookupByLibrary.simpleMessage(
+      "CANCELLED",
+    ),
+    "intercityStatusCompleted": MessageLookupByLibrary.simpleMessage(
+      "COMPLETED",
+    ),
+    "intercityStatusDispatched": MessageLookupByLibrary.simpleMessage(
+      "DISPATCHED",
+    ),
+    "intercityStatusFilling": MessageLookupByLibrary.simpleMessage("FILLING"),
+    "intercityStatusInProgress": MessageLookupByLibrary.simpleMessage(
+      "IN PROGRESS",
+    ),
+    "intercityStatusMinReached": MessageLookupByLibrary.simpleMessage(
+      "MIN REACHED",
+    ),
+    "intercityStatusPending": MessageLookupByLibrary.simpleMessage("PENDING"),
+    "intercityStatusPublished": MessageLookupByLibrary.simpleMessage(
+      "PUBLISHED",
+    ),
+    "intercityStatusUnknown": MessageLookupByLibrary.simpleMessage("UNKNOWN"),
+    "intercityToCity": MessageLookupByLibrary.simpleMessage(
+      "To City/Area (Search)",
+    ),
+    "intercityTotalFareInput": MessageLookupByLibrary.simpleMessage(
+      "Total Fare (₹)",
+    ),
+    "intercityTripCompleted": MessageLookupByLibrary.simpleMessage(
+      "Trip completed successfully",
+    ),
+    "intercityTripDetails": MessageLookupByLibrary.simpleMessage(
+      "Trip Details",
+    ),
+    "intercityTripInstruction": MessageLookupByLibrary.simpleMessage(
+      "Select trip details. Search locations using Google Maps. Distance is auto-calculated.",
+    ),
+    "intercityTripPublishedSuccess": MessageLookupByLibrary.simpleMessage(
+      "Trip published successfully!",
+    ),
+    "intercityTripStarted": MessageLookupByLibrary.simpleMessage(
+      "Trip started successfully",
+    ),
+    "intercityUnknownPassenger": MessageLookupByLibrary.simpleMessage(
+      "Unknown Passenger",
+    ),
+    "intercityVehicleAuto": MessageLookupByLibrary.simpleMessage("Auto Normal"),
+    "intercityVehicleCarNormal": MessageLookupByLibrary.simpleMessage(
+      "Car Normal",
+    ),
+    "intercityVehicleCarPremium": MessageLookupByLibrary.simpleMessage(
+      "Car Premium Express",
+    ),
+    "intercityVehicleTataMagic": MessageLookupByLibrary.simpleMessage(
+      "Tata Magic Lite",
+    ),
+    "intercityVehicleType": MessageLookupByLibrary.simpleMessage(
+      "Vehicle Type",
+    ),
+    "intercityVerificationFailed": m9,
+    "intercityVerified": MessageLookupByLibrary.simpleMessage("Verified"),
+    "intercityVerify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "intercityVerifyOtp": MessageLookupByLibrary.simpleMessage("Verify OTP"),
     "internal_server_error": MessageLookupByLibrary.simpleMessage(
       "Internal server error",
     ),
@@ -240,6 +512,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "km": MessageLookupByLibrary.simpleMessage("km"),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
     "lets_ride": MessageLookupByLibrary.simpleMessage("Let’s Ride"),
+    "license_back": MessageLookupByLibrary.simpleMessage("License Back"),
+    "license_front": MessageLookupByLibrary.simpleMessage("License Front"),
+    "license_number": MessageLookupByLibrary.simpleMessage("License Number"),
+    "license_number_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter driving license number (e.g., DL-0123456789)",
+    ),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "location_permission_msg": MessageLookupByLibrary.simpleMessage(
       "Please enable location access to use this feature.",
@@ -253,6 +531,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginSignup": MessageLookupByLibrary.simpleMessage("Log in / Sign up"),
+    "login_subtitle": MessageLookupByLibrary.simpleMessage(
+      "Enter your email and password to continue",
+    ),
     "login_with_your_password": MessageLookupByLibrary.simpleMessage(
       "Login with your Password",
     ),
@@ -281,6 +562,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_payment_methods_available": MessageLookupByLibrary.simpleMessage(
       "No Payment methods available",
     ),
+    "no_rides_today": MessageLookupByLibrary.simpleMessage("No rides today"),
     "no_rides_yet": MessageLookupByLibrary.simpleMessage("No rides yet."),
     "no_service_available": MessageLookupByLibrary.simpleMessage(
       "No Service Available",
@@ -307,7 +589,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "password_hint": MessageLookupByLibrary.simpleMessage(
       "Set a Strong Password",
     ),
+    "password_hint_min": MessageLookupByLibrary.simpleMessage(
+      "Enter password (minimum 6 characters)",
+    ),
     "password_label": MessageLookupByLibrary.simpleMessage("Password"),
+    "password_length_error": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 6 characters",
+    ),
     "password_mismatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match.",
     ),
@@ -330,6 +618,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Phone number must be at least 6 digits",
     ),
     "phoneNo": MessageLookupByLibrary.simpleMessage("Phone No"),
+    "phone_numeric_error": MessageLookupByLibrary.simpleMessage(
+      "Phone number must contain only numbers",
+    ),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage(
       "Pick from Gallery",
     ),
@@ -355,6 +646,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile_under_review": MessageLookupByLibrary.simpleMessage(
       "Your Profile is Under Review",
+    ),
+    "rc_back": MessageLookupByLibrary.simpleMessage("RC Back"),
+    "rc_front": MessageLookupByLibrary.simpleMessage("RC Front"),
+    "rc_number": MessageLookupByLibrary.simpleMessage("RC Number"),
+    "rc_number_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter vehicle RC number (Registration Certificate)",
     ),
     "reached_destination": MessageLookupByLibrary.simpleMessage(
       "Reached Destination",
@@ -456,6 +753,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "share_experience": MessageLookupByLibrary.simpleMessage(
       "Share Your Experience!",
     ),
+    "signup_action": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "skip_for_now": MessageLookupByLibrary.simpleMessage("Skip for Now"),
     "something_went_wrong": MessageLookupByLibrary.simpleMessage(
       "Something went wrong",
@@ -470,6 +768,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "status": MessageLookupByLibrary.simpleMessage("Status"),
     "stayOnThisDevice": MessageLookupByLibrary.simpleMessage(
       "Stay on This Device",
+    ),
+    "step_bank_details": MessageLookupByLibrary.simpleMessage("Bank Details"),
+    "step_create_account": MessageLookupByLibrary.simpleMessage(
+      "Create Account",
+    ),
+    "step_license_docs": MessageLookupByLibrary.simpleMessage(
+      "License & Documents",
+    ),
+    "step_personal_info": MessageLookupByLibrary.simpleMessage(
+      "Personal Information",
+    ),
+    "step_subtitle_bank": MessageLookupByLibrary.simpleMessage(
+      "Enter your bank account details",
+    ),
+    "step_subtitle_default": MessageLookupByLibrary.simpleMessage(
+      "Fill in your details to get started",
+    ),
+    "step_subtitle_docs": MessageLookupByLibrary.simpleMessage(
+      "Upload required documents",
+    ),
+    "step_subtitle_personal": MessageLookupByLibrary.simpleMessage(
+      "Enter your basic details",
+    ),
+    "step_subtitle_vehicle": MessageLookupByLibrary.simpleMessage(
+      "Tell us about your vehicle",
+    ),
+    "step_vehicle_info": MessageLookupByLibrary.simpleMessage(
+      "Vehicle Information",
     ),
     "stop_point": MessageLookupByLibrary.simpleMessage("Stop point"),
     "submit": MessageLookupByLibrary.simpleMessage("Submit"),
@@ -526,11 +852,36 @@ class MessageLookup extends MessageLookupByLibrary {
       "Unexpected response format",
     ),
     "update": MessageLookupByLibrary.simpleMessage("Update"),
+    "upi_id": MessageLookupByLibrary.simpleMessage("UPI ID"),
+    "upi_id_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter UPI ID (e.g., name@paytm, name@phonepe)",
+    ),
     "upload": MessageLookupByLibrary.simpleMessage("Upload"),
+    "upload_aadhaar_back_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload Aadhaar back photo",
+    ),
+    "upload_aadhaar_front_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload Aadhaar front photo",
+    ),
     "upload_driver_documents": MessageLookupByLibrary.simpleMessage(
       "Upload your driver documents to complete verification and start driving. Quick, easy, and secure!",
     ),
     "upload_image": MessageLookupByLibrary.simpleMessage("Upload image"),
+    "upload_license_back_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload license back photo",
+    ),
+    "upload_license_front_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload license front photo",
+    ),
+    "upload_profile_photo_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload profile photo",
+    ),
+    "upload_rc_back_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload RC back photo",
+    ),
+    "upload_rc_front_error": MessageLookupByLibrary.simpleMessage(
+      "Please upload RC front photo",
+    ),
     "use_otp_instead": MessageLookupByLibrary.simpleMessage("Use OTP Instead"),
     "use_your_password_here": MessageLookupByLibrary.simpleMessage(
       "Use your password here",
@@ -539,7 +890,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Validation error",
     ),
     "vehicle_color": MessageLookupByLibrary.simpleMessage("Vehicle Color"),
+    "vehicle_color_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter vehicle color (e.g., Red, Blue, White)",
+    ),
+    "vehicle_model": MessageLookupByLibrary.simpleMessage("Vehicle Model"),
+    "vehicle_model_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter vehicle model (e.g., Swift, Activa, City)",
+    ),
     "vehicle_name": MessageLookupByLibrary.simpleMessage("Vehicle Name"),
+    "vehicle_number_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter vehicle registration number (e.g., MH12AB1234)",
+    ),
     "vehicle_papers": MessageLookupByLibrary.simpleMessage("Vehicle Papers"),
     "vehicle_papers_required": MessageLookupByLibrary.simpleMessage(
       "Vehicle Papers required",
@@ -551,6 +912,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Vehicle Production Year",
     ),
     "vehicle_type": MessageLookupByLibrary.simpleMessage("Vehicle Type"),
+    "vehicle_type_hint": MessageLookupByLibrary.simpleMessage(
+      "Select vehicle type (e.g., CAR, BIKE, SUV)",
+    ),
+    "verify_otp_action": MessageLookupByLibrary.simpleMessage("Confirm OTP"),
     "view_all": MessageLookupByLibrary.simpleMessage("View All"),
     "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
     "wallet_balance": MessageLookupByLibrary.simpleMessage("Wallet Balance"),
@@ -569,7 +934,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "withdrawal_success": MessageLookupByLibrary.simpleMessage(
       "Withdrawal Request Submitted Successfully!",
     ),
-    "write": m8,
+    "write": m10,
     "writeIssueDetails": MessageLookupByLibrary.simpleMessage(
       "Write Issue Details",
     ),

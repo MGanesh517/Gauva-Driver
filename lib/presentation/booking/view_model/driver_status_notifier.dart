@@ -62,7 +62,11 @@ class DriverStatusNotifier extends StateNotifier<DriverStatusState> {
     final orderNotifier = ref.read(rideOrderNotifierProvider.notifier)..resetStateAfterDelay();
     orderRequestDialogue();
     await orderNotifier.orderDetails(orderId: data['order_id']);
-    ref.read(bookingNotifierProvider.notifier).updateMapZoom();
+    try {
+      await ref.read(bookingNotifierProvider.notifier).updateMapZoom();
+    } catch (e) {
+      print('⚠️ Error updating map zoom for order request: $e');
+    }
 
     state = DriverStatusState.orderRequest(data);
   }
@@ -76,6 +80,12 @@ class DriverStatusNotifier extends StateNotifier<DriverStatusState> {
         showNotification(message: failure.message);
       },
       (data) async {
+        // Save user data if present in response
+        if (data.data != null) {
+          print('💾 Driver Status: Saving user data from status update...');
+          await LocalStorageService().saveUser(data: data.data!.toJson());
+        }
+
         // Check new API format (isOnline) or old format (data.status)
         final bool isOnlineFromResponse =
             data.isOnline ?? (data.data?.status?.toLowerCase() == DriverStatus.online.name);
@@ -97,7 +107,7 @@ class DriverStatusNotifier extends StateNotifier<DriverStatusState> {
               ref.read(bookingNotifierProvider.notifier).resetToInitial(enablePusher: false);
               // Wrap map operations in try-catch to handle disposed controllers
               try {
-                ref.read(bookingNotifierProvider.notifier).resetMapZoom();
+                await ref.read(bookingNotifierProvider.notifier).resetMapZoom();
               } catch (e) {
                 print('⚠️ Error resetting map zoom when going offline: $e');
               }

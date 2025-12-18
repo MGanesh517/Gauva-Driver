@@ -44,8 +44,13 @@ class Environment {
     // Step 1: Remove all fragments (#) first
     String wsUrl = baseUrl.split('#').first.trim();
 
-    // Step 2: Convert https to wss, http to ws
-    wsUrl = wsUrl.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://');
+    // Step 2: Convert https to wss, http to ws (Case Insensitive)
+    final lowerCased = wsUrl.toLowerCase();
+    if (lowerCased.startsWith('https://')) {
+      wsUrl = 'wss://${wsUrl.substring(8)}';
+    } else if (lowerCased.startsWith('http://')) {
+      wsUrl = 'ws://${wsUrl.substring(7)}';
+    }
 
     // Step 3: Remove any port numbers (like :0, :8080, :443)
     wsUrl = wsUrl.replaceAll(RegExp(r':\d+'), '');

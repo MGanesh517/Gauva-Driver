@@ -38,9 +38,9 @@ void _showTermsDialog(BuildContext context, PackageInfo platformInfo, bool showT
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
-            child: Assets.images.appLogo.image(width: 150.w, height: 150.h),
+            child: Assets.images.rideInHome.image(width: 150.w, height: 150.h),
           ),
-          Gap(12.h),
+          Gap(6.h),
           Text(
             platformInfo.appName,
             textAlign: TextAlign.center,
@@ -50,11 +50,11 @@ void _showTermsDialog(BuildContext context, PackageInfo platformInfo, bool showT
               color: ColorPalette.primary50,
             ),
           ),
-          Gap(4.h),
-          Text(
-            'Version: ${platformInfo.version} (Build ${platformInfo.buildNumber})',
-            style: context.bodySmall?.copyWith(fontSize: 12.sp, color: Colors.grey),
-          ),
+          // Gap(4.h),
+          // Text(
+          //   'Version: ${platformInfo.version} (Build ${platformInfo.buildNumber})',
+          //   style: context.bodySmall?.copyWith(fontSize: 12.sp, color: Colors.grey),
+          // ),
         ],
       ),
       content: Consumer(
@@ -62,8 +62,8 @@ void _showTermsDialog(BuildContext context, PackageInfo platformInfo, bool showT
           final state = ref.watch(termsAndConditionProvider);
           final policyState = ref.watch(privacyAndPolicyProvider);
 
-          return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 300.h),
+          return SizedBox(
+            height: 300.h,
             child: Column(
               children: [
                 Gap(8.h),
@@ -113,14 +113,14 @@ void _showTermsDialog(BuildContext context, PackageInfo platformInfo, bool showT
                     ),
                   ),
                 ),
-                Gap(16.h),
-                Center(
-                  child: Text(
-                    localize(context).all_rights_reserved('© 2025 Razinsoft.'),
-                    textAlign: TextAlign.center,
-                    style: context.bodySmall?.copyWith(fontSize: 12.sp, color: ColorPalette.primary50),
-                  ),
-                ),
+                // Gap(16.h),
+                // Center(
+                //   child: Text(
+                //     localize(context).all_rights_reserved('© 2025 Gauva.'),
+                //     textAlign: TextAlign.center,
+                //     style: context.bodySmall?.copyWith(fontSize: 12.sp, color: ColorPalette.primary50),
+                //   ),
+                // ),
               ],
             ),
           );

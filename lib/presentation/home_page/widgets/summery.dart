@@ -21,7 +21,7 @@ Widget summery(BuildContext context) => Consumer(
               title: localize(context).your_balance,
               value:
                   '₹'
-                  '${data?.wallet ?? 0}',
+                  '${data?.wallet?.balance ?? 0}',
               icon: Assets.images.balance,
               backgroundColor: const Color(0xFF3B3E4B),
             ),
@@ -31,7 +31,7 @@ Widget summery(BuildContext context) => Consumer(
               title: localize(context).todays_earning,
               value:
                   '₹'
-                  '${data?.todayEarning ?? 0}',
+                  '${data?.wallet?.todaysEarnings ?? 0}',
               icon: Assets.images.balance,
               backgroundColor: const Color(0xFF8154DA),
             ),
@@ -43,7 +43,7 @@ Widget summery(BuildContext context) => Consumer(
             summeryCard(
               context,
               title: localize(context).cancel_ride,
-              value: '${data?.cancelRide ?? 0}',
+              value: '${data?.wallet?.cancelRide ?? 0}',
               icon: Assets.images.taxi,
               backgroundColor: const Color(0xFFF87A5E),
             ),
@@ -51,7 +51,7 @@ Widget summery(BuildContext context) => Consumer(
             summeryCard(
               context,
               title: localize(context).your_ride_complete,
-              value: '${data?.completeRide ?? 0}',
+              value: '${data?.wallet?.rideComplete ?? 0}',
               icon: Assets.images.taxi,
               backgroundColor: const Color(0xFF0CA96A),
             ),

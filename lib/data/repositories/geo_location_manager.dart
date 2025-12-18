@@ -50,6 +50,11 @@ class GeoLocationManager implements IGeoLocationManager {
           );
       return CommonResponse.fromJson(response.data);
     } catch (e) {
+      // Log error but don't throw - location updates are non-critical
+      // The server endpoint might not be available, but we should continue tracking location
+      print('⚠️ GeoLocationManager: Failed to save driver location to server: $e');
+      print('⚠️ GeoLocationManager: Location was: [${latLng.latitude}, ${latLng.longitude}]');
+      // Return a response indicating failure but don't break the app
       return CommonResponse.fromJson({'success': false, 'message': e.toString()});
     }
   }

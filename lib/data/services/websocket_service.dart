@@ -1,24 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:stomp_dart_client/stomp_dart_client.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:gauva_driver/data/services/local_storage_service.dart';
+import 'package:web_socket_channel/io.dart';
+import '../../core/config/environment.dart';
 
-/// Base WebSocket service for both STOMP and Socket.IO
+/// Base WebSocket service for Plain WebSocket (Raw JSON)
 class WebSocketService {
-  // Configuration
-  static const String baseUrl = 'https://gauva-f6f6d9ddagfqc9fw.canadacentral-01.azurewebsites.net';
-  static const String socketIOUrl = 'https://gauva-f6f6d9ddagfqc9fw.canadacentral-01.azurewebsites.net';
-
-  // STOMP client
-  StompClient? stompClient;
-
-  // Socket.IO client
-  IO.Socket? socketIO;
+  // WebSocket channel
+  IOWebSocketChannel? _channel;
 
   // Connection status
-  bool isStompConnected = false;
-  bool isSocketIOConnected = false;
+  bool isConnected = false;
 
   // Stream controllers for events
   final _rideStatusController = StreamController<Map<String, dynamic>>.broadcast();
@@ -38,286 +29,305 @@ class WebSocketService {
   void addToNewRideRequestStream(Map<String, dynamic> data) => _newRideRequestController.add(data);
   void addToFleetStatsStream(Map<String, dynamic> data) => _fleetStatsController.add(data);
 
+  // Auto-reconnect support
+  bool _shouldReconnect = true;
+  String? _jwtToken;
+  Timer? _reconnectTimer;
+  Timer? _healthCheckTimer;
+  final _onReconnectedController = StreamController<void>.broadcast();
+
   // Getters for streams
   Stream<Map<String, dynamic>> get rideStatusStream => _rideStatusController.stream;
   Stream<Map<String, dynamic>> get driverLocationStream => _driverLocationController.stream;
   Stream<Map<String, dynamic>> get walletUpdateStream => _walletUpdateController.stream;
   Stream<Map<String, dynamic>> get chatMessageStream => _chatMessageController.stream;
   Stream<Map<String, dynamic>> get driverStatusStream => _driverStatusController.stream;
-  Stream<Map<String, dynamic>> get newRideRequestStream => _newRideRequestController.stream;
+  Stream<Map<String, dynamic>> get newRideRequestStream {
+    print('🔍 WebSocket: Accessing newRideRequestStream getter');
+    return _newRideRequestController.stream;
+  }
   Stream<Map<String, dynamic>> get fleetStatsStream => _fleetStatsController.stream;
+  Stream<void> get onReconnected => _onReconnectedController.stream;
 
-  /// Connect to STOMP WebSocket
-  Future<void> connectStomp(String jwtToken) async {
+  /// Connect to Raw All-in-One WebSocket
+  Future<void> connect(String jwtToken) async {
+    // Store token for auto-reconnect
+    _jwtToken = jwtToken;
+    _shouldReconnect = true;
+
+    // Prevent multiple connection attempts
+    if (isConnected && _channel != null) {
+      print('⚠️ WebSocket Service: Already connected, skipping...');
+      return;
+    }
+
+    // Don't call disconnect() here as it sets _shouldReconnect to false
+    // Just close existing channel if any
+    if (_channel != null) {
+      try {
+        _channel!.sink.close();
+      } catch (e) {
+        /* ignore */
+      }
+      _channel = null;
+    }
+
     try {
-      // Use wss:// for HTTPS connections (production)
-      final wsUrl = baseUrl.startsWith('https')
-          ? baseUrl.replaceFirst('https', 'wss')
-          : baseUrl.replaceFirst('http', 'ws');
+      final wsUrl = Environment.stompWebSocketUrl;
 
-      final stompConfig = StompConfig(
-        url: '$wsUrl/ws',
-        onConnect: (frame) {
-          print('✅ STOMP Connected');
-          isStompConnected = true;
+      print('🔌 WebSocket Service: Connecting to Raw WebSocket at $wsUrl');
+      print('🔑 WebSocket Service: Using token (length: ${jwtToken.length})');
+
+      _channel = IOWebSocketChannel.connect(
+        Uri.parse(wsUrl),
+        headers: {'Authorization': 'Bearer $jwtToken'},
+        pingInterval: const Duration(seconds: 10),
+      );
+
+      isConnected = true;
+      print('✅ WebSocket Connection initiated');
+      print('✅ WebSocket: Connection established - ready to receive messages');
+      print('✅ WebSocket: Stream listener will be attached for continuous listening');
+
+      // Listen to incoming messages
+      _channel!.stream.listen(
+        (message) {
+          _handleIncomingMessage(message);
         },
-        onStompError: (frame) {
-          print('❌ STOMP Error: ${frame.body}');
-          isStompConnected = false;
+        onDone: () {
+          print('❌ WebSocket Closed - Connection terminated');
+          isConnected = false;
+          _attemptReconnect();
         },
-        onWebSocketError: (error) {
+        onError: (error) {
           print('❌ WebSocket Error: $error');
-          isStompConnected = false;
+          isConnected = false;
+          _attemptReconnect();
         },
-        onDisconnect: (frame) {
-          print('❌ STOMP Disconnected');
-          isStompConnected = false;
-        },
-        stompConnectHeaders: {'Authorization': 'Bearer $jwtToken'},
-        webSocketConnectHeaders: {'Authorization': 'Bearer $jwtToken'},
-        beforeConnect: () async {
-          await Future.delayed(const Duration(milliseconds: 300));
-        },
-        heartbeatIncoming: const Duration(milliseconds: 4000),
-        heartbeatOutgoing: const Duration(milliseconds: 4000),
+        cancelOnError: false, // Keep listening even on errors
       );
-
-      stompClient = StompClient(config: stompConfig);
-      stompClient!.activate();
-    } catch (e) {
-      print('Error connecting to STOMP: $e');
-      rethrow;
-    }
-  }
-
-  /// Connect to Socket.IO
-  /// NOTE: Socket.IO may not be available on Azure App Service
-  /// Use STOMP WebSocket instead for production
-  Future<void> connectSocketIO(String? jwtToken) async {
-    try {
-      // Convert https to wss for WebSocket
-      final wsUrl = socketIOUrl.startsWith('https')
-          ? socketIOUrl.replaceFirst('https://', 'wss://')
-          : socketIOUrl.replaceFirst('http://', 'ws://');
-
-      // Remove port if it's the default (Socket.IO may run on same port as main server)
-      final cleanUrl = wsUrl.replaceAll(':9090', '').replaceAll(':0', '');
-
-      print('🔌 Connecting Socket.IO to: $cleanUrl');
-
-      socketIO = IO.io(
-        cleanUrl,
-        IO.OptionBuilder()
-            .setTransports(['websocket', 'polling'])
-            .setQuery({'EIO': '3'}) // Use EIO=3 for Socket.IO v1.x
-            .enableAutoConnect()
-            .enableReconnection()
-            .setReconnectionDelay(1000)
-            .setReconnectionDelayMax(5000)
-            .setReconnectionAttempts(999999) // Keep trying
-            .setTimeout(20000)
-            .build(),
-      );
-
-      // Connection events
-      socketIO!.onConnect((_) {
-        print('✅ Socket.IO Connected');
-        isSocketIOConnected = true;
-      });
-
-      socketIO!.onDisconnect((_) {
-        print('❌ Socket.IO Disconnected');
-        isSocketIOConnected = false;
-      });
-
-      socketIO!.onConnectError((error) {
-        print('❌ Socket.IO Connection Error: $error');
-        isSocketIOConnected = false;
-      });
-
-      // Server confirmation
-      socketIO!.on('connected', (data) {
-        print('Server confirmation: $data');
-      });
-
-      // Error handling
-      socketIO!.on('error', (data) {
-        print('Socket.IO Error: $data');
-      });
-
-      // Join error
-      socketIO!.on('join_error', (data) {
-        print('Join Error: $data');
-      });
-
-      // Real-time event listeners
-      _setupSocketIOListeners();
-    } catch (e) {
-      print('Error connecting to Socket.IO: $e');
-      rethrow;
-    }
-  }
-
-  /// Setup Socket.IO event listeners
-  void _setupSocketIOListeners() {
-    // Ride status updates
-    socketIO!.on('ride_status', (data) {
-      print('📱 Ride Status Update: $data');
-      _rideStatusController.add(Map<String, dynamic>.from(data));
-    });
-
-    // Driver location updates
-    socketIO!.on('driver_location', (data) {
-      print('📍 Driver Location: $data');
-      _driverLocationController.add(Map<String, dynamic>.from(data));
-    });
-
-    // Wallet updates
-    socketIO!.on('wallet_update', (data) {
-      print('💰 Wallet Update: $data');
-      _walletUpdateController.add(Map<String, dynamic>.from(data));
-    });
-
-    // Chat messages
-    socketIO!.on('chat_message', (data) {
-      print('💬 Chat Message: $data');
-      _chatMessageController.add(Map<String, dynamic>.from(data));
-    });
-
-    // Driver status updates
-    socketIO!.on('driver_status', (data) {
-      print('🚗 Driver Status: $data');
-      _driverStatusController.add(Map<String, dynamic>.from(data));
-    });
-
-    // New ride request (for drivers)
-    socketIO!.on('new_ride_request', (data) {
-      print('🆕 New Ride Request: $data');
-      _newRideRequestController.add(Map<String, dynamic>.from(data));
-    });
-
-    // Fleet stats (for admin)
-    socketIO!.on('fleet_stats', (data) {
-      print('📊 Fleet Stats: $data');
-      _fleetStatsController.add(Map<String, dynamic>.from(data));
-    });
-  }
-
-  /// Join a room (Socket.IO)
-  void joinRoom(String type, dynamic id) {
-    if (!isSocketIOConnected) {
-      print('⚠️ Socket.IO not connected. Cannot join room.');
-      return;
-    }
-
-    socketIO!.emit('join', {'type': type, 'id': id});
-
-    socketIO!.on('joined', (data) {
-      print('✅ Joined room: $data');
-    });
-  }
-
-  /// Leave a room (Socket.IO)
-  void leaveRoom(String type, dynamic id) {
-    if (!isSocketIOConnected) {
-      return;
-    }
-
-    socketIO!.emit('leave', {'type': type, 'id': id});
-  }
-
-  /// Send location update (Socket.IO)
-  void sendLocationUpdate({
-    required int rideId,
-    required int? driverId,
-    required double lat,
-    required double lng,
-    double? heading,
-  }) {
-    if (!isSocketIOConnected) {
-      print('⚠️ Socket.IO not connected. Cannot send location.');
-      return;
-    }
-
-    socketIO!.emit('location', {'rideId': rideId, 'driverId': driverId, 'lat': lat, 'lng': lng, 'heading': heading});
-  }
-
-  /// Send chat message (Socket.IO)
-  void sendChatMessage({
-    required int rideId,
-    required String senderId,
-    required String senderName,
-    required String receiverId,
-    required String message,
-    required String messageId,
-  }) {
-    if (!isSocketIOConnected) {
-      print('⚠️ Socket.IO not connected. Cannot send chat.');
-      return;
-    }
-
-    socketIO!.emit('chat', {
-      'rideId': rideId,
-      'senderId': senderId,
-      'senderName': senderName,
-      'receiverId': receiverId,
-      'message': message,
-      'messageId': messageId,
-    });
-  }
-
-  /// Subscribe to STOMP topic
-  void subscribeToStompTopic(String topic, Function(Map<String, dynamic>) callback) {
-    if (!isStompConnected || stompClient == null) {
-      print('⚠️ STOMP not connected. Cannot subscribe.');
-      return;
-    }
-
-    stompClient!.subscribe(
-      destination: topic,
-      callback: (frame) {
-        try {
-          final data = jsonDecode(frame.body!) as Map<String, dynamic>;
-          callback(data);
-        } catch (e) {
-          print('Error parsing STOMP message: $e');
+      
+      print('✅ WebSocket: Stream listener attached - continuously listening for messages');
+      
+      // Start health check timer (every 30 seconds)
+      _healthCheckTimer?.cancel();
+      _healthCheckTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+        if (isConnected && _channel != null) {
+          print('💓 WebSocket: Health check - Connection active, listening continuously');
+          // Optionally send ping to keep connection alive
+          try {
+            sendMessage('ping', {});
+          } catch (e) {
+            print('⚠️ WebSocket: Error sending ping: $e');
+          }
+        } else {
+          print('⚠️ WebSocket: Health check - Connection lost, attempting reconnect...');
+          _attemptReconnect();
         }
-      },
-    );
+      });
+    } catch (e) {
+      print('❌ Error connecting to WebSocket: $e');
+      isConnected = false;
+      // If initial connection fails, attempt reconnect
+      _attemptReconnect();
+      rethrow;
+    }
   }
 
-  /// Send message via STOMP
-  void sendStompMessage(String destination, Map<String, dynamic> message) {
-    if (!isStompConnected || stompClient == null) {
-      print('⚠️ STOMP not connected. Cannot send message.');
+  /// Attempt to reconnect after a delay
+  void _attemptReconnect() {
+    if (!_shouldReconnect || _jwtToken == null) {
       return;
     }
 
-    stompClient!.send(destination: destination, body: jsonEncode(message));
+    if (_reconnectTimer != null && _reconnectTimer!.isActive) {
+      return; // Already scheduled
+    }
+
+    print('⏳ WebSocket: Scheduling reconnect in 5s...');
+    _reconnectTimer = Timer(const Duration(seconds: 5), () async {
+      if (!_shouldReconnect || isConnected) return;
+
+      print('🔄 WebSocket: Attempting to reconnect...');
+      try {
+        await connect(_jwtToken!);
+        // connect() rethrows on error, so we catch it here to loop again
+        if (isConnected) {
+          print('✅ WebSocket: Auto-reconnected successfully');
+          _onReconnectedController.add(null);
+        }
+      } catch (e) {
+        print('❌ WebSocket: Auto-reconnect failed ($e). Retrying in 5s...');
+        _attemptReconnect();
+      }
+    });
   }
 
-  /// Disconnect all
+  /// Handle incoming raw JSON message
+  void _handleIncomingMessage(dynamic message) {
+    try {
+      print('📩 WebSocket Received (raw): $message'); // Enable logging to verify continuous listening
+      final decoded = jsonDecode(message);
+
+      if (decoded is Map<String, dynamic>) {
+        final event = decoded['event'];
+        final data = decoded['data'];
+        
+        // Enhanced logging for new_ride_request events
+        if (event == 'new_ride_request') {
+          print('🔍 WebSocket: Detected new_ride_request event in raw message!');
+          print('🔍 WebSocket: Event: $event');
+          print('🔍 WebSocket: Data type: ${data.runtimeType}');
+          print('🔍 WebSocket: Message keys: ${decoded.keys.toList()}');
+        }
+
+        // Handle "connected" event/confirmation
+        if (event == 'connected') {
+          print('✅ WebSocket Server Confirmation: ${data['message'] ?? 'Connected'}');
+          print('✅ WebSocket: Connection established and listening continuously');
+          return;
+        }
+        
+        // Handle "joined" event/confirmation
+        if (event == 'joined') {
+          final room = data?['room'] ?? 
+                      data?['type'] ?? 
+                      (decoded['room'] ?? decoded['type']);
+          print('✅ WebSocket: Successfully joined room: $room');
+          if (data != null && data is Map) {
+            print('✅ WebSocket: Join confirmation data: $data');
+          }
+          return;
+        }
+        
+        // Handle "pong" event (response to ping)
+        if (event == 'pong') {
+          print('💓 WebSocket: Pong received - connection is alive');
+          return;
+        }
+
+        // Dispatch based on 'event' name
+        if (event != null && data != null) {
+          // Normalize data to Map<String, dynamic>
+          final Map<String, dynamic> mapData = data is Map<String, dynamic> ? data : {'payload': data};
+
+          switch (event) {
+            case 'ride_status':
+            case 'rideStatus':
+              print('📱 Ride Status Update: $mapData');
+              _rideStatusController.add(mapData);
+              break;
+            case 'driver_location':
+            case 'driverLocation':
+              print('📍 Driver Location: $mapData');
+              _driverLocationController.add(mapData);
+              break;
+            case 'wallet_update':
+            case 'walletUpdate':
+              print('💰 Wallet Update: $mapData');
+              _walletUpdateController.add(mapData);
+              break;
+            case 'chat_message':
+            case 'chatMessage':
+              print('💬 Chat Message: $mapData');
+              _chatMessageController.add(mapData);
+              break;
+            case 'driver_status':
+            case 'driverStatus':
+              print('🚗 Driver Status: $mapData');
+              _driverStatusController.add(mapData);
+              break;
+            case 'new_ride_request':
+            case 'newRideRequest':
+              print('🆕 ==========================================');
+              print('🆕 NEW RIDE REQUEST EVENT RECEIVED!');
+              print('🆕 Event: $event');
+              print('🆕 Full Data Object: $mapData');
+              print('🆕 Data Type: ${mapData.runtimeType}');
+              print('🆕 Data Keys: ${mapData.keys.toList()}');
+              print('🆕 Attempting to extract Ride ID...');
+              
+              // Try multiple possible ID fields
+              final rideId = mapData['rideId'] ?? 
+                            mapData['id'] ?? 
+                            mapData['orderId'] ??
+                            mapData['order_id'] ??
+                            mapData['ride']?['id'] ??
+                            mapData['ride']?['rideId'] ??
+                            mapData['order']?['id'] ??
+                            mapData['order']?['orderId'];
+              
+              print('🆕 Extracted Ride ID: $rideId (type: ${rideId?.runtimeType})');
+              print('🆕 Adding to newRideRequestStream...');
+              
+              _newRideRequestController.add(mapData);
+              
+              print('🆕 ✅ Successfully added to newRideRequestStream');
+              print('🆕 ✅ Any active listeners will receive this event');
+              print('🆕 ==========================================');
+              break;
+            case 'fleet_stats':
+              print('📊 Fleet Stats: $mapData');
+              _fleetStatsController.add(mapData);
+              break;
+            default:
+              print('⚠️ Unhandled WebSocket Event: $event');
+          }
+        }
+      }
+    } catch (e) {
+      print('❌ Error parsing WebSocket message: $e\nMessage: $message');
+    }
+  }
+
+  /// Send message via WebSocket
+  /// Format: {"event": "eventName", "data": {...}}
+  /// Special handling for "join" and "leave" events where type/id are at root level
+  void sendMessage(String eventName, Map<String, dynamic> data) {
+    if (!isConnected || _channel == null) {
+      print('⚠️ WebSocket not connected. Cannot send $eventName.');
+      return;
+    }
+
+    try {
+      Map<String, dynamic> payload;
+      
+      // Special handling for join/leave events - type and id should be at root level
+      if (eventName == 'join' || eventName == 'leave') {
+        payload = {
+          'event': eventName,
+          'type': data['type'],
+          'id': data['id'],
+        };
+      } else {
+        // For all other events, use standard format with data object
+        payload = {'event': eventName, 'data': data};
+      }
+      
+      final message = jsonEncode(payload);
+      print('📤 WebSocket Sending: $message');
+      _channel!.sink.add(message);
+      print('✅ WebSocket: Message sent successfully');
+    } catch (e) {
+      print('❌ Error sending WebSocket message: $e');
+    }
+  }
+
+  /// Disconnect
   void disconnect() {
-    if (stompClient != null) {
-      stompClient!.deactivate();
-      stompClient = null;
-      isStompConnected = false;
-    }
+    _shouldReconnect = false;
+    _reconnectTimer?.cancel();
+    _healthCheckTimer?.cancel();
 
-    if (socketIO != null) {
-      socketIO!.disconnect();
-      socketIO!.dispose();
-      socketIO = null;
-      isSocketIOConnected = false;
+    if (_channel != null) {
+      try {
+        _channel!.sink.close();
+      } catch (e) {
+        print('Error closing sink: $e');
+      }
+      _channel = null;
     }
-
-    // Close stream controllers
-    _rideStatusController.close();
-    _driverLocationController.close();
-    _walletUpdateController.close();
-    _chatMessageController.close();
-    _driverStatusController.close();
-    _newRideRequestController.close();
-    _fleetStatsController.close();
+    isConnected = false;
+    print('🔌 WebSocket: Disconnected and cleanup complete');
   }
 }

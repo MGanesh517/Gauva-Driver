@@ -17,9 +17,10 @@ abstract class IRideRepo {
   Future<Either<Failure, List<Order>>> getStartedRides();
   Future<Either<Failure, List<Order>>> getAllocatedRides();
   Future<Either<Failure, List<Order>>> getCompletedRides();
-  Future<Either<Failure, OrderDetailModel>> acceptRide({required int rideId});
+  Future<Either<Failure, OrderDetailModel>> acceptRide({required int rideId, required int otp});
   Future<Either<Failure, CommonResponse>> declineRide({required int rideId});
-  Future<Either<Failure, OrderDetailModel>> startRide({required int rideId, required String otp});
+  Future<Either<Failure, OrderDetailModel>> startRide({required int rideId, required int otp});
   Future<Either<Failure, OrderDetailModel>> completeRide({required int rideId});
   Future<Either<Failure, OrderDetailModel>> getRideDetails({required int rideId});
+  Future<Either<Failure, OrderDetailModel>> goToPickup({required int orderId});
 }

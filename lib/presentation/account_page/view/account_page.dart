@@ -10,12 +10,13 @@ import 'package:gauva_driver/core/utils/build_network_image.dart';
 import 'package:gauva_driver/core/utils/delete_account_dialogue.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
+import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:gauva_driver/data/services/navigation_service.dart';
 import 'package:gauva_driver/presentation/account_page/provider/terms_and_privacy_provider.dart';
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
 
 import '../../../core/routes/app_routes.dart';
-import '../../../core/utils/app_colors.dart';
+
 import '../../../core/utils/exit_app_dialogue.dart';
 import '../../../core/utils/get_version.dart';
 import '../../../core/widgets/country_code_bottom_sheet.dart';
@@ -278,20 +279,45 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
             },
           ),
           Gap(8.h),
-          accountButton(
-            context,
-            leading: Assets.images.payout.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
-            title: localize(context).payout_method,
-            onTap: () {
-              NavigationService.pushNamed(AppRoutes.payoutMethod);
-            },
-          ),
-          Gap(8.h),
+          // accountButton(
+          //   context,
+          //   leading: Assets.images.payout.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
+          //   title: localize(context).payout_method,
+          //   onTap: () {
+          //     NavigationService.pushNamed(AppRoutes.payoutMethod);
+          //   },
+          // ),
+          // Gap(8.h),
+          // accountButton(
+          //   context,
+          //   leading: Assets.images.language.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
+          //   title: localize(context).language,
+          //   trailing: countrySelector(loadAddress: true),
+          // ),
+          // Gap(8.h),
           accountButton(
             context,
             leading: Assets.images.language.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).language,
-            trailing: countrySelector(loadAddress: true),
+            trailing: ValueListenableBuilder<String>(
+              valueListenable: LocalStorageService().languageNotifier,
+              builder: (context, currentLang, child) {
+                return DropdownButton<String>(
+                  value: currentLang,
+                  underline: const SizedBox(),
+                  icon: const Icon(Icons.arrow_drop_down),
+                  items: const [
+                    DropdownMenuItem(value: 'en', child: Text('English')),
+                    DropdownMenuItem(value: 'te', child: Text('Telugu')),
+                  ],
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      LocalStorageService().selectLanguage(newValue);
+                    }
+                  },
+                );
+              },
+            ),
           ),
           Gap(8.h),
           accountButton(
@@ -347,12 +373,12 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
               showDeleteAccountDialog();
             },
           ),
-          Gap(16.h),
-          Text(
-            version ?? '',
-            textAlign: TextAlign.center,
-            style: context.bodyMedium?.copyWith(fontSize: 14.sp, color: AppColors.primary),
-          ),
+          // Gap(16.h),
+          // Text(
+          //   version ?? '',
+          //   textAlign: TextAlign.center,
+          //   style: context.bodyMedium?.copyWith(fontSize: 14.sp, color: AppColors.primary),
+          // ),
         ],
       ),
     ),

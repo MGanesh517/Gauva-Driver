@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,15 +77,17 @@ class _OrderRequestDialogState extends ConsumerState<_OrderRequestDialog> {
                 Gap(8.h),
                 locationTime(
                   context,
-                  time: ((order?.duration ?? 0) / 60).toStringAsFixed(1),
-                  distance: ((order?.distance ?? 0) / 1000).toStringAsFixed(1),
+                  // Duration is already in minutes from API, no need to divide by 60
+                  time: (order?.duration ?? 0).toStringAsFixed(1),
+                  // Distance is already in km from API, no need to divide by 1000
+                  distance: (order?.distance ?? 0).toStringAsFixed(2),
                 ),
                 Gap(8.h),
                 readAbleLocationView(context, order?.addresses),
                 Gap(8.h),
                 ridePreference(context, preferenceList: order?.ridePreference ?? []),
                 Gap(16.h),
-                orderRequestButtons(context, orderId: order?.id),
+                orderRequestButtons(context, orderId: order?.id, order: order),
               ],
             ),
           ),

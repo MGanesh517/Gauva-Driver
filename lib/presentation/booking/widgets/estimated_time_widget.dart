@@ -4,11 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
+import 'package:gauva_driver/data/services/local_storage_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/enums/booking_status.dart';
 import '../../../core/utils/localize.dart';
 import '../../../gen/assets.gen.dart';
 import '../provider/driver_providers.dart';
+import '../provider/ride_providers.dart';
 import '../provider/way_point_list_provider.dart';
 
 Widget headingToDestination(BuildContext context) => Column(
@@ -35,6 +38,14 @@ Widget headingToDestination(BuildContext context) => Column(
     Consumer(
       builder: (context, ref, _) {
         final onTripStatusNotifier = ref.read(ontripStatusNotifier.notifier);
+        final rideOrderState = ref.watch(rideOrderNotifierProvider);
+
+        // Get destination coordinates from order
+        final order = rideOrderState.maybeWhen(success: (o) => o, orElse: () => null);
+
+        final destinationLat = order?.points?.dropLocation?[0];
+        final destinationLng = order?.points?.dropLocation?[1];
+
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Column(
@@ -43,23 +54,126 @@ Widget headingToDestination(BuildContext context) => Column(
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Open Google Maps button
+                  if (destinationLat != null && destinationLng != null)
+                    TextButton.icon(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h)),
+                        backgroundColor: WidgetStateProperty.all(const Color(0xFF1469B5)),
+                        foregroundColor: WidgetStateProperty.all(Colors.white),
+                        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
+                      ),
+                      onPressed: () async {
+                        // Open Google Maps with navigation to destination
+                        final String googleMapsUrl =
+                            'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLng&travelmode=driving';
+                        final Uri uri = Uri.parse(googleMapsUrl);
+
+                        print('🗺️ Opening Google Maps for navigation to: $destinationLat,$destinationLng');
+
+                        try {
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            print('✅ Google Maps opened successfully');
+                          } else {
+                            print('❌ Cannot launch Google Maps URL');
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Cannot open Google Maps. Please install Google Maps app.'),
+                                ),
+                              );
+                            }
+                          }
+                        } catch (e) {
+                          print('❌ Error opening Google Maps: $e');
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text('Error opening Google Maps: $e')));
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.navigation, size: 18),
+                      label: Text(
+                        'Open in Google Maps',
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  Gap(8.w),
+                  // Complete ride button
                   TextButton(
                     style: ButtonStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.zero),
-                      minimumSize: WidgetStateProperty.all(Size.zero),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h)),
+                      backgroundColor: WidgetStateProperty.all(const Color(0xFF28a745)),
+                      foregroundColor: WidgetStateProperty.all(Colors.white),
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
                     ),
-                    onPressed: () {
-                      onTripStatusNotifier.updateOnTripStatus(status: BookingStatus.reachedDestination);
+                    onPressed: () async {
+                      print('✅ headingToDestination: Complete ride button pressed');
+
+                      // Get order ID from state
+                      int? orderId = order?.id;
+
+                      if (orderId == null) {
+                        final rideOrderState = ref.read(rideOrderNotifierProvider);
+                        orderId = rideOrderState.maybeWhen(success: (o) => o?.id, orElse: () => null);
+                      }
+
+                      // Fallback: try localStorage
+                      if (orderId == null) {
+                        final localStorage = LocalStorageService();
+                        orderId = await localStorage.getOrderId();
+                      }
+
+                      print('✅ headingToDestination: Order ID: $orderId');
+
+                      if (orderId == null) {
+                        print('❌ headingToDestination: Order ID is null, cannot complete ride');
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(const SnackBar(content: Text('Error: Order ID not found')));
+                        }
+                        return;
+                      }
+
+                      print('✅ headingToDestination: Calling completeRide API...');
+
+                      // Call the completeRide API
+                      final rideOrderNotifier = ref.read(rideOrderNotifierProvider.notifier);
+                      rideOrderNotifier.completeRide(
+                        orderId: orderId,
+                        onSuccess: (v) {
+                          print('✅ headingToDestination: Ride completed successfully');
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            onTripStatusNotifier.updateOnTripStatus(status: BookingStatus.reachedDestination);
+                          });
+                        },
+                        onError: (failure) {
+                          print('❌ headingToDestination: Failed to complete ride: ${failure.message}');
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text('Failed to complete ride: ${failure.message}')));
+                          }
+                        },
+                      );
                     },
-                    child: const Text('Continue'),
+                    child: Text(
+                      'Complete Ride',
+                      style: context.bodyMedium?.copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
-              ),
-              Text(
-                'Only for demo ',
-                style: context.bodySmall?.copyWith(fontSize: 8.sp, fontWeight: FontWeight.w500, color: Colors.blueGrey),
               ),
             ],
           ),

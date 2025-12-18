@@ -107,7 +107,19 @@ class LoginWithPassNotifier extends StateNotifier<AppState<LoginWithPassResponse
           return;
         }
         await LocalStorageService().saveToken(data.data?.token);
-        await LocalStorageService().saveUser(data: data.data?.user?.toJson());
+        
+        // Save user data and verify it was saved
+        final userData = data.data?.user?.toJson();
+        print('💾 Auth (LoginWithPass): Saving user data - User ID: ${userData?['id']}, User data exists: ${userData != null}');
+        if (userData != null) {
+          await LocalStorageService().saveUser(data: userData);
+          // Verify user was saved
+          final savedUserId = await LocalStorageService().getUserId();
+          print('✅ Auth (LoginWithPass): User data saved - Verified driver ID: $savedUserId');
+        } else {
+          print('⚠️ Auth (LoginWithPass): User data is null, cannot save');
+        }
+        
         LocalStorageService().setRegistrationProgress(AppRoutes.dashboard);
 
         await ref.read(tripActivityNotifierProvider.notifier).checkTripActivity();

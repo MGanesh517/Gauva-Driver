@@ -3,5 +3,5 @@ import 'package:gauva_driver/data/models/ride_history_response/ride_history_mode
 import '../../../core/errors/failure.dart';
 
 abstract class IRideHistoryRepo {
-  Future<Either<Failure, RideHistoryModel>> getRideHistory({String? status, String? date});
+  Future<Either<Failure, RideHistoryModel>> getRideHistory({String? status, String? date, int? page, int? size});
 }

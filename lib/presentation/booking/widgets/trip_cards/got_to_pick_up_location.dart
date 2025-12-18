@@ -7,6 +7,7 @@ import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/core/widgets/buttons/app_primary_button.dart';
 import 'package:gauva_driver/data/models/order_response/order_model/order/order.dart';
 import 'package:gauva_driver/gen/assets.gen.dart';
+import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:gauva_driver/presentation/booking/provider/driver_providers.dart';
 import 'package:gauva_driver/presentation/booking/view_model/loading_notifier.dart';
 import 'package:gauva_driver/presentation/booking/widgets/trip_cards/action_sheet.dart';
@@ -31,9 +32,25 @@ Widget gotoPickupLocation(BuildContext context, Order? order) => Consumer(
         Expanded(
           child: AppPrimaryButton(
             isLoading: isLoading,
-            onPressed: () {
-              rideOrderNotifier.saveOrderStatus(
-                status: 'go_to_pickup',
+            onPressed: () async {
+              // Get order ID from state
+              int? orderId = rideOrderState.maybeWhen(
+                success: (order) => order?.id,
+                orElse: () => null,
+              );
+              
+              // Fallback: try to get from localStorage if not in state
+              if (orderId == null) {
+                orderId = await LocalStorageService().getOrderId();
+              }
+              
+              if (orderId == null) {
+                // Show error if no order ID found
+                return;
+              }
+              
+              rideOrderNotifier.goToPickup(
+                orderId: orderId,
                 onSuccess: (v) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     onTripNotifier.updateOnTripStatus(status: BookingStatus.arrivedAtPickupPoint);

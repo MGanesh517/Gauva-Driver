@@ -148,8 +148,7 @@ class $AssetsIconsGen {
   AssetGenImage get home => const AssetGenImage('assets/icons/home.png');
 
   /// File path: assets/icons/ride-history.png
-  AssetGenImage get rideHistory =>
-      const AssetGenImage('assets/icons/ride-history.png');
+  AssetGenImage get rideHistory => const AssetGenImage('assets/icons/ride-history.png');
 
   /// File path: assets/icons/wallet.png
   AssetGenImage get wallet => const AssetGenImage('assets/icons/wallet.png');
@@ -162,24 +161,19 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   /// File path: assets/images/activity-background.png
-  AssetGenImage get activityBackground =>
-      const AssetGenImage('assets/images/activity-background.png');
+  AssetGenImage get activityBackground => const AssetGenImage('assets/images/activity-background.png');
 
   /// File path: assets/images/app-logo.png
-  AssetGenImage get appLogo =>
-      const AssetGenImage('assets/images/app-logo.png');
+  AssetGenImage get appLogo => const AssetGenImage('assets/images/app-logo.png');
 
   /// File path: assets/images/arrow-left.png
-  AssetGenImage get arrowLeft =>
-      const AssetGenImage('assets/images/arrow-left.png');
+  AssetGenImage get arrowLeft => const AssetGenImage('assets/images/arrow-left.png');
 
   /// File path: assets/images/background-announcements.png
-  AssetGenImage get backgroundAnnouncements =>
-      const AssetGenImage('assets/images/background-announcements.png');
+  AssetGenImage get backgroundAnnouncements => const AssetGenImage('assets/images/background-announcements.png');
 
   /// File path: assets/images/background-dotted.png
-  AssetGenImage get backgroundDotted =>
-      const AssetGenImage('assets/images/background-dotted.png');
+  AssetGenImage get backgroundDotted => const AssetGenImage('assets/images/background-dotted.png');
 
   /// File path: assets/images/balance.png
   AssetGenImage get balance => const AssetGenImage('assets/images/balance.png');
@@ -188,152 +182,119 @@ class $AssetsImagesGen {
   AssetGenImage get broken => const AssetGenImage('assets/images/broken.png');
 
   /// File path: assets/images/cancel-profile.png
-  AssetGenImage get cancelProfile =>
-      const AssetGenImage('assets/images/cancel-profile.png');
+  AssetGenImage get cancelProfile => const AssetGenImage('assets/images/cancel-profile.png');
 
   /// File path: assets/images/car-animation.gif
-  AssetGenImage get carAnimation =>
-      const AssetGenImage('assets/images/car-animation.gif');
+  AssetGenImage get carAnimation => const AssetGenImage('assets/images/car-animation.gif');
 
   /// File path: assets/images/car-to-view-left-to-right.png
-  AssetGenImage get carToViewLeftToRight =>
-      const AssetGenImage('assets/images/car-to-view-left-to-right.png');
+  AssetGenImage get carToViewLeftToRight => const AssetGenImage('assets/images/car-to-view-left-to-right.png');
 
   /// File path: assets/images/car-top-view.png
-  AssetGenImage get carTopView =>
-      const AssetGenImage('assets/images/car-top-view.png');
+  AssetGenImage get carTopView => const AssetGenImage('assets/images/car-top-view.png');
 
   /// File path: assets/images/card-background-1.png
-  AssetGenImage get cardBackground1 =>
-      const AssetGenImage('assets/images/card-background-1.png');
+  AssetGenImage get cardBackground1 => const AssetGenImage('assets/images/card-background-1.png');
 
   /// File path: assets/images/card-background-2.png
-  AssetGenImage get cardBackground2 =>
-      const AssetGenImage('assets/images/card-background-2.png');
+  AssetGenImage get cardBackground2 => const AssetGenImage('assets/images/card-background-2.png');
 
   /// File path: assets/images/card-background-3.png
-  AssetGenImage get cardBackground3 =>
-      const AssetGenImage('assets/images/card-background-3.png');
+  AssetGenImage get cardBackground3 => const AssetGenImage('assets/images/card-background-3.png');
 
   /// File path: assets/images/card-background-4.png
-  AssetGenImage get cardBackground4 =>
-      const AssetGenImage('assets/images/card-background-4.png');
+  AssetGenImage get cardBackground4 => const AssetGenImage('assets/images/card-background-4.png');
 
   /// File path: assets/images/card-hexagon.png
-  AssetGenImage get cardHexagon =>
-      const AssetGenImage('assets/images/card-hexagon.png');
+  AssetGenImage get cardHexagon => const AssetGenImage('assets/images/card-hexagon.png');
 
   /// File path: assets/images/card.png
   AssetGenImage get card => const AssetGenImage('assets/images/card.png');
 
   /// File path: assets/images/change-password.png
-  AssetGenImage get changePassword =>
-      const AssetGenImage('assets/images/change-password.png');
+  AssetGenImage get changePassword => const AssetGenImage('assets/images/change-password.png');
 
   /// File path: assets/images/chip.png
   AssetGenImage get chip => const AssetGenImage('assets/images/chip.png');
 
   /// File path: assets/images/confirm-arrival.png
-  AssetGenImage get confirmArrival =>
-      const AssetGenImage('assets/images/confirm-arrival.png');
+  AssetGenImage get confirmArrival => const AssetGenImage('assets/images/confirm-arrival.png');
 
   /// File path: assets/images/confirm-pickup.png
-  AssetGenImage get confirmPickup =>
-      const AssetGenImage('assets/images/confirm-pickup.png');
+  AssetGenImage get confirmPickup => const AssetGenImage('assets/images/confirm-pickup.png');
 
   /// File path: assets/images/destination.png
-  AssetGenImage get destination =>
-      const AssetGenImage('assets/images/destination.png');
+  AssetGenImage get destination => const AssetGenImage('assets/images/destination.png');
 
   /// File path: assets/images/distance-logo.png
-  AssetGenImage get distanceLogo =>
-      const AssetGenImage('assets/images/distance-logo.png');
+  AssetGenImage get distanceLogo => const AssetGenImage('assets/images/distance-logo.png');
 
   /// File path: assets/images/dollar-send-circle.png
-  AssetGenImage get dollarSendCircle =>
-      const AssetGenImage('assets/images/dollar-send-circle.png');
+  AssetGenImage get dollarSendCircle => const AssetGenImage('assets/images/dollar-send-circle.png');
 
   /// File path: assets/images/done-circle.png
-  AssetGenImage get doneCircle =>
-      const AssetGenImage('assets/images/done-circle.png');
+  AssetGenImage get doneCircle => const AssetGenImage('assets/images/done-circle.png');
 
   /// File path: assets/images/drawer-top-background.png
-  AssetGenImage get drawerTopBackground =>
-      const AssetGenImage('assets/images/drawer-top-background.png');
+  AssetGenImage get drawerTopBackground => const AssetGenImage('assets/images/drawer-top-background.png');
 
   /// File path: assets/images/exit-logo.png
-  AssetGenImage get exitLogo =>
-      const AssetGenImage('assets/images/exit-logo.png');
+  AssetGenImage get exitLogo => const AssetGenImage('assets/images/exit-logo.png');
 
   /// File path: assets/images/go-to-pick-up-location.png
-  AssetGenImage get goToPickUpLocation =>
-      const AssetGenImage('assets/images/go-to-pick-up-location.png');
+  AssetGenImage get goToPickUpLocation => const AssetGenImage('assets/images/go-to-pick-up-location.png');
 
   /// File path: assets/images/googlemap-preview.png
-  AssetGenImage get googlemapPreview =>
-      const AssetGenImage('assets/images/googlemap-preview.png');
+  AssetGenImage get googlemapPreview => const AssetGenImage('assets/images/googlemap-preview.png');
 
   /// File path: assets/images/gradient-total.png
-  AssetGenImage get gradientTotal =>
-      const AssetGenImage('assets/images/gradient-total.png');
+  AssetGenImage get gradientTotal => const AssetGenImage('assets/images/gradient-total.png');
 
   /// File path: assets/images/history-rides-header-background.png
   AssetGenImage get historyRidesHeaderBackground =>
       const AssetGenImage('assets/images/history-rides-header-background.png');
 
   /// File path: assets/images/language-account.png
-  AssetGenImage get languageAccount =>
-      const AssetGenImage('assets/images/language-account.png');
+  AssetGenImage get languageAccount => const AssetGenImage('assets/images/language-account.png');
 
   /// File path: assets/images/language.png
-  AssetGenImage get language =>
-      const AssetGenImage('assets/images/language.png');
+  AssetGenImage get language => const AssetGenImage('assets/images/language.png');
 
   /// File path: assets/images/location-pin-marker.png
-  AssetGenImage get locationPinMarker =>
-      const AssetGenImage('assets/images/location-pin-marker.png');
+  AssetGenImage get locationPinMarker => const AssetGenImage('assets/images/location-pin-marker.png');
 
   /// File path: assets/images/location-pin.png
-  AssetGenImage get locationPin =>
-      const AssetGenImage('assets/images/location-pin.png');
+  AssetGenImage get locationPin => const AssetGenImage('assets/images/location-pin.png');
 
   /// File path: assets/images/log-out.png
   AssetGenImage get logOut => const AssetGenImage('assets/images/log-out.png');
 
   /// File path: assets/images/logo-header.png
-  AssetGenImage get logoHeader =>
-      const AssetGenImage('assets/images/logo-header.png');
+  AssetGenImage get logoHeader => const AssetGenImage('assets/images/logo-header.png');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
   /// File path: assets/images/mapbox-preview.png
-  AssetGenImage get mapboxPreview =>
-      const AssetGenImage('assets/images/mapbox-preview.png');
+  AssetGenImage get mapboxPreview => const AssetGenImage('assets/images/mapbox-preview.png');
 
   /// File path: assets/images/money-withdrawal.png
-  AssetGenImage get moneyWithdrawal =>
-      const AssetGenImage('assets/images/money-withdrawal.png');
+  AssetGenImage get moneyWithdrawal => const AssetGenImage('assets/images/money-withdrawal.png');
 
   /// File path: assets/images/my-profile.png
-  AssetGenImage get myProfile =>
-      const AssetGenImage('assets/images/my-profile.png');
+  AssetGenImage get myProfile => const AssetGenImage('assets/images/my-profile.png');
 
   /// File path: assets/images/openstreet-preview.png
-  AssetGenImage get openstreetPreview =>
-      const AssetGenImage('assets/images/openstreet-preview.png');
+  AssetGenImage get openstreetPreview => const AssetGenImage('assets/images/openstreet-preview.png');
 
   /// File path: assets/images/order-request-header.png
-  AssetGenImage get orderRequestHeader =>
-      const AssetGenImage('assets/images/order-request-header.png');
+  AssetGenImage get orderRequestHeader => const AssetGenImage('assets/images/order-request-header.png');
 
   /// File path: assets/images/payment-received.png
-  AssetGenImage get paymentReceived =>
-      const AssetGenImage('assets/images/payment-received.png');
+  AssetGenImage get paymentReceived => const AssetGenImage('assets/images/payment-received.png');
 
   /// File path: assets/images/payment-withdraw-circle.png
-  AssetGenImage get paymentWithdrawCircle =>
-      const AssetGenImage('assets/images/payment-withdraw-circle.png');
+  AssetGenImage get paymentWithdrawCircle => const AssetGenImage('assets/images/payment-withdraw-circle.png');
 
   /// File path: assets/images/payout.png
   AssetGenImage get payout => const AssetGenImage('assets/images/payout.png');
@@ -342,8 +303,7 @@ class $AssetsImagesGen {
   AssetGenImage get person => const AssetGenImage('assets/images/person.png');
 
   /// File path: assets/images/phone-flip.png
-  AssetGenImage get phoneFlip =>
-      const AssetGenImage('assets/images/phone-flip.png');
+  AssetGenImage get phoneFlip => const AssetGenImage('assets/images/phone-flip.png');
 
   /// File path: assets/images/pick-up.png
   AssetGenImage get pickUp => const AssetGenImage('assets/images/pick-up.png');
@@ -352,62 +312,50 @@ class $AssetsImagesGen {
   AssetGenImage get privacy => const AssetGenImage('assets/images/privacy.png');
 
   /// File path: assets/images/profile-header-background.png
-  AssetGenImage get profileHeaderBackground =>
-      const AssetGenImage('assets/images/profile-header-background.png');
+  AssetGenImage get profileHeaderBackground => const AssetGenImage('assets/images/profile-header-background.png');
 
   /// File path: assets/images/profile-info-background.jpg
-  AssetGenImage get profileInfoBackground =>
-      const AssetGenImage('assets/images/profile-info-background.jpg');
+  AssetGenImage get profileInfoBackground => const AssetGenImage('assets/images/profile-info-background.jpg');
 
   /// File path: assets/images/profile-review-dark.png
-  AssetGenImage get profileReviewDark =>
-      const AssetGenImage('assets/images/profile-review-dark.png');
+  AssetGenImage get profileReviewDark => const AssetGenImage('assets/images/profile-review-dark.png');
 
   /// File path: assets/images/profile-review.png
-  AssetGenImage get profileReview =>
-      const AssetGenImage('assets/images/profile-review.png');
+  AssetGenImage get profileReview => const AssetGenImage('assets/images/profile-review.png');
 
   /// File path: assets/images/reached-destination.png
-  AssetGenImage get reachedDestination =>
-      const AssetGenImage('assets/images/reached-destination.png');
+  AssetGenImage get reachedDestination => const AssetGenImage('assets/images/reached-destination.png');
 
   /// File path: assets/images/report-issue.png
-  AssetGenImage get reportIssue =>
-      const AssetGenImage('assets/images/report-issue.png');
+  AssetGenImage get reportIssue => const AssetGenImage('assets/images/report-issue.png');
 
   /// File path: assets/images/ride-in-home.png
-  AssetGenImage get rideInHome =>
-      const AssetGenImage('assets/images/ride-in-home.png');
+  AssetGenImage get rideInHome => const AssetGenImage('assets/images/gauva.png');
 
   /// File path: assets/images/ride_in.png
-  AssetGenImage get rideIn => const AssetGenImage('assets/images/ride_in.png');
+  AssetGenImage get rideIn => const AssetGenImage('assets/gauv.png');
 
   /// File path: assets/images/route.png
   AssetGenImage get route => const AssetGenImage('assets/images/route.png');
 
   /// File path: assets/images/scheduled-rides-header-background.png
-  AssetGenImage get scheduledRidesHeaderBackground => const AssetGenImage(
-    'assets/images/scheduled-rides-header-background.png',
-  );
+  AssetGenImage get scheduledRidesHeaderBackground =>
+      const AssetGenImage('assets/images/scheduled-rides-header-background.png');
 
   /// File path: assets/images/send-right.png
-  AssetGenImage get sendRight =>
-      const AssetGenImage('assets/images/send-right.png');
+  AssetGenImage get sendRight => const AssetGenImage('assets/images/send-right.png');
 
   /// File path: assets/images/star.png
   AssetGenImage get star => const AssetGenImage('assets/images/star.png');
 
   /// File path: assets/images/start-ride.png
-  AssetGenImage get startRide =>
-      const AssetGenImage('assets/images/start-ride.png');
+  AssetGenImage get startRide => const AssetGenImage('assets/images/start-ride.png');
 
   /// File path: assets/images/success-round.png
-  AssetGenImage get successRound =>
-      const AssetGenImage('assets/images/success-round.png');
+  AssetGenImage get successRound => const AssetGenImage('assets/images/success-round.png');
 
   /// File path: assets/images/taxi-cab.png
-  AssetGenImage get taxiCab =>
-      const AssetGenImage('assets/images/taxi-cab.png');
+  AssetGenImage get taxiCab => const AssetGenImage('assets/images/taxi-cab.png');
 
   /// File path: assets/images/taxi.png
   AssetGenImage get taxi => const AssetGenImage('assets/images/taxi.png');
@@ -422,15 +370,13 @@ class $AssetsImagesGen {
   AssetGenImage get trash => const AssetGenImage('assets/images/trash.png');
 
   /// File path: assets/images/wallet-background.jpg
-  AssetGenImage get walletBackground =>
-      const AssetGenImage('assets/images/wallet-background.jpg');
+  AssetGenImage get walletBackground => const AssetGenImage('assets/images/wallet-background.jpg');
 
   /// File path: assets/images/watch.png
   AssetGenImage get watch => const AssetGenImage('assets/images/watch.png');
 
   /// File path: assets/images/withdraw-earning.png
-  AssetGenImage get withdrawEarning =>
-      const AssetGenImage('assets/images/withdraw-earning.png');
+  AssetGenImage get withdrawEarning => const AssetGenImage('assets/images/withdraw-earning.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -513,38 +459,25 @@ class $AssetsLottieGen {
   const $AssetsLottieGen();
 
   /// File path: assets/lottie/coupon.json
-  LottieGenImage get coupon =>
-      const LottieGenImage('assets/lottie/coupon.json');
+  LottieGenImage get coupon => const LottieGenImage('assets/lottie/coupon.json');
 
   /// File path: assets/lottie/exit-app.json
-  LottieGenImage get exitApp =>
-      const LottieGenImage('assets/lottie/exit-app.json');
+  LottieGenImage get exitApp => const LottieGenImage('assets/lottie/exit-app.json');
 
   /// File path: assets/lottie/gift-redeemed.json
-  LottieGenImage get giftRedeemed =>
-      const LottieGenImage('assets/lottie/gift-redeemed.json');
+  LottieGenImage get giftRedeemed => const LottieGenImage('assets/lottie/gift-redeemed.json');
 
   /// File path: assets/lottie/loading.json
-  LottieGenImage get loading =>
-      const LottieGenImage('assets/lottie/loading.json');
+  LottieGenImage get loading => const LottieGenImage('assets/lottie/loading.json');
 
   /// File path: assets/lottie/location.json
-  LottieGenImage get location =>
-      const LottieGenImage('assets/lottie/location.json');
+  LottieGenImage get location => const LottieGenImage('assets/lottie/location.json');
 
   /// File path: assets/lottie/looking.json
-  LottieGenImage get looking =>
-      const LottieGenImage('assets/lottie/looking.json');
+  LottieGenImage get looking => const LottieGenImage('assets/lottie/looking.json');
 
   /// List of all assets
-  List<LottieGenImage> get values => [
-    coupon,
-    exitApp,
-    giftRedeemed,
-    loading,
-    location,
-    looking,
-  ];
+  List<LottieGenImage> get values => [coupon, exitApp, giftRedeemed, loading, location, looking];
 }
 
 class $AssetsSvgGen {
@@ -681,8 +614,7 @@ class LottieGenImage {
     _lottie.LottieImageProviderFactory? imageProviderFactory,
     Key? key,
     AssetBundle? bundle,
-    Widget Function(BuildContext, Widget, _lottie.LottieComposition?)?
-    frameBuilder,
+    Widget Function(BuildContext, Widget, _lottie.LottieComposition?)? frameBuilder,
     ImageErrorWidgetBuilder? errorBuilder,
     double? width,
     double? height,

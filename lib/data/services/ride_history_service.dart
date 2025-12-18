@@ -9,10 +9,9 @@ class RideHistoryService implements IRideHistoryService {
 
   RideHistoryService({required this.dioClient});
   @override
-  Future<Response> getRideHistory({String? status, String? date}) async => await dioClient.dio
-        .get(ApiEndpoints.rideHistory, queryParameters: {
-          'status': status,
-      'date': date
-    });
-
+  @override
+  Future<Response> getRideHistory({String? status, String? date, int? page, int? size}) async => await dioClient.dio.get(
+    ApiEndpoints.rideHistory,
+    queryParameters: {'status': status, 'date': date, 'page': page, 'size': size},
+  );
 }

@@ -5,9 +5,10 @@ class Addresses {
     this.waitAddress,});
 
   Addresses.fromJson(dynamic json) {
-    pickupAddress = json['pickup_address'];
-    dropAddress = json['drop_address'];
-    waitAddress = json['wait_address'];
+    // Handle both formats: pickup_address/drop_address (old) and pickupArea/destinationArea (new API)
+    pickupAddress = json['pickup_address'] ?? json['pickupArea'];
+    dropAddress = json['drop_address'] ?? json['destinationArea'];
+    waitAddress = json['wait_address'] ?? json['waitArea'];
   }
   String? pickupAddress;
   String? dropAddress;

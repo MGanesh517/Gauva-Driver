@@ -18,6 +18,6 @@ final dashboardRepoProvider = Provider<IDashboardRepository>(
   (ref) => DashboardRepoImpl(dashboardService: ref.read(dashboardServiceProvider)),
 );
 
-final homeProvider = StateNotifierProvider<HomeNotifier, AppState<DashboardData?>>(
+final homeProvider = StateNotifierProvider<HomeNotifier, AppState<DashboardModel?>>(
   (ref) => HomeNotifier(ref, ref.read(dashboardRepoProvider)),
 );

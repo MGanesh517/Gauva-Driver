@@ -2398,6 +2398,1531 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Create New Trip`
+  String get intercityCreateNewTrip {
+    return Intl.message(
+      'Create New Trip',
+      name: 'intercityCreateNewTrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PUBLISH TRIP`
+  String get intercityPublishTrip {
+    return Intl.message(
+      'PUBLISH TRIP',
+      name: 'intercityPublishTrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trip Details`
+  String get intercityTripDetails {
+    return Intl.message(
+      'Trip Details',
+      name: 'intercityTripDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Booking Type`
+  String get intercityBookingType {
+    return Intl.message(
+      'Booking Type',
+      name: 'intercityBookingType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share Pool`
+  String get intercitySharePool {
+    return Intl.message(
+      'Share Pool',
+      name: 'intercitySharePool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private`
+  String get intercityPrivate {
+    return Intl.message(
+      'Private',
+      name: 'intercityPrivate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Type`
+  String get intercityVehicleType {
+    return Intl.message(
+      'Vehicle Type',
+      name: 'intercityVehicleType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Route Selection`
+  String get intercityRouteSelection {
+    return Intl.message(
+      'Route Selection',
+      name: 'intercityRouteSelection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From City/Area (Search)`
+  String get intercityFromCity {
+    return Intl.message(
+      'From City/Area (Search)',
+      name: 'intercityFromCity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To City/Area (Search)`
+  String get intercityToCity {
+    return Intl.message(
+      'To City/Area (Search)',
+      name: 'intercityToCity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locations & Coords`
+  String get intercityLocationsCoords {
+    return Intl.message(
+      'Locations & Coords',
+      name: 'intercityLocationsCoords',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pickup Address (Edit if needed)`
+  String get intercityPickupAddress {
+    return Intl.message(
+      'Pickup Address (Edit if needed)',
+      name: 'intercityPickupAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drop Address (Edit if needed)`
+  String get intercityDropAddress {
+    return Intl.message(
+      'Drop Address (Edit if needed)',
+      name: 'intercityDropAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule & Fare`
+  String get intercityScheduleFare {
+    return Intl.message(
+      'Schedule & Fare',
+      name: 'intercityScheduleFare',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Departure Time`
+  String get intercityDepartureTime {
+    return Intl.message(
+      'Departure Time',
+      name: 'intercityDepartureTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Date & Time`
+  String get intercitySelectDateTime {
+    return Intl.message(
+      'Select Date & Time',
+      name: 'intercitySelectDateTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Fare (₹)`
+  String get intercityTotalFareInput {
+    return Intl.message(
+      'Total Fare (₹)',
+      name: 'intercityTotalFareInput',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seats`
+  String get intercitySeats {
+    return Intl.message('Seats', name: 'intercitySeats', desc: '', args: []);
+  }
+
+  /// `Distance (km)`
+  String get intercityDistance {
+    return Intl.message(
+      'Distance (km)',
+      name: 'intercityDistance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return Trip`
+  String get intercityReturnTrip {
+    return Intl.message(
+      'Return Trip',
+      name: 'intercityReturnTrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Night Fare`
+  String get intercityNightFare {
+    return Intl.message(
+      'Night Fare',
+      name: 'intercityNightFare',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return Departure`
+  String get intercityReturnDeparture {
+    return Intl.message(
+      'Return Departure',
+      name: 'intercityReturnDeparture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Night Fare Multiplier`
+  String get intercityNightFareMultiplier {
+    return Intl.message(
+      'Night Fare Multiplier',
+      name: 'intercityNightFareMultiplier',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trip published successfully!`
+  String get intercityTripPublishedSuccess {
+    return Intl.message(
+      'Trip published successfully!',
+      name: 'intercityTripPublishedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select departure time`
+  String get intercitySelectDepartureTimeError {
+    return Intl.message(
+      'Please select departure time',
+      name: 'intercitySelectDepartureTimeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required`
+  String get intercityRequiredError {
+    return Intl.message(
+      'Required',
+      name: 'intercityRequiredError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Trips`
+  String get intercityMyTrips {
+    return Intl.message(
+      'My Trips',
+      name: 'intercityMyTrips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No published trips found.`
+  String get intercityNoPublishedTrips {
+    return Intl.message(
+      'No published trips found.',
+      name: 'intercityNoPublishedTrips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Trip`
+  String get intercityStartTrip {
+    return Intl.message(
+      'Start Trip',
+      name: 'intercityStartTrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get intercityComplete {
+    return Intl.message(
+      'Complete',
+      name: 'intercityComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passengers`
+  String get intercityPassengers {
+    return Intl.message(
+      'Passengers',
+      name: 'intercityPassengers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verified`
+  String get intercityVerified {
+    return Intl.message(
+      'Verified',
+      name: 'intercityVerified',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Onboarded`
+  String get intercityOnboarded {
+    return Intl.message(
+      'Onboarded',
+      name: 'intercityOnboarded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify OTP`
+  String get intercityVerifyOtp {
+    return Intl.message(
+      'Verify OTP',
+      name: 'intercityVerifyOtp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter OTP`
+  String get intercityEnterOtpDialog {
+    return Intl.message(
+      'Enter OTP',
+      name: 'intercityEnterOtpDialog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `6-Digit OTP`
+  String get intercityOtpHint {
+    return Intl.message(
+      '6-Digit OTP',
+      name: 'intercityOtpHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get intercityCancel {
+    return Intl.message('Cancel', name: 'intercityCancel', desc: '', args: []);
+  }
+
+  /// `Verify`
+  String get intercityVerify {
+    return Intl.message('Verify', name: 'intercityVerify', desc: '', args: []);
+  }
+
+  /// `OTP Verified Successfully`
+  String get intercityOtpVerifiedSuccess {
+    return Intl.message(
+      'OTP Verified Successfully',
+      name: 'intercityOtpVerifiedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification Failed: {error}`
+  String intercityVerificationFailed(Object error) {
+    return Intl.message(
+      'Verification Failed: $error',
+      name: 'intercityVerificationFailed',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Map`
+  String get intercityMap {
+    return Intl.message('Map', name: 'intercityMap', desc: '', args: []);
+  }
+
+  /// `Trip started successfully`
+  String get intercityTripStarted {
+    return Intl.message(
+      'Trip started successfully',
+      name: 'intercityTripStarted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error: {error}`
+  String intercityError(String error) {
+    return Intl.message(
+      'Error: $error',
+      name: 'intercityError',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Trip completed successfully`
+  String get intercityTripCompleted {
+    return Intl.message(
+      'Trip completed successfully',
+      name: 'intercityTripCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not launch map`
+  String get intercityMapLaunchError {
+    return Intl.message(
+      'Could not launch map',
+      name: 'intercityMapLaunchError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No bookings for this trip`
+  String get intercityNoBookings {
+    return Intl.message(
+      'No bookings for this trip',
+      name: 'intercityNoBookings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookings`
+  String get intercityBookings {
+    return Intl.message(
+      'Bookings',
+      name: 'intercityBookings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Intercity Driver`
+  String get intercityDriverTitle {
+    return Intl.message(
+      'Intercity Driver',
+      name: 'intercityDriverTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Intercity`
+  String get intercityLabel {
+    return Intl.message(
+      'Intercity',
+      name: 'intercityLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No pending bookings.`
+  String get intercityNoPendingBookings {
+    return Intl.message(
+      'No pending bookings.',
+      name: 'intercityNoPendingBookings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PENDING`
+  String get intercityStatusPending {
+    return Intl.message(
+      'PENDING',
+      name: 'intercityStatusPending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown Passenger`
+  String get intercityUnknownPassenger {
+    return Intl.message(
+      'Unknown Passenger',
+      name: 'intercityUnknownPassenger',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seats`
+  String get intercityLabelSeats {
+    return Intl.message(
+      'Seats',
+      name: 'intercityLabelSeats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get intercityLabelAmount {
+    return Intl.message(
+      'Amount',
+      name: 'intercityLabelAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment`
+  String get intercityLabelPayment {
+    return Intl.message(
+      'Payment',
+      name: 'intercityLabelPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CASH`
+  String get intercityPaymentCash {
+    return Intl.message(
+      'CASH',
+      name: 'intercityPaymentCash',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reject`
+  String get intercityActionReject {
+    return Intl.message(
+      'Reject',
+      name: 'intercityActionReject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get intercityActionAccept {
+    return Intl.message(
+      'Accept',
+      name: 'intercityActionAccept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Booking accepted`
+  String get intercityMsgBookingAccepted {
+    return Intl.message(
+      'Booking accepted',
+      name: 'intercityMsgBookingAccepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Booking rejected`
+  String get intercityMsgBookingRejected {
+    return Intl.message(
+      'Booking rejected',
+      name: 'intercityMsgBookingRejected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get intercityActionRetry {
+    return Intl.message(
+      'Retry',
+      name: 'intercityActionRetry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UNKNOWN`
+  String get intercityStatusUnknown {
+    return Intl.message(
+      'UNKNOWN',
+      name: 'intercityStatusUnknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PUBLISHED`
+  String get intercityStatusPublished {
+    return Intl.message(
+      'PUBLISHED',
+      name: 'intercityStatusPublished',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DISPATCHED`
+  String get intercityStatusDispatched {
+    return Intl.message(
+      'DISPATCHED',
+      name: 'intercityStatusDispatched',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MIN REACHED`
+  String get intercityStatusMinReached {
+    return Intl.message(
+      'MIN REACHED',
+      name: 'intercityStatusMinReached',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IN PROGRESS`
+  String get intercityStatusInProgress {
+    return Intl.message(
+      'IN PROGRESS',
+      name: 'intercityStatusInProgress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `COMPLETED`
+  String get intercityStatusCompleted {
+    return Intl.message(
+      'COMPLETED',
+      name: 'intercityStatusCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CANCELLED`
+  String get intercityStatusCancelled {
+    return Intl.message(
+      'CANCELLED',
+      name: 'intercityStatusCancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FILLING`
+  String get intercityStatusFilling {
+    return Intl.message(
+      'FILLING',
+      name: 'intercityStatusFilling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Car`
+  String get intercityCar {
+    return Intl.message('Car', name: 'intercityCar', desc: '', args: []);
+  }
+
+  /// `Onboarded: `
+  String get intercityOnboardedLabel {
+    return Intl.message(
+      'Onboarded: ',
+      name: 'intercityOnboardedLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select trip details. Search locations using Google Maps. Distance is auto-calculated.`
+  String get intercityTripInstruction {
+    return Intl.message(
+      'Select trip details. Search locations using Google Maps. Distance is auto-calculated.',
+      name: 'intercityTripInstruction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pickup Lat`
+  String get intercityPickupLat {
+    return Intl.message(
+      'Pickup Lat',
+      name: 'intercityPickupLat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pickup Lng`
+  String get intercityPickupLng {
+    return Intl.message(
+      'Pickup Lng',
+      name: 'intercityPickupLng',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drop Lat`
+  String get intercityDropLat {
+    return Intl.message(
+      'Drop Lat',
+      name: 'intercityDropLat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drop Lng`
+  String get intercityDropLng {
+    return Intl.message(
+      'Drop Lng',
+      name: 'intercityDropLng',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Car Normal`
+  String get intercityVehicleCarNormal {
+    return Intl.message(
+      'Car Normal',
+      name: 'intercityVehicleCarNormal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Car Premium Express`
+  String get intercityVehicleCarPremium {
+    return Intl.message(
+      'Car Premium Express',
+      name: 'intercityVehicleCarPremium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto Normal`
+  String get intercityVehicleAuto {
+    return Intl.message(
+      'Auto Normal',
+      name: 'intercityVehicleAuto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tata Magic Lite`
+  String get intercityVehicleTataMagic {
+    return Intl.message(
+      'Tata Magic Lite',
+      name: 'intercityVehicleTataMagic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email and password to continue`
+  String get login_subtitle {
+    return Intl.message(
+      'Enter your email and password to continue',
+      name: 'login_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get email_hint {
+    return Intl.message(
+      'Enter your email',
+      name: 'email_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your password`
+  String get enter_password_error {
+    return Intl.message(
+      'Please enter your password',
+      name: 'enter_password_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account? `
+  String get dont_have_account {
+    return Intl.message(
+      'Don\'t have an account? ',
+      name: 'dont_have_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Up`
+  String get signup_action {
+    return Intl.message('Sign Up', name: 'signup_action', desc: '', args: []);
+  }
+
+  /// `Personal Information`
+  String get step_personal_info {
+    return Intl.message(
+      'Personal Information',
+      name: 'step_personal_info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Information`
+  String get step_vehicle_info {
+    return Intl.message(
+      'Vehicle Information',
+      name: 'step_vehicle_info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License & Documents`
+  String get step_license_docs {
+    return Intl.message(
+      'License & Documents',
+      name: 'step_license_docs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank Details`
+  String get step_bank_details {
+    return Intl.message(
+      'Bank Details',
+      name: 'step_bank_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Account`
+  String get step_create_account {
+    return Intl.message(
+      'Create Account',
+      name: 'step_create_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your basic details`
+  String get step_subtitle_personal {
+    return Intl.message(
+      'Enter your basic details',
+      name: 'step_subtitle_personal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us about your vehicle`
+  String get step_subtitle_vehicle {
+    return Intl.message(
+      'Tell us about your vehicle',
+      name: 'step_subtitle_vehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload required documents`
+  String get step_subtitle_docs {
+    return Intl.message(
+      'Upload required documents',
+      name: 'step_subtitle_docs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your bank account details`
+  String get step_subtitle_bank {
+    return Intl.message(
+      'Enter your bank account details',
+      name: 'step_subtitle_bank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill in your details to get started`
+  String get step_subtitle_default {
+    return Intl.message(
+      'Fill in your details to get started',
+      name: 'step_subtitle_default',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message('Back', name: 'back', desc: '', args: []);
+  }
+
+  /// `Please upload profile photo`
+  String get upload_profile_photo_error {
+    return Intl.message(
+      'Please upload profile photo',
+      name: 'upload_profile_photo_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your full name`
+  String get enter_full_name_error {
+    return Intl.message(
+      'Please enter your full name',
+      name: 'enter_full_name_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your email`
+  String get enter_email_error {
+    return Intl.message(
+      'Please enter your email',
+      name: 'enter_email_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid email address`
+  String get enter_valid_email_error {
+    return Intl.message(
+      'Please enter a valid email address',
+      name: 'enter_valid_email_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter phone number`
+  String get enter_phone_error {
+    return Intl.message(
+      'Please enter phone number',
+      name: 'enter_phone_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid 10-digit phone number`
+  String get enter_valid_phone_error {
+    return Intl.message(
+      'Please enter a valid 10-digit phone number',
+      name: 'enter_valid_phone_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number must contain only numbers`
+  String get phone_numeric_error {
+    return Intl.message(
+      'Phone number must contain only numbers',
+      name: 'phone_numeric_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must be at least 6 characters`
+  String get password_length_error {
+    return Intl.message(
+      'Password must be at least 6 characters',
+      name: 'password_length_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter vehicle type`
+  String get enter_vehicle_type_error {
+    return Intl.message(
+      'Please enter vehicle type',
+      name: 'enter_vehicle_type_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter vehicle number`
+  String get enter_vehicle_number_error {
+    return Intl.message(
+      'Please enter vehicle number',
+      name: 'enter_vehicle_number_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter vehicle color`
+  String get enter_vehicle_color_error {
+    return Intl.message(
+      'Please enter vehicle color',
+      name: 'enter_vehicle_color_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter vehicle model`
+  String get enter_vehicle_model_error {
+    return Intl.message(
+      'Please enter vehicle model',
+      name: 'enter_vehicle_model_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter license number`
+  String get enter_license_number_error {
+    return Intl.message(
+      'Please enter license number',
+      name: 'enter_license_number_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter Aadhaar number`
+  String get enter_aadhaar_number_error {
+    return Intl.message(
+      'Please enter Aadhaar number',
+      name: 'enter_aadhaar_number_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aadhaar number must be exactly 12 digits`
+  String get aadhaar_length_error {
+    return Intl.message(
+      'Aadhaar number must be exactly 12 digits',
+      name: 'aadhaar_length_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter RC number`
+  String get enter_rc_number_error {
+    return Intl.message(
+      'Please enter RC number',
+      name: 'enter_rc_number_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload license front photo`
+  String get upload_license_front_error {
+    return Intl.message(
+      'Please upload license front photo',
+      name: 'upload_license_front_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload license back photo`
+  String get upload_license_back_error {
+    return Intl.message(
+      'Please upload license back photo',
+      name: 'upload_license_back_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload RC front photo`
+  String get upload_rc_front_error {
+    return Intl.message(
+      'Please upload RC front photo',
+      name: 'upload_rc_front_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload RC back photo`
+  String get upload_rc_back_error {
+    return Intl.message(
+      'Please upload RC back photo',
+      name: 'upload_rc_back_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload Aadhaar front photo`
+  String get upload_aadhaar_front_error {
+    return Intl.message(
+      'Please upload Aadhaar front photo',
+      name: 'upload_aadhaar_front_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please upload Aadhaar back photo`
+  String get upload_aadhaar_back_error {
+    return Intl.message(
+      'Please upload Aadhaar back photo',
+      name: 'upload_aadhaar_back_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter account holder name`
+  String get enter_account_holder_name_error {
+    return Intl.message(
+      'Please enter account holder name',
+      name: 'enter_account_holder_name_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter bank name`
+  String get enter_bank_name_error {
+    return Intl.message(
+      'Please enter bank name',
+      name: 'enter_bank_name_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter account number`
+  String get enter_account_number_error {
+    return Intl.message(
+      'Please enter account number',
+      name: 'enter_account_number_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account number must contain only numbers`
+  String get account_number_numeric_error {
+    return Intl.message(
+      'Account number must contain only numbers',
+      name: 'account_number_numeric_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account number must be between 9 and 18 digits`
+  String get account_number_length_error {
+    return Intl.message(
+      'Account number must be between 9 and 18 digits',
+      name: 'account_number_length_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter IFSC code`
+  String get enter_ifsc_code_error {
+    return Intl.message(
+      'Please enter IFSC code',
+      name: 'enter_ifsc_code_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid IFSC code (e.g., ABCD0123456)`
+  String get enter_valid_ifsc_error {
+    return Intl.message(
+      'Please enter a valid IFSC code (e.g., ABCD0123456)',
+      name: 'enter_valid_ifsc_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter UPI ID`
+  String get enter_upi_id_error {
+    return Intl.message(
+      'Please enter UPI ID',
+      name: 'enter_upi_id_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid UPI ID (e.g., name@paytm)`
+  String get enter_valid_upi_error {
+    return Intl.message(
+      'Please enter a valid UPI ID (e.g., name@paytm)',
+      name: 'enter_valid_upi_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full name as per ID proof`
+  String get full_name_hint {
+    return Intl.message(
+      'Full name as per ID proof',
+      name: 'full_name_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address (e.g., name@example.com)`
+  String get email_hint_example {
+    return Intl.message(
+      'Enter your email address (e.g., name@example.com)',
+      name: 'email_hint_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter password (minimum 6 characters)`
+  String get password_hint_min {
+    return Intl.message(
+      'Enter password (minimum 6 characters)',
+      name: 'password_hint_min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select vehicle type (e.g., CAR, BIKE, SUV)`
+  String get vehicle_type_hint {
+    return Intl.message(
+      'Select vehicle type (e.g., CAR, BIKE, SUV)',
+      name: 'vehicle_type_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter vehicle registration number (e.g., MH12AB1234)`
+  String get vehicle_number_hint {
+    return Intl.message(
+      'Enter vehicle registration number (e.g., MH12AB1234)',
+      name: 'vehicle_number_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter vehicle color (e.g., Red, Blue, White)`
+  String get vehicle_color_hint {
+    return Intl.message(
+      'Enter vehicle color (e.g., Red, Blue, White)',
+      name: 'vehicle_color_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Model`
+  String get vehicle_model {
+    return Intl.message(
+      'Vehicle Model',
+      name: 'vehicle_model',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter vehicle model (e.g., Swift, Activa, City)`
+  String get vehicle_model_hint {
+    return Intl.message(
+      'Enter vehicle model (e.g., Swift, Activa, City)',
+      name: 'vehicle_model_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License Number`
+  String get license_number {
+    return Intl.message(
+      'License Number',
+      name: 'license_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter driving license number (e.g., DL-0123456789)`
+  String get license_number_hint {
+    return Intl.message(
+      'Enter driving license number (e.g., DL-0123456789)',
+      name: 'license_number_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License Front`
+  String get license_front {
+    return Intl.message(
+      'License Front',
+      name: 'license_front',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License Back`
+  String get license_back {
+    return Intl.message(
+      'License Back',
+      name: 'license_back',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aadhaar Number`
+  String get aadhaar_number {
+    return Intl.message(
+      'Aadhaar Number',
+      name: 'aadhaar_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter 12-digit Aadhaar number`
+  String get aadhaar_number_hint {
+    return Intl.message(
+      'Enter 12-digit Aadhaar number',
+      name: 'aadhaar_number_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aadhaar Front`
+  String get aadhaar_front {
+    return Intl.message(
+      'Aadhaar Front',
+      name: 'aadhaar_front',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aadhaar Back`
+  String get aadhaar_back {
+    return Intl.message(
+      'Aadhaar Back',
+      name: 'aadhaar_back',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RC Number`
+  String get rc_number {
+    return Intl.message('RC Number', name: 'rc_number', desc: '', args: []);
+  }
+
+  /// `Enter vehicle RC number (Registration Certificate)`
+  String get rc_number_hint {
+    return Intl.message(
+      'Enter vehicle RC number (Registration Certificate)',
+      name: 'rc_number_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RC Front`
+  String get rc_front {
+    return Intl.message('RC Front', name: 'rc_front', desc: '', args: []);
+  }
+
+  /// `RC Back`
+  String get rc_back {
+    return Intl.message('RC Back', name: 'rc_back', desc: '', args: []);
+  }
+
+  /// `Account Holder Name`
+  String get account_holder_name {
+    return Intl.message(
+      'Account Holder Name',
+      name: 'account_holder_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter account holder name as per bank records`
+  String get account_holder_name_hint {
+    return Intl.message(
+      'Enter account holder name as per bank records',
+      name: 'account_holder_name_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank Name`
+  String get bank_name {
+    return Intl.message('Bank Name', name: 'bank_name', desc: '', args: []);
+  }
+
+  /// `Account Number`
+  String get account_number {
+    return Intl.message(
+      'Account Number',
+      name: 'account_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IFSC Code`
+  String get ifsc_code {
+    return Intl.message('IFSC Code', name: 'ifsc_code', desc: '', args: []);
+  }
+
+  /// `UPI ID`
+  String get upi_id {
+    return Intl.message('UPI ID', name: 'upi_id', desc: '', args: []);
+  }
+
+  /// `Enter bank name (e.g., State Bank of India)`
+  String get bank_name_hint {
+    return Intl.message(
+      'Enter bank name (e.g., State Bank of India)',
+      name: 'bank_name_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter bank account number (9-18 digits, numbers only)`
+  String get account_number_hint {
+    return Intl.message(
+      'Enter bank account number (9-18 digits, numbers only)',
+      name: 'account_number_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter IFSC code (e.g., SBIN0001234)`
+  String get ifsc_code_hint {
+    return Intl.message(
+      'Enter IFSC code (e.g., SBIN0001234)',
+      name: 'ifsc_code_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter UPI ID (e.g., name@paytm, name@phonepe)`
+  String get upi_id_hint {
+    return Intl.message(
+      'Enter UPI ID (e.g., name@paytm, name@phonepe)',
+      name: 'upi_id_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm OTP`
+  String get verify_otp_action {
+    return Intl.message(
+      'Confirm OTP',
+      name: 'verify_otp_action',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No rides today`
+  String get no_rides_today {
+    return Intl.message(
+      'No rides today',
+      name: 'no_rides_today',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -2411,6 +3936,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
       Locale.fromSubtags(languageCode: 'de'),
       Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'ru'),
+      Locale.fromSubtags(languageCode: 'te'),
       Locale.fromSubtags(languageCode: 'zh'),
     ];
   }

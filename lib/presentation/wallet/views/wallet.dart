@@ -31,7 +31,12 @@ class _WalletState extends ConsumerState<Wallet> {
       body: Container(
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(color: isDarkMode() ? Colors.black : Colors.white),
-        child: Column(children: [walletSummery(context), Gap(16.h), transactionHistory(context)]),
+        child: Column(
+          children: [
+            walletSummery(context),
+            // Gap(16.h), transactionHistory(context)
+          ],
+        ),
       ),
     ),
   );

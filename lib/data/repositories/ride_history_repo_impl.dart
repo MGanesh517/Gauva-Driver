@@ -12,12 +12,13 @@ class RideHistoryRepoImpl extends BaseRepository implements IRideHistoryRepo {
   RideHistoryRepoImpl({required this.rideHistoryService});
 
   @override
-  Future<Either<Failure, RideHistoryModel>> getRideHistory({String? status, String? date}) async => await safeApiCall(()async{
-      final response = await rideHistoryService.getRideHistory(status: status, date: date);
-      try {
-        return RideHistoryModel.fromJson(response.data);
-      } catch (e) {
-        throw Exception('Parsing error');
-      }
-
-    });}
+  Future<Either<Failure, RideHistoryModel>> getRideHistory({String? status, String? date, int? page, int? size}) async =>
+      await safeApiCall(() async {
+        final response = await rideHistoryService.getRideHistory(status: status, date: date, page: page, size: size);
+        try {
+          return RideHistoryModel.fromJson(response.data);
+        } catch (e) {
+          throw Exception('Parsing error');
+        }
+      });
+}

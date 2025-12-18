@@ -45,8 +45,8 @@ Widget rideActivityCard(
     ),
     child: Row(
       children: [
-        showCancelItem ? buildImageError(40, 40) : imageBuilder(order.rider?.profilePicture),
-        Gap(8.w),
+        // showCancelItem ? buildImageError(40, 40) : imageBuilder(order.rider?.profilePicture),
+        // Gap(8.w),
         Expanded(
           child: rideDetails(context, order: order, showCancelItem: showCancelItem),
         ),
@@ -131,7 +131,7 @@ Widget rideDetails(BuildContext context, {required Order order, bool showCancelI
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
     Text(
-      order.rider?.name?.capitalize() ?? 'N/A',
+      order?.status?.capitalize() ?? 'N/A',
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: context.bodyMedium?.copyWith(
@@ -143,24 +143,60 @@ Widget rideDetails(BuildContext context, {required Order order, bool showCancelI
     Gap(4.h),
     showCancelItem
         ? const SizedBox.shrink()
-        : Row(
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              infoChip(context, netImage: order.service?.logo, title: showCancelItem ? '' : order.service?.name),
-              Gap(8.w),
-              infoChip(
-                context,
-                image: Assets.images.distanceLogo,
-                title: showCancelItem ? '' : '${((order.distance ?? 0) / 1000).toStringAsFixed(2)} km',
-                imgColor: ColorPalette.primary50,
+              Row(
+                children: [
+                  infoChip(
+                    context,
+                    image: Assets.images.distanceLogo,
+                    title: showCancelItem ? '' : '${(order.distance ?? 0).toStringAsFixed(2)} km',
+                    imgColor: ColorPalette.primary50,
+                  ),
+                  Gap(8.w),
+                  infoChip(
+                    context,
+                    image: Assets.images.watch,
+                    title: showCancelItem ? '' : '${((order.duration ?? 0) / 60).toStringAsFixed(2)} min',
+                    imgColor: Colors.green,
+                    showVerticalDivider: false,
+                  ),
+                ],
               ),
-              Gap(8.w),
-              infoChip(
-                context,
-                image: Assets.images.watch,
-                title: showCancelItem ? '' : '${((order.duration ?? 0) / 60).toStringAsFixed(2)} min',
-                imgColor: Colors.green,
-                showVerticalDivider: false,
-              ),
+              Gap(8.h),
+              if (order.addresses?.pickupAddress != null) ...[
+                Row(
+                  children: [
+                    Icon(Ionicons.location_outline, size: 14.sp, color: Colors.green),
+                    Gap(4.w),
+                    Expanded(
+                      child: Text(
+                        order.addresses!.pickupAddress!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.bodySmall?.copyWith(fontSize: 12.sp, color: const Color(0xFF687387)),
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(4.h),
+              ],
+              if (order.addresses?.dropAddress != null)
+                Row(
+                  children: [
+                    Icon(Ionicons.location_outline, size: 14.sp, color: Colors.red),
+                    Gap(4.w),
+                    Expanded(
+                      child: Text(
+                        order.addresses!.dropAddress!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.bodySmall?.copyWith(fontSize: 12.sp, color: const Color(0xFF687387)),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
   ],

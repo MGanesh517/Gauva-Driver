@@ -28,8 +28,23 @@ class RideRepoImpl extends BaseRepository implements IRideRepo {
   Future<Either<Failure, OrderDetailModel>> orderDetails({required int orderId}) async => await safeApiCall(() async {
     final response = await rideService.orderDetails(orderId: orderId);
     try {
+      // Handle array response (HTML tool shows response can be an array)
+      if (response.data is List && (response.data as List).isNotEmpty) {
+        // Extract first element from array
+        final firstElement = (response.data as List).first;
+        return OrderDetailModel.fromJson(firstElement);
+      }
+      // Handle direct object response
       return OrderDetailModel.fromJson(response.data);
     } catch (e) {
+      print('❌ Error parsing orderDetails response: $e');
+      print('❌ Response data type: ${response.data.runtimeType}');
+      print('❌ Response data: ${response.data}');
+      // Try to handle array on error too
+      if (response.data is List && (response.data as List).isNotEmpty) {
+        final firstElement = (response.data as List).first;
+        return OrderDetailModel.fromJson(firstElement);
+      }
       return OrderDetailModel.fromJson(response.data);
     }
   });
@@ -140,14 +155,15 @@ class RideRepoImpl extends BaseRepository implements IRideRepo {
   });
 
   @override
-  Future<Either<Failure, OrderDetailModel>> acceptRide({required int rideId}) async => await safeApiCall(() async {
-    final response = await rideService.acceptRide(rideId: rideId);
-    try {
-      return OrderDetailModel.fromJson(response.data);
-    } catch (e) {
-      return OrderDetailModel.fromJson(response.data);
-    }
-  });
+  Future<Either<Failure, OrderDetailModel>> acceptRide({required int rideId, required int otp}) async =>
+      await safeApiCall(() async {
+        final response = await rideService.acceptRide(rideId: rideId, otp: otp);
+        try {
+          return OrderDetailModel.fromJson(response.data);
+        } catch (e) {
+          return OrderDetailModel.fromJson(response.data);
+        }
+      });
 
   @override
   Future<Either<Failure, CommonResponse>> declineRide({required int rideId}) async => await safeApiCall(() async {
@@ -156,7 +172,7 @@ class RideRepoImpl extends BaseRepository implements IRideRepo {
   });
 
   @override
-  Future<Either<Failure, OrderDetailModel>> startRide({required int rideId, required String otp}) async =>
+  Future<Either<Failure, OrderDetailModel>> startRide({required int rideId, required int otp}) async =>
       await safeApiCall(() async {
         final response = await rideService.startRide(rideId: rideId, otp: otp);
         try {
@@ -179,6 +195,16 @@ class RideRepoImpl extends BaseRepository implements IRideRepo {
   @override
   Future<Either<Failure, OrderDetailModel>> getRideDetails({required int rideId}) async => await safeApiCall(() async {
     final response = await rideService.getRideDetails(rideId: rideId);
+    try {
+      return OrderDetailModel.fromJson(response.data);
+    } catch (e) {
+      return OrderDetailModel.fromJson(response.data);
+    }
+  });
+
+  @override
+  Future<Either<Failure, OrderDetailModel>> goToPickup({required int orderId}) async => await safeApiCall(() async {
+    final response = await rideService.goToPickup(orderId: orderId);
     try {
       return OrderDetailModel.fromJson(response.data);
     } catch (e) {

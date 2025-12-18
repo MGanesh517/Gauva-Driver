@@ -5,6 +5,7 @@ import 'package:gauva_driver/core/enums/booking_status.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/widgets/buttons/app_primary_button.dart';
 import 'package:gauva_driver/data/models/order_response/order_model/order/order.dart';
+import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:gauva_driver/gen/assets.gen.dart';
 import 'package:gauva_driver/presentation/booking/provider/driver_providers.dart';
 import 'package:gauva_driver/presentation/booking/widgets/trip_cards/action_sheet.dart';
@@ -28,13 +29,44 @@ Widget reachedDestination(BuildContext context, Order? order) => Consumer(
         Expanded(
           child: AppPrimaryButton(
             isLoading: ref.watch(loadingProvider),
-            onPressed: () {
-              rideOrderNotifier.saveOrderStatus(
-                status: 'dropped_off',
+            onPressed: () async {
+              print('✅ reachedDestination: Complete ride button pressed');
+              
+              // Get order ID - try multiple sources
+              int? orderId = order?.id;
+              
+              if (orderId == null) {
+                orderId = rideOrderState.maybeWhen(
+                  success: (o) => o?.id,
+                  orElse: () => null,
+                );
+              }
+              
+              // Fallback: try localStorage
+              if (orderId == null) {
+                orderId = await LocalStorageService().getOrderId();
+              }
+
+              print('✅ reachedDestination: Order ID: $orderId');
+
+              if (orderId == null) {
+                print('❌ reachedDestination: Order ID is null, cannot complete ride');
+                return;
+              }
+
+              print('✅ reachedDestination: Calling completeRide API instead of dropped_off...');
+
+              // Call the completeRide API instead of dropped_off status
+              rideOrderNotifier.completeRide(
+                orderId: orderId,
                 onSuccess: (v) {
+                  print('✅ reachedDestination: Ride completed successfully');
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     onTripNotifier.updateOnTripStatus(status: BookingStatus.payment);
                   });
+                },
+                onError: (failure) {
+                  print('❌ reachedDestination: Failed to complete ride: ${failure.message}');
                 },
               );
             },

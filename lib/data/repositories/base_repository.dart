@@ -14,10 +14,12 @@ abstract class BaseRepository {
     try {
       // Step 1: Check internet connectivity
       final connectivityResult = await Connectivity().checkConnectivity();
-      final hasInternet = connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet);
+      final hasInternet =
+          connectivityResult.contains(ConnectivityResult.mobile) ||
+          connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.ethernet);
 
       if (!hasInternet) {
-
         return Left(Failure(message: AppLocalizations().no_internet_connection));
       }
 

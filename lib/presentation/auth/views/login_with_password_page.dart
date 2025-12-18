@@ -150,7 +150,7 @@ class _LoginWithPasswordPageState extends ConsumerState<LoginWithPasswordPage> {
               final String password = passwordController.text.trim();
 
               if (password.isEmpty) {
-                showNotification(message: 'Please enter password');
+                showNotification(message: localize(context).enter_password_error);
                 return;
               }
 

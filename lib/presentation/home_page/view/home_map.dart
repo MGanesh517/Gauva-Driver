@@ -23,14 +23,35 @@ class _HomeMapState extends ConsumerState<HomeMap> {
   }
 
   void _onMapCreated(GoogleMapController controller) async {
-    final homeState = ref.read(bookingNotifierProvider);
-    ref.read(bookingNotifierProvider.notifier).setMapController(controller);
-    final UserHiveModel? userHiveModel = await LocalStorageService().getSavedUser();
-    if (homeState.currentLocation != null) {
-      final int radius = ref.read(bookingNotifierProvider.notifier).getRadiusInKm(userHiveModel?.radiusInMeter);
-      final double zoomLevel = ref.read(bookingNotifierProvider.notifier).getZoomLevel(radius * 1000);
+    // Check if widget is still mounted before using ref
+    if (!mounted) return;
 
-      controller.animateCamera(CameraUpdate.newLatLngZoom(homeState.currentLocation!, zoomLevel));
+    final homeState = ref.read(bookingNotifierProvider);
+    final bookingNotifier = ref.read(bookingNotifierProvider.notifier);
+
+    // Set map controller immediately (synchronous operation)
+    bookingNotifier.setMapController(controller);
+
+    // Store current location before async call
+    final currentLocation = homeState.currentLocation;
+
+    // Perform async operation
+    final UserHiveModel? userHiveModel = await LocalStorageService().getSavedUser();
+
+    // Check if widget is still mounted after async operation
+    if (!mounted) return;
+
+    if (currentLocation != null) {
+      // Read notifier again after async operation (with mounted check)
+      final int radius = bookingNotifier.getRadiusInKm(userHiveModel?.radiusInMeter);
+      final double zoomLevel = bookingNotifier.getZoomLevel(radius * 1000);
+
+      try {
+        await controller.animateCamera(CameraUpdate.newLatLngZoom(currentLocation, zoomLevel));
+      } catch (e) {
+        print('⚠️ Error animating camera in home_map: $e');
+        // Silently fail - map controller might be disposed or platform channel disconnected
+      }
     }
   }
 

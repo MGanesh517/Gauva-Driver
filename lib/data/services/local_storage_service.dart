@@ -118,11 +118,13 @@ class LocalStorageService {
     try {
       final user = await getSavedUser();
       if (user == null) {
-        print('⚠️ LocalStorage: getUserId() - No user data found');
+        print('⚠️ LocalStorage: getUserId() - No user data object found in storage');
         return null;
       }
       if (user.id == null) {
-        print('⚠️ LocalStorage: getUserId() - User data exists but ID is null');
+        print(
+          '⚠️ LocalStorage: getUserId() - User data exists but ID field is null. User data: ${jsonEncode(user.toMap())}',
+        );
         return null;
       }
       print('✅ LocalStorage: getUserId() - Found driver ID: ${user.id}');

@@ -82,18 +82,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                   ),
-                  Gap(16.w),
-                  Expanded(
-                    child: Text(
-                      version,
-                      textAlign: TextAlign.end,
-                      style: context.bodyMedium?.copyWith(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w400,
-                        color: ColorPalette.primary50,
-                      ),
-                    ),
-                  ),
+                  // Gap(16.w),
+                  // Expanded(
+                  //   child: Text(
+                  //     version,
+                  //     textAlign: TextAlign.end,
+                  //     style: context.bodyMedium?.copyWith(
+                  //       fontSize: 13.sp,
+                  //       fontWeight: FontWeight.w400,
+                  //       color: ColorPalette.primary50,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               Gap(4.h),
@@ -107,7 +107,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               Gap(8.h),
               Text(
-                'Enter your email and password to continue',
+                localize(context).login_subtitle,
                 style: context.bodyMedium?.copyWith(
                   fontSize: 16.sp,
                   color: const Color(0xFF687387),
@@ -123,18 +123,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     _buildTextField(
                       context,
                       isDark,
-                      title: 'Email',
+                      title: localize(context).email_label,
                       controller: _emailController,
-                      hintText: 'Enter your email',
+                      hintText: localize(context).email_hint,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     Gap(16.h),
                     _buildTextField(
                       context,
                       isDark,
-                      title: 'Password',
+                      title: localize(context).password_label,
                       controller: _passwordController,
-                      hintText: 'Enter your password',
+                      hintText: localize(context).enter_password,
                       obscureText: _obscurePassword,
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -195,21 +195,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         final email = _emailController.text.trim();
                         final password = _passwordController.text.trim();
 
-                        if (email.isEmpty) {
-                          showNotification(message: 'Please enter your email');
-                          return;
-                        }
+                        // if (email.isEmpty) {
+                        //   showNotification(message: 'Please enter your email');
+                        //   return;
+                        // }
 
                         if (password.isEmpty) {
-                          showNotification(message: 'Please enter your password');
+                          showNotification(message: localize(context).enter_password_error);
                           return;
                         }
 
-                        // Basic email validation
-                        if (!email.contains('@') || !email.contains('.')) {
-                          showNotification(message: 'Please enter a valid email address');
-                          return;
-                        }
+                        // // Basic email validation
+                        // if (!email.contains('@') || !email.contains('.')) {
+                        //   showNotification(message: 'Please enter a valid email address');
+                        //   return;
+                        // }
 
                         stateNotifier.login(identifier: email, password: password);
                       },
@@ -222,7 +222,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have an account? ",
+                            localize(context).dont_have_account,
                             style: context.bodyMedium?.copyWith(fontSize: 14.sp, color: const Color(0xFF687387)),
                           ),
                           GestureDetector(
@@ -230,7 +230,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               NavigationService.pushNamed(AppRoutes.signup);
                             },
                             child: Text(
-                              'Sign Up',
+                              localize(context).signup_action,
                               style: context.bodyMedium?.copyWith(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,

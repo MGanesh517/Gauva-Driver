@@ -47,9 +47,38 @@ Widget paymentReceived(BuildContext context, Order? order) => Consumer(
         Expanded(
           child: AppPrimaryButton(
             isLoading: ref.watch(loadingProvider),
-            onPressed: () {
-              rideOrderNotifier.saveOrderStatus(
-                status: 'completed',
+            onPressed: () async {
+              print('✅ paymentReceived: Complete ride button pressed');
+              
+              // Get order ID - try multiple sources
+              // Note: order is guaranteed to be non-null here (see line 38: order!)
+              int? orderId = order.id;
+              
+              if (orderId == null) {
+                final rideOrderState = ref.read(rideOrderNotifierProvider);
+                orderId = rideOrderState.maybeWhen(
+                  success: (o) => o?.id,
+                  orElse: () => null,
+                );
+              }
+              
+              // Fallback: try localStorage
+              if (orderId == null) {
+                orderId = await LocalStorageService().getOrderId();
+              }
+
+              print('✅ paymentReceived: Order ID: $orderId');
+
+              if (orderId == null) {
+                print('❌ paymentReceived: Order ID is null, cannot proceed');
+                return;
+              }
+
+              print('✅ paymentReceived: Calling completeRide API...');
+
+              // Call the completeRide API (no OTP needed)
+              rideOrderNotifier.completeRide(
+                orderId: orderId,
                 onSuccess: (v) {
                   WidgetsBinding.instance.addPostFrameCallback((_) async {
                     tripStateNotifier.updateOnTripStatus(status: BookingStatus.initial);
@@ -60,6 +89,9 @@ Widget paymentReceived(BuildContext context, Order? order) => Consumer(
                     pusherNotifier.setupPusherListeners();
                     NavigationService.pushNamedAndRemoveUntil(AppRoutes.dashboard);
                   });
+                },
+                onError: (failure) {
+                  print('❌ paymentReceived: Failed to complete ride: ${failure.message}');
                 },
               );
             },

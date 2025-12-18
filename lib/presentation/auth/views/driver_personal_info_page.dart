@@ -19,7 +19,7 @@ import 'package:gauva_driver/presentation/profile/provider/profile_providers.dar
 import '../../../core/utils/helpers.dart';
 import '../../../core/utils/is_dark_mode.dart';
 import '../../../data/models/gender_model/gender_model.dart';
-import '../../../generated/l10n.dart';
+
 import '../widgets/auth_bottom_buttons.dart';
 import '../widgets/image_picker_form_field.dart';
 
@@ -38,10 +38,10 @@ class _ContactDetailsPageState extends ConsumerState<DriverPersonalInfoPage> {
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final addressController = TextEditingController();
-  final genderList = <GenderModel>[
-    GenderModel(id: 1, value: 'Male', name: AppLocalizations().gender_male),
-    GenderModel(id: 2, value: 'Female', name: AppLocalizations().gender_female),
-    GenderModel(id: 3, value: 'Other', name: AppLocalizations().gender_other),
+  List<GenderModel> get genderList => <GenderModel>[
+    GenderModel(id: 1, value: 'Male', name: localize(context).gender_male),
+    GenderModel(id: 2, value: 'Female', name: localize(context).gender_female),
+    GenderModel(id: 3, value: 'Other', name: localize(context).gender_other),
   ];
   GenderModel? selectedGender;
 

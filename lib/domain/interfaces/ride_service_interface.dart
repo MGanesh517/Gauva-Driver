@@ -12,9 +12,10 @@ abstract class IRideService {
   Future<Response> getStartedRides();
   Future<Response> getAllocatedRides();
   Future<Response> getCompletedRides();
-  Future<Response> acceptRide({required int rideId});
+  Future<Response> acceptRide({required int rideId, required int otp});
   Future<Response> declineRide({required int rideId});
-  Future<Response> startRide({required int rideId, required String otp});
+  Future<Response> startRide({required int rideId, required int otp});
   Future<Response> completeRide({required int rideId});
   Future<Response> getRideDetails({required int rideId});
+  Future<Response> goToPickup({required int orderId});
 }

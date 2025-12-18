@@ -23,26 +23,26 @@ class ApiEndpoints {
   static const String getMessage = '/message';
   static const String orderRide = '$mediator/order';
   static const String checkActiveTrip = '/v1/driver/rides/started';
-  static const String dashboard = '$mediator/dashboard';
+  static const String dashboard = '/v1/driver/dashboard';
   static const String cancelRide = '/cancel-ride';
-  static const String driverLocationsUpdate = '$mediator/locations/update';
-  static const String rideHistory = '$mediator/order';
+  static const String driverLocationsUpdate = '/v1/driver/locations/update';
+  static const String rideHistory = '/v1/ride/driver/history';
   static const String earnings = '/earning';
   static const String paymentMethods = '/payment-method';
-  static const String wallets = '$mediator/wallet';
-  static const String withdraw = '$mediator/withdraw';
-  static const String addCard = '$mediator/add-card';
-  static const String myCard = '$mediator/my-card';
-  static const String deleteCard = '$mediator/delete-card';
-  static const String transactionHistory = '$mediator/transaction/details';
+  static const String wallets = '/$mediator/wallet';
+  static const String withdraw = '/$mediator/withdraw';
+  static const String addCard = '/$mediator/add-card';
+  static const String myCard = '/$mediator/my-card';
+  static const String deleteCard = '/$mediator/delete-card';
+  static const String transactionHistory = '/$mediator/transaction/details';
   static const String paymentTransactions = '/v1/payments/transactions';
   static const String getReportTypes = '/report-types';
   static const String submitReport = '/report-create';
-  static const String deleteAccount = '$mediator/destroy';
+  static const String deleteAccount = '/$mediator/destroy';
   static const String getCountryList = '/configs/country-code';
-  static const String termsAndConditions = 'legal-terms';
-  static const String privacyPolicy = 'privacy-policy';
-  static const String sendTravelInfo = '$mediator/locations/send-travel-info';
+  static const String termsAndConditions = '/legal-terms';
+  static const String privacyPolicy = '/privacy-policy';
+  static const String sendTravelInfo = '/$mediator/locations/send-travel-info';
 
   // New API endpoints (without /api prefix since Environment.apiUrl already includes it)
   static const String driverRegister = '/v1/auth/register/driver/documents';
@@ -52,8 +52,9 @@ class ApiEndpoints {
   static const String driverLogout = '/v1/auth/logout/driver';
   static const String driverStatusOnline = '/v1/driver/status/online';
 
-  // Driver Ride APIs
-  static const String getCurrentRide = '/v1/driver'; // /{driverId}/current_ride
+  // Driver Ride APIs (matching HTML tool flow)
+  static const String getCurrentRide = '/v1/driver'; // /{driverId}/current_ride (legacy)
+  static const String getCurrentRides = '/v1/driver/rides/current'; // GET current rides (accepted/started)
   static const String getStartedRides = '/v1/driver/rides/started';
   static const String getAllocatedRides = '/v1/driver/rides/allocated';
   static const String getCompletedRides = '/v1/driver/rides/completed';
@@ -62,4 +63,5 @@ class ApiEndpoints {
   static const String startRide = '/v1/ride'; // /{rideId}/start
   static const String completeRide = '/v1/ride'; // /{rideId}/complete
   static const String getRideDetails = '/v1/ride'; // /{rideId}
+  static const String goToPickup = 'driver/order'; // /{id}/go_to_pickup
 }

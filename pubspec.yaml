@@ -102,6 +102,7 @@ dev_dependencies:
   flutter_gen: ^5.7.0
   flutter_gen_runner: ^5.7.0
   json_serializable: ^6.7.1
+  intl_utils: ^2.8.7
 
 
   # Linting
@@ -132,6 +133,7 @@ flutter:
     - assets/vehicles/
     - assets/notification.mp3
     - assets/notification2.mp3
+    - assets/Rapidosound.mp3
 
   fonts:
     - family: GeneralSans

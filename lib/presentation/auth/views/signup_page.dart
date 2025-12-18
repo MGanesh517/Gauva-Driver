@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +63,18 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final TextEditingController _ifscCodeController = TextEditingController();
   final TextEditingController _upiIdController = TextEditingController();
 
-  final List<String> _vehicleTypes = ['CAR', 'XL', 'SUV', 'BIG_CAR', 'AUTO'];
+  final List<String> _vehicleTypes = [
+    'CAR',
+    'XL',
+    'SUV',
+    'BIG_CAR',
+    'AUTO',
+    'BIKE',
+    'SCOOTER',
+    'MOTORCYCLE',
+    'TRUCK',
+    'VAN',
+  ];
 
   int _currentStep = 0;
   double _latitude = 0.0;
@@ -128,28 +141,40 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   }
 
   bool _validateStep1() {
+    if (_profilePhoto == null) {
+      showNotification(message: localize(context).upload_profile_photo_error);
+      return false;
+    }
     if (_nameController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter your full name');
+      showNotification(message: localize(context).enter_full_name_error);
       return false;
     }
     if (_emailController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter your email');
+      showNotification(message: localize(context).enter_email_error);
       return false;
     }
-    if (!_emailController.text.trim().contains('@')) {
-      showNotification(message: 'Please enter a valid email');
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailController.text.trim())) {
+      showNotification(message: localize(context).enter_valid_email_error);
       return false;
     }
     if (_phoneNumber.trim().isEmpty) {
-      showNotification(message: 'Please enter phone number');
+      showNotification(message: localize(context).enter_phone_error);
+      return false;
+    }
+    if (_phoneNumber.trim().length < 10) {
+      showNotification(message: localize(context).enter_valid_phone_error);
+      return false;
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(_phoneNumber.trim())) {
+      showNotification(message: localize(context).phone_numeric_error);
       return false;
     }
     if (_passwordController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter password');
+      showNotification(message: localize(context).enter_password_error);
       return false;
     }
     if (_passwordController.text.trim().length < 6) {
-      showNotification(message: 'Password must be at least 6 characters');
+      showNotification(message: localize(context).password_length_error);
       return false;
     }
     return true;
@@ -157,19 +182,19 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   bool _validateStep2() {
     if (_vehicleTypeController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter vehicle type');
+      showNotification(message: localize(context).enter_vehicle_type_error);
       return false;
     }
     if (_vehicleNumberController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter vehicle number');
+      showNotification(message: localize(context).enter_vehicle_number_error);
       return false;
     }
     if (_vehicleColorController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter vehicle color');
+      showNotification(message: localize(context).enter_vehicle_color_error);
       return false;
     }
     if (_vehicleModelController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter vehicle model');
+      showNotification(message: localize(context).enter_vehicle_model_error);
       return false;
     }
     return true;
@@ -177,46 +202,85 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   bool _validateStep3() {
     if (_licenseNumberController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter license number');
+      showNotification(message: localize(context).enter_license_number_error);
       return false;
     }
     if (_aadhaarNumberController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter Aadhaar number');
+      showNotification(message: localize(context).enter_aadhaar_number_error);
+      return false;
+    }
+    if (!RegExp(r'^[0-9]{12}$').hasMatch(_aadhaarNumberController.text.trim())) {
+      showNotification(message: localize(context).aadhaar_length_error);
       return false;
     }
     if (_rcNumberController.text.trim().isEmpty) {
-      showNotification(message: 'Please enter RC number');
+      showNotification(message: localize(context).enter_rc_number_error);
       return false;
     }
     if (_licenseFront == null) {
-      showNotification(message: 'Please upload license front photo');
+      showNotification(message: localize(context).upload_license_front_error);
       return false;
     }
     if (_licenseBack == null) {
-      showNotification(message: 'Please upload license back photo');
+      showNotification(message: localize(context).upload_license_back_error);
       return false;
     }
     if (_rcFront == null) {
-      showNotification(message: 'Please upload RC front photo');
+      showNotification(message: localize(context).upload_rc_front_error);
       return false;
     }
     if (_rcBack == null) {
-      showNotification(message: 'Please upload RC back photo');
+      showNotification(message: localize(context).upload_rc_back_error);
       return false;
     }
     if (_aadhaarFront == null) {
-      showNotification(message: 'Please upload Aadhaar front photo');
+      showNotification(message: localize(context).upload_aadhaar_front_error);
       return false;
     }
     if (_aadhaarBack == null) {
-      showNotification(message: 'Please upload Aadhaar back photo');
+      showNotification(message: localize(context).upload_aadhaar_back_error);
       return false;
     }
     return true;
   }
 
   bool _validateStep4() {
-    // Bank details are optional, so no validation needed
+    if (_accountHolderNameController.text.trim().isEmpty) {
+      showNotification(message: localize(context).enter_account_holder_name_error);
+      return false;
+    }
+    if (_bankNameController.text.trim().isEmpty) {
+      showNotification(message: localize(context).enter_bank_name_error);
+      return false;
+    }
+    if (_accountNumberController.text.trim().isEmpty) {
+      showNotification(message: localize(context).enter_account_number_error);
+      return false;
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(_accountNumberController.text.trim())) {
+      showNotification(message: localize(context).account_number_numeric_error);
+      return false;
+    }
+    if (_accountNumberController.text.trim().length < 9 || _accountNumberController.text.trim().length > 18) {
+      showNotification(message: localize(context).account_number_length_error);
+      return false;
+    }
+    if (_ifscCodeController.text.trim().isEmpty) {
+      showNotification(message: localize(context).enter_ifsc_code_error);
+      return false;
+    }
+    if (!RegExp(r'^[A-Z]{4}0[A-Z0-9]{6}$').hasMatch(_ifscCodeController.text.trim().toUpperCase())) {
+      showNotification(message: localize(context).enter_valid_ifsc_error);
+      return false;
+    }
+    if (_upiIdController.text.trim().isEmpty) {
+      showNotification(message: localize(context).enter_upi_id_error);
+      return false;
+    }
+    if (!RegExp(r'^[\w\.-]+@[\w\.-]+$').hasMatch(_upiIdController.text.trim())) {
+      showNotification(message: localize(context).enter_valid_upi_error);
+      return false;
+    }
     return true;
   }
 
@@ -301,6 +365,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         resizeToAvoidBottomInset: true,
         body: AuthAppBar(
           title: 'Sign Up',
+
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -334,59 +399,57 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     );
   }
 
-  Widget _buildProgressIndicator(bool isDark) {
-    return Row(
-      children: List.generate(4, (index) {
-        final isActive = index <= _currentStep;
-        return Expanded(
-          child: Container(
-            height: 4.h,
-            margin: EdgeInsets.symmetric(horizontal: 4.w),
-            decoration: BoxDecoration(
-              color: isActive ? ColorPalette.primary50 : (isDark ? const Color(0xFF2A2D36) : const Color(0xFFE8EAED)),
-              borderRadius: BorderRadius.circular(2.r),
-            ),
+  Widget _buildProgressIndicator(bool isDark) => Row(
+    children: List.generate(4, (index) {
+      final isActive = index <= _currentStep;
+      return Expanded(
+        child: Container(
+          height: 4.h,
+          margin: EdgeInsets.symmetric(horizontal: 4.w),
+          decoration: BoxDecoration(
+            color: isActive ? ColorPalette.primary50 : (isDark ? const Color(0xFF2A2D36) : const Color(0xFFE8EAED)),
+            borderRadius: BorderRadius.circular(2.r),
           ),
-        );
-      }),
-    );
-  }
+        ),
+      );
+    }),
+  );
 
   String _getStepTitle() {
     switch (_currentStep) {
       case 0:
-        return 'Personal Information';
+        return localize(context).step_personal_info;
       case 1:
-        return 'Vehicle Information';
+        return localize(context).step_vehicle_info;
       case 2:
-        return 'License & Documents';
+        return localize(context).step_license_docs;
       case 3:
-        return 'Bank Details';
+        return localize(context).step_bank_details;
       default:
-        return 'Create Account';
+        return localize(context).step_create_account;
     }
   }
 
   String _getStepSubtitle() {
     switch (_currentStep) {
       case 0:
-        return 'Enter your basic details';
+        return localize(context).step_subtitle_personal;
       case 1:
-        return 'Tell us about your vehicle';
+        return localize(context).step_subtitle_vehicle;
       case 2:
-        return 'Upload required documents';
+        return localize(context).step_subtitle_docs;
       case 3:
-        return 'Bank account details (Optional)';
+        return localize(context).step_subtitle_bank;
       default:
-        return 'Fill in your details to get started';
+        return localize(context).step_subtitle_default;
     }
   }
 
   String _getButtonText() {
     if (_currentStep < 3) {
-      return 'Next';
+      return localize(context).next;
     }
-    return 'Sign Up';
+    return localize(context).signup_action;
   }
 
   Widget _buildCurrentStep(BuildContext context, bool isDark) {
@@ -404,369 +467,381 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     }
   }
 
-  Widget _buildBottomButtons(bool isLoading) {
-    return SafeArea(
-      child: Container(
-        color: isDarkMode() ? context.surface : Colors.white,
-        padding: EdgeInsets.all(16.r),
-        child: _currentStep > 0
-            ? Row(
-                children: [
-                  Expanded(
-                    child: _buildButton(title: 'Back', onTap: _onBack, isLoading: false, isPrimary: true),
-                  ),
-                  Gap(12.w),
-                  Expanded(
-                    flex: 2,
-                    child: _buildButton(title: _getButtonText(), onTap: _onNext, isLoading: isLoading, isPrimary: true),
-                  ),
-                ],
-              )
-            : _buildButton(title: _getButtonText(), onTap: _onNext, isLoading: isLoading, isPrimary: true),
-      ),
-    );
-  }
+  Widget _buildBottomButtons(bool isLoading) => SafeArea(
+    child: Container(
+      color: isDarkMode() ? context.surface : Colors.white,
+      padding: EdgeInsets.all(16.r),
+      child: _currentStep > 0
+          ? Row(
+              children: [
+                Expanded(
+                  child: _buildButton(title: localize(context).back, onTap: _onBack, isLoading: false, isPrimary: true),
+                ),
+                Gap(12.w),
+                Expanded(
+                  flex: 2,
+                  child: _buildButton(title: _getButtonText(), onTap: _onNext, isLoading: isLoading, isPrimary: true),
+                ),
+              ],
+            )
+          : _buildButton(title: _getButtonText(), onTap: _onNext, isLoading: isLoading, isPrimary: true),
+    ),
+  );
 
   Widget _buildButton({
     required String title,
     required VoidCallback onTap,
     required bool isLoading,
     required bool isPrimary,
-  }) {
-    return Container(
-      height: 48.h,
-      decoration: BoxDecoration(
-        gradient: (isLoading)
-            ? null
-            : const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF397098), Color(0xFF942FAF)],
-              ),
-        color: isLoading ? context.theme.colorScheme.onSurface.withValues(alpha: 0.12) : null,
+  }) => Container(
+    height: 48.h,
+    decoration: BoxDecoration(
+      gradient: (isLoading)
+          ? null
+          : const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF397098), Color(0xFF942FAF)],
+            ),
+      color: isLoading ? context.theme.colorScheme.onSurface.withValues(alpha: 0.12) : null,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: isLoading ? null : onTap,
         borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: isLoading ? null : onTap,
-          borderRadius: BorderRadius.circular(8.r),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 13.h, horizontal: 16.w),
-            alignment: Alignment.center,
-            child: isLoading
-                ? SizedBox(
-                    height: 24.h,
-                    width: 24.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 13.h, horizontal: 16.w),
+          alignment: Alignment.center,
+          child: isLoading
+              ? SizedBox(
+                  height: 24.h,
+                  width: 24.w,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
-          ),
+                )
+              : Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
         ),
       ),
-    );
-  }
+    ),
+  );
 
   // Step 1: Personal Information
-  Widget _buildStep1(BuildContext context, bool isDark) {
-    return Column(
-      children: [
-        imagePickerFormField(
-          context: context,
-          name: 'profilePhoto',
-          title: 'Profile Photo',
-          initialFile: _profilePhoto,
-          isRequired: true,
-          showImageSquare: false,
-          onChanged: (file) {
+  Widget _buildStep1(BuildContext context, bool isDark) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      imagePickerFormField(
+        context: context,
+        name: 'profilePhoto',
+        title: localize(context).profile_image,
+        initialFile: _profilePhoto,
+        isRequired: true,
+        showImageSquare: false,
+        onChanged: (file) {
+          setState(() {
+            _profilePhoto = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).full_name,
+        controller: _nameController,
+        hintText: localize(context).full_name_hint,
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).email_label,
+        controller: _emailController,
+        hintText: localize(context).email_hint_example,
+        keyboardType: TextInputType.emailAddress,
+      ),
+      Gap(16.h),
+      Text(
+        localize(context).phoneNo,
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(12.h),
+      AppPhoneNumberTextField(initialValue: _phoneNumber, onChanged: _onPhoneChanged, isDark: isDark),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).password_label,
+        controller: _passwordController,
+        hintText: localize(context).password_hint_min,
+        obscureText: _obscurePassword,
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+            color: isDark ? Colors.white70 : Colors.grey,
+          ),
+          onPressed: () {
             setState(() {
-              _profilePhoto = file;
+              _obscurePassword = !_obscurePassword;
             });
           },
         ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Full Name',
-          controller: _nameController,
-          hintText: 'Enter your full name',
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Email',
-          controller: _emailController,
-          hintText: 'Enter your email',
-          keyboardType: TextInputType.emailAddress,
-        ),
-        Gap(16.h),
-        Text(
-          'Phone Number',
-          style: context.bodyMedium?.copyWith(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w800,
-            color: isDark ? Colors.white : const Color(0xFF24262D),
-          ),
-        ),
-        Gap(12.h),
-        AppPhoneNumberTextField(initialValue: _phoneNumber, onChanged: _onPhoneChanged, isDark: isDark),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Password',
-          controller: _passwordController,
-          hintText: 'Enter password',
-          obscureText: _obscurePassword,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: isDark ? Colors.white70 : Colors.grey,
-            ),
-            onPressed: () {
-              setState(() {
-                _obscurePassword = !_obscurePassword;
-              });
-            },
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 
   // Step 2: Vehicle Information
-  Widget _buildStep2(BuildContext context, bool isDark) {
-    return Column(
-      children: [
-        Text(
-          'Vehicle Type',
-          style: context.bodyMedium?.copyWith(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w800,
-            color: isDark ? Colors.white : const Color(0xFF24262D),
+  Widget _buildStep2(BuildContext context, bool isDark) => Column(
+    children: [
+      requiredTitle(context, title: localize(context).vehicle_type, isRequired: true),
+      Gap(8.h),
+      FormBuilderDropdown<String>(
+        name: 'vehicleType',
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          hintText: localize(context).vehicle_type_hint,
+          hintStyle: context.bodyMedium?.copyWith(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF687387),
           ),
+          border: border(),
+          enabledBorder: border(),
+          focusedBorder: border(true),
         ),
-        Gap(12.h),
-        FormBuilderDropdown<String>(
-          name: 'vehicleType',
-          decoration: InputDecoration(
-            hintText: 'Select vehicle type',
-            border: border(),
-            enabledBorder: border(),
-            focusedBorder: border(true),
-          ),
-          items: _vehicleTypes.map((type) => DropdownMenuItem(value: type, child: Text(type))).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              setState(() {
-                _vehicleTypeController.text = value;
-              });
-            }
-          },
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Vehicle Number',
-          controller: _vehicleNumberController,
-          hintText: 'Enter vehicle number',
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Vehicle Color',
-          controller: _vehicleColorController,
-          hintText: 'Enter vehicle color',
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Vehicle Model',
-          controller: _vehicleModelController,
-          hintText: 'Enter vehicle model',
-        ),
-      ],
-    );
-  }
+        items: _vehicleTypes
+            .map(
+              (type) => DropdownMenuItem(
+                value: type,
+                child: Text(
+                  type,
+                  style: context.bodyMedium?.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : const Color(0xFF24262D),
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+        onChanged: (value) {
+          if (value != null) {
+            setState(() {
+              _vehicleTypeController.text = value;
+            });
+          }
+        },
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).vehicle_plate_number,
+        controller: _vehicleNumberController,
+        hintText: localize(context).vehicle_number_hint,
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).vehicle_color,
+        controller: _vehicleColorController,
+        hintText: localize(context).vehicle_color_hint,
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).vehicle_model,
+        controller: _vehicleModelController,
+        hintText: localize(context).vehicle_model_hint,
+      ),
+    ],
+  );
 
   // Step 3: License & Documents
-  Widget _buildStep3(BuildContext context, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildTextField(
-          context,
-          isDark,
-          title: 'License Number',
-          controller: _licenseNumberController,
-          hintText: 'Enter license number',
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'licenseFront',
-          title: 'License Front',
-          initialFile: _licenseFront,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _licenseFront = file;
-            });
-          },
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'licenseBack',
-          title: 'License Back',
-          initialFile: _licenseBack,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _licenseBack = file;
-            });
-          },
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Aadhaar Number',
-          controller: _aadhaarNumberController,
-          hintText: 'Enter Aadhaar number',
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'aadhaarFront',
-          title: 'Aadhaar Front',
-          initialFile: _aadhaarFront,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _aadhaarFront = file;
-            });
-          },
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'aadhaarBack',
-          title: 'Aadhaar Back',
-          initialFile: _aadhaarBack,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _aadhaarBack = file;
-            });
-          },
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'RC Number',
-          controller: _rcNumberController,
-          hintText: 'Enter RC number',
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'rcFront',
-          title: 'RC Front',
-          initialFile: _rcFront,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _rcFront = file;
-            });
-          },
-        ),
-        Gap(16.h),
-        imagePickerFormField(
-          context: context,
-          name: 'rcBack',
-          title: 'RC Back',
-          initialFile: _rcBack,
-          isRequired: true,
-          onChanged: (file) {
-            setState(() {
-              _rcBack = file;
-            });
-          },
-        ),
-      ],
-    );
-  }
+  Widget _buildStep3(BuildContext context, bool isDark) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).license_number,
+        controller: _licenseNumberController,
+        hintText: localize(context).license_number_hint,
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'licenseFront',
+        title: localize(context).license_front,
+        initialFile: _licenseFront,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _licenseFront = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'licenseBack',
+        title: localize(context).license_back,
+        initialFile: _licenseBack,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _licenseBack = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).aadhaar_number,
+        controller: _aadhaarNumberController,
+        hintText: localize(context).aadhaar_number_hint,
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(12)],
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'aadhaarFront',
+        title: localize(context).aadhaar_front,
+        initialFile: _aadhaarFront,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _aadhaarFront = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'aadhaarBack',
+        title: localize(context).aadhaar_back,
+        initialFile: _aadhaarBack,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _aadhaarBack = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).rc_number,
+        controller: _rcNumberController,
+        hintText: localize(context).rc_number_hint,
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'rcFront',
+        title: localize(context).rc_front,
+        initialFile: _rcFront,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _rcFront = file;
+          });
+        },
+      ),
+      Gap(16.h),
+      imagePickerFormField(
+        context: context,
+        name: 'rcBack',
+        title: localize(context).rc_back,
+        initialFile: _rcBack,
+        isRequired: true,
+        onChanged: (file) {
+          setState(() {
+            _rcBack = file;
+          });
+        },
+      ),
+    ],
+  );
 
   // Step 4: Bank Information
-  Widget _buildStep4(BuildContext context, bool isDark) {
-    return Column(
-      children: [
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Account Holder Name',
-          controller: _accountHolderNameController,
-          hintText: 'Enter account holder name',
-          isRequired: false,
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Bank Name',
-          controller: _bankNameController,
-          hintText: 'Enter bank name',
-          isRequired: false,
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'Account Number',
-          controller: _accountNumberController,
-          hintText: 'Enter account number',
-          keyboardType: TextInputType.number,
-          isRequired: false,
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'IFSC Code',
-          controller: _ifscCodeController,
-          hintText: 'Enter IFSC code',
-          isRequired: false,
-        ),
-        Gap(16.h),
-        _buildTextField(
-          context,
-          isDark,
-          title: 'UPI ID',
-          controller: _upiIdController,
-          hintText: 'Enter UPI ID',
-          isRequired: false,
-        ),
-      ],
-    );
-  }
+  Widget _buildStep4(BuildContext context, bool isDark) => Column(
+    children: [
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).account_holder_name,
+        controller: _accountHolderNameController,
+        hintText: localize(context).account_holder_name_hint,
+        isRequired: true,
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).bank_name,
+        controller: _bankNameController,
+        hintText: localize(context).bank_name_hint,
+        isRequired: true,
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).account_number,
+        controller: _accountNumberController,
+        hintText: localize(context).account_number_hint,
+        keyboardType: TextInputType.number,
+        isRequired: true,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).ifsc_code,
+        controller: _ifscCodeController,
+        hintText: localize(context).ifsc_code_hint,
+        isRequired: true,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+          TextInputFormatter.withFunction(
+            (oldValue, newValue) => TextEditingValue(text: newValue.text.toUpperCase(), selection: newValue.selection),
+          ),
+        ],
+      ),
+      Gap(16.h),
+      _buildTextField(
+        context,
+        isDark,
+        title: localize(context).upi_id,
+        controller: _upiIdController,
+        hintText: localize(context).upi_id_hint,
+        keyboardType: TextInputType.emailAddress,
+        isRequired: true,
+      ),
+    ],
+  );
 
   Widget _buildTextField(
     BuildContext context,
@@ -778,31 +853,31 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     bool obscureText = false,
     Widget? suffixIcon,
     bool isRequired = true,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        requiredTitle(context, title: title, isRequired: isRequired),
-        Gap(8.h),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            hintText: hintText ?? title,
-            hintStyle: context.bodyMedium?.copyWith(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF687387),
-            ),
-            suffixIcon: suffixIcon,
-            border: border(),
-            enabledBorder: border(),
-            focusedBorder: border(true),
+    List<TextInputFormatter>? inputFormatters,
+  }) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      requiredTitle(context, title: title, isRequired: isRequired),
+      Gap(8.h),
+      TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        inputFormatters: inputFormatters,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          hintText: hintText ?? title,
+          hintStyle: context.bodyMedium?.copyWith(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF687387),
           ),
+          suffixIcon: suffixIcon,
+          border: border(),
+          enabledBorder: border(),
+          focusedBorder: border(true),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

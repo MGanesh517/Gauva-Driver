@@ -9,5 +9,5 @@ class DashboardServiceImpl implements IDashboardService {
 
   DashboardServiceImpl({required this.dioClient});
   @override
-  Future<Response> getDashboard() async => await dioClient.dio.post(ApiEndpoints.dashboard);
+  Future<Response> getDashboard() async => await dioClient.dio.get(ApiEndpoints.dashboard);
 }
