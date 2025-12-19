@@ -162,7 +162,7 @@ packages:
     source: hosted
     version: "1.3.1"
   change_app_package_name:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: change_app_package_name
       sha256: "8e43b754fe960426904d77ed4c62fa8c9834deaf6e293ae40963fa447482c4c5"
@@ -839,10 +839,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: cd57f7969b4679317c17af6fd16ee233c1e60a82ed209d8a475c54fd6fd6f845
+      sha256: "87fbd7c534435b6c5d9d98b01e1fd527812b82e68ddd8bd35fc45ed0fa8f0a95"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.2.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -937,10 +937,10 @@ packages:
     dependency: "direct main"
     description:
       name: geolocator
-      sha256: e7ebfa04ce451daf39b5499108c973189a71a919aa53c1204effda1c5b93b822
+      sha256: f62bcd90459e63210bbf9c35deb6a51c521f992a78de19a1fe5c11704f9530e2
       url: "https://pub.dev"
     source: hosted
-    version: "14.0.0"
+    version: "13.0.4"
   geolocator_android:
     dependency: "direct overridden"
     description:
@@ -1566,7 +1566,7 @@ packages:
     source: hosted
     version: "2.4.0"
   rename:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: rename
       sha256: da5f4d67f8c68f066ad04edfd6585495dbe595f2baf3b1999eb6af1805d79539
@@ -1626,22 +1626,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  socket_io_client:
-    dependency: "direct main"
-    description:
-      name: socket_io_client
-      sha256: ede469f3e4c55e8528b4e023bdedbc20832e8811ab9b61679d1ba3ed5f01f23b
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3+1"
-  socket_io_common:
-    dependency: transitive
-    description:
-      name: socket_io_common
-      sha256: "2ab92f8ff3ebbd4b353bf4a98bee45cc157e3255464b2f90f66e09c4472047eb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   source_gen:
     dependency: transitive
     description:
@@ -1730,14 +1714,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  stomp_dart_client:
-    dependency: "direct main"
-    description:
-      name: stomp_dart_client
-      sha256: "54a73fd73f160a2956036fa39539e283f58535c3e84bff3a40e16003dd320123"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   stream_channel:
     dependency: transitive
     description:
@@ -1970,14 +1946,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  web_socket:
-    dependency: transitive
-    description:
-      name: web_socket
-      sha256: "34d64019aa8e36bf9842ac014bb5d2f5586ca73df5e4d9bf5c936975cae6982c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   web_socket_channel:
     dependency: "direct main"
     description:

@@ -24,6 +24,7 @@ class User {
     this.driverStatus,
     this.totalRide,
     this.totalDistance,
+    this.serviceType,
   });
 
   User.fromJson(dynamic json) {
@@ -51,6 +52,7 @@ class User {
     driverStatus = json['driver_status'];
     totalRide = json['total_ride'];
     totalDistance = json['total_distance'];
+    serviceType = json['service_type'];
   }
   num? id;
   String? name;
@@ -76,7 +78,10 @@ class User {
   String? driverStatus;
   num? totalRide;
   num? totalDistance;
-  User copyWith({  num? id,
+  String? serviceType;
+
+  User copyWith({
+    num? id,
     String? name,
     String? countryIso,
     String? gender,
@@ -99,8 +104,10 @@ class User {
     dynamic radiusInMeter,
     String? driverStatus,
     num? totalRide,
-    num? totalDistance
-  }) => User(  id: id ?? this.id,
+    num? totalDistance,
+    String? serviceType,
+  }) => User(
+    id: id ?? this.id,
     name: name ?? this.name,
     countryIso: countryIso ?? this.countryIso,
     gender: gender ?? this.gender,
@@ -124,7 +131,9 @@ class User {
     driverStatus: driverStatus ?? this.driverStatus,
     totalRide: totalRide ?? this.totalRide,
     totalDistance: totalDistance ?? this.totalDistance,
+    serviceType: serviceType ?? this.serviceType,
   );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -151,7 +160,7 @@ class User {
     map['driver_status'] = driverStatus;
     map['total_ride'] = totalRide;
     map['total_distance'] = totalDistance;
+    map['service_type'] = serviceType;
     return map;
   }
-
 }

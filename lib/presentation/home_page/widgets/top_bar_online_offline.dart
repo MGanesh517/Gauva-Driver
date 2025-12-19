@@ -5,7 +5,7 @@ import 'package:gauva_driver/presentation/home_page/widgets/online_offline_switc
 
 Widget topBarOnlineOffline(BuildContext context) => Row(
   children: [
-    Assets.images.rideInHome.image(height: 65.h, width: 65.w, fit: BoxFit.fill),
+    Image.asset(Assets.images.appLogo.path, height: 65.h, width: 65.w, fit: BoxFit.fill),
     const Spacer(),
     onlineOfflineSwitch(context),
   ],

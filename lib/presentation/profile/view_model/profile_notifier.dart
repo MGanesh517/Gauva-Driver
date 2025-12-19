@@ -13,7 +13,7 @@ import 'package:gauva_driver/data/repositories/interfaces/auth_repo_interface.da
 import 'package:gauva_driver/data/services/navigation_service.dart';
 
 import '../../../core/state/app_state.dart';
-import '../../../data/models/common_response.dart';
+
 import '../provider/profile_providers.dart';
 
 class SelectedAvatarNotifierProvider extends StateNotifier<Tuple2<int?, String?>> {

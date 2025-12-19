@@ -67,6 +67,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         resizeToAvoidBottomInset: true,
         body: AuthAppBar(
           showLeading: false,
+          title: "Gauva Partner",
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -260,31 +261,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     TextInputType? keyboardType,
     bool obscureText = false,
     Widget? suffixIcon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        requiredTitle(context, title: title, isRequired: true),
-        Gap(8.h),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            hintText: hintText ?? title,
-            hintStyle: context.bodyMedium?.copyWith(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF687387),
-            ),
-            suffixIcon: suffixIcon,
-            border: border(),
-            enabledBorder: border(),
-            focusedBorder: border(true),
+  }) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      requiredTitle(context, title: title, isRequired: true),
+      Gap(8.h),
+      TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          hintText: hintText ?? title,
+          hintStyle: context.bodyMedium?.copyWith(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF687387),
           ),
+          suffixIcon: suffixIcon,
+          border: border(),
+          enabledBorder: border(),
+          focusedBorder: border(true),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

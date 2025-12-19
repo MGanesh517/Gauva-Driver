@@ -38,7 +38,7 @@ void _showTermsDialog(BuildContext context, PackageInfo platformInfo, bool showT
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
-            child: Assets.images.rideInHome.image(width: 150.w, height: 150.h),
+            child: Assets.images.appLogo.image(width: 150.w, height: 150.h),
           ),
           Gap(6.h),
           Text(

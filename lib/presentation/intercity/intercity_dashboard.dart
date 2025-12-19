@@ -47,17 +47,30 @@ class _IntercityDashboardState extends State<IntercityDashboard> with SingleTick
         BookingsPage(key: ValueKey('bookings_$_refreshKey')),
       ],
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () async {
-        await Navigator.push(context, MaterialPageRoute(builder: (context) => const PublishTripScreen()));
-        if (mounted) {
-          setState(() {
-            _refreshKey++;
-          });
-        }
-      },
-      child: const Icon(Icons.add),
-      tooltip: localize(context).intercityPublishTrip,
+    floatingActionButton: Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+        // shape: BoxShape.rectangle,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF397098), Color(0xFF942FAF)],
+        ),
+      ),
+      child: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const PublishTripScreen()));
+          if (mounted) {
+            setState(() {
+              _refreshKey++;
+            });
+          }
+        },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        tooltip: localize(context).intercityPublishTrip,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     ),
   );
 }

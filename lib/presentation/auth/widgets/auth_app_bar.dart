@@ -8,7 +8,6 @@ import 'package:gauva_driver/gen/assets.gen.dart';
 import '../../../core/theme/color_palette.dart';
 import '../../../core/utils/is_dark_mode.dart';
 import '../../../core/widgets/buttons/app_back_button.dart';
-import '../../account_page/view/account_page.dart';
 
 class AuthAppBar extends StatelessWidget {
   const AuthAppBar({super.key, this.showLeading = true, this.hideTop = false, this.title, this.child});
@@ -66,15 +65,21 @@ class AuthAppBar extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              // countrySelector(showDecoration: true),
                             ],
                           )
                         : Row(
                             children: [
-                              // Image.asset("assets/gauv.png", height: 48.h, width: 79.w, fit: BoxFit.fill),
-                              Assets.images.rideIn.image(height: 48.h, width: 79.w, fit: BoxFit.fill),
-                              // const Spacer(),
-                              // countrySelector(showDecoration: true),
+                              if (title != null)
+                                Text(
+                                  title!,
+                                  style: context.bodyMedium?.copyWith(
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              else
+                                Assets.images.gauv.image(height: 48.h, width: 79.w, fit: BoxFit.fill),
                             ],
                           ),
                     Gap(showLeading ? 0 : 24.h),

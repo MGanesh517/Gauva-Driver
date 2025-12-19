@@ -243,6 +243,7 @@ class AuthServiceImpl extends IAuthService {
     required double latitude,
     required double longitude,
     required String vehicleType,
+    required String serviceType,
     required String vehicleNumber,
     required String vehicleColor,
     required String vehicleModel,
@@ -274,6 +275,7 @@ class AuthServiceImpl extends IAuthService {
       'latitude': latitude,
       'longitude': longitude,
       'vehicleType': vehicleType,
+      'serviceType': serviceType,
       'vehicleNumber': vehicleNumber,
       'vehicleColor': vehicleColor,
       'vehicleModel': vehicleModel,
@@ -398,5 +400,14 @@ class AuthServiceImpl extends IAuthService {
     print('🚀 Logout URL: $fullUrl');
 
     return await dioClient.dio.post(url);
+  }
+
+  @override
+  Future<Response> saveFcmToken({required String token}) async {
+    final url = ApiEndpoints.saveFcmToken;
+    final fullUrl = '${dioClient.dio.options.baseUrl}$url';
+    print('🚀 Save FCM Token URL: $fullUrl');
+    print('🔑 Token: $token');
+    return await dioClient.dio.post(url, data: {'token': token});
   }
 }

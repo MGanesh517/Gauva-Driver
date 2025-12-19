@@ -5,6 +5,7 @@ import '../services/local_storage_service.dart';
 import '../models/intercity/booking_model.dart';
 import '../models/intercity/trip_model.dart';
 import '../models/intercity/intercity_route_model.dart';
+import '../models/intercity/intercity_service_type_model.dart';
 import 'interfaces/intercity_repository_interface.dart';
 
 class IntercityRepositoryImpl implements IntercityRepository {
@@ -158,11 +159,12 @@ class IntercityRepositoryImpl implements IntercityRepository {
   }
 
   @override
-  Future<List<String>> getServiceTypes() async {
+  Future<List<IntercityServiceType>> getServiceTypes() async {
     final response = await client.get(Uri.parse('$baseUrl/api/customer/intercity/service-types'));
     print('GET Service Types Response: ${response.statusCode} - ${response.body}');
     if (response.statusCode == 200) {
-      return List<String>.from(jsonDecode(response.body));
+      final List<dynamic> list = jsonDecode(response.body);
+      return list.map((e) => IntercityServiceType.fromJson(e)).toList();
     } else {
       throw Exception('Failed to load service types: ${response.statusCode}');
     }

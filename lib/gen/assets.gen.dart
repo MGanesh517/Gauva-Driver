@@ -241,6 +241,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/exit-logo.png
   AssetGenImage get exitLogo => const AssetGenImage('assets/images/exit-logo.png');
 
+  /// File path: assets/images/gauv.png
+  AssetGenImage get gauv => const AssetGenImage('assets/images/gauv.png');
+
+  /// File path: assets/images/gauva.png
+  AssetGenImage get gauva => const AssetGenImage('assets/images/gauva.png');
+
   /// File path: assets/images/go-to-pick-up-location.png
   AssetGenImage get goToPickUpLocation => const AssetGenImage('assets/images/go-to-pick-up-location.png');
 
@@ -330,10 +336,10 @@ class $AssetsImagesGen {
   AssetGenImage get reportIssue => const AssetGenImage('assets/images/report-issue.png');
 
   /// File path: assets/images/ride-in-home.png
-  AssetGenImage get rideInHome => const AssetGenImage('assets/images/gauva.png');
+  AssetGenImage get rideInHome => const AssetGenImage('assets/images/app-logo.png');
 
   /// File path: assets/images/ride_in.png
-  AssetGenImage get rideIn => const AssetGenImage('assets/gauv.png');
+  AssetGenImage get rideIn => const AssetGenImage('assets/images/app-logo.png');
 
   /// File path: assets/images/route.png
   AssetGenImage get route => const AssetGenImage('assets/images/route.png');
@@ -407,6 +413,8 @@ class $AssetsImagesGen {
     doneCircle,
     drawerTopBackground,
     exitLogo,
+    gauv,
+    gauva,
     goToPickUpLocation,
     googlemapPreview,
     gradientTotal,
@@ -436,8 +444,8 @@ class $AssetsImagesGen {
     profileReview,
     reachedDestination,
     reportIssue,
-    rideInHome,
-    rideIn,
+    // rideInHome,
+    // rideIn,
     route,
     scheduledRidesHeaderBackground,
     sendRight,
@@ -513,6 +521,7 @@ class Assets {
   const Assets._();
 
   static const String aEnv = '.env';
+  static const String rapidosound = 'assets/Rapidosound.mp3';
   static const $AssetsAvatarsGen avatars = $AssetsAvatarsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
@@ -523,7 +532,7 @@ class Assets {
   static const $AssetsVehiclesGen vehicles = $AssetsVehiclesGen();
 
   /// List of all assets
-  static List<String> get values => [aEnv, notification, notification2];
+  static List<String> get values => [aEnv, rapidosound, notification, notification2];
 }
 
 class AssetGenImage {

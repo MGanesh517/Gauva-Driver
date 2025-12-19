@@ -1,6 +1,7 @@
 import '../../models/intercity/booking_model.dart';
 import '../../models/intercity/trip_model.dart';
 import '../../models/intercity/intercity_route_model.dart';
+import '../../models/intercity/intercity_service_type_model.dart';
 
 abstract class IntercityRepository {
   Future<List<TripModel>> getMyTrips();
@@ -12,6 +13,6 @@ abstract class IntercityRepository {
   Future<void> startTrip(int tripId);
   Future<void> completeTrip(int tripId);
   Future<List<IntercityRouteModel>> getRoutes({String? origin, String? destination});
-  Future<List<String>> getServiceTypes();
+  Future<List<IntercityServiceType>> getServiceTypes();
   Future<void> verifyOtp(int bookingId, int otp);
 }

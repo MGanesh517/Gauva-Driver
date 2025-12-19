@@ -6,7 +6,7 @@ class Environment {
   static const String dev = 'development';
   static const String prod = 'production';
   static final String _baseUrl =
-      dotenv.env['API_BASE_URL'] ?? 'https://gauva-f6f6d9ddagfqc9fw.canadacentral-01.azurewebsites.net';
+      dotenv.env['API_BASE_URL'] ?? 'https://gauva-f6f6d9ddagfqc9fw.southindia-01.azurewebsites.net';
   static final String? _socketIOUrl = dotenv.env['SOCKET_IO_URL'];
 
   static const EnvironmentType currentEnvironment = EnvironmentType.dev;
@@ -88,7 +88,7 @@ class Environment {
   }
 
   /// Get STOMP WebSocket URL
-  /// WebSocket Connection URL: wss://gauva-b7gaf7bwcwhqa0c6.canadacentral-01.azurewebsites.net/ws
+  /// WebSocket Connection URL: wss://gauva-f6f6d9ddagfqc9fw.southindia-01.azurewebsites.net/ws
   static String get stompWebSocketUrl {
     return _cleanWebSocketUrl(_baseUrl, '/ws');
   }

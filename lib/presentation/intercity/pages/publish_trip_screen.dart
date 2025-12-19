@@ -1,3 +1,10 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:convert';
+// import 'package:dartz/dartz.dart';
+// import 'package:gauva_driver/core/errors/failure.dart';
+// import 'package:gauva_driver/data/models/driver_details_response/driver_details_response.dart';
+import '../../auth/provider/auth_providers.dart';
+import '../../../../data/services/local_storage_service.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,17 +13,18 @@ import 'dart:async';
 import 'dart:math' show cos, sqrt, asin;
 import '../../../data/repositories/intercity_repo_impl.dart';
 import '../../../data/models/intercity/intercity_route_model.dart';
+import '../../../data/models/intercity/intercity_service_type_model.dart';
 import '../../../data/services/google_places_service.dart';
 import '../../../../generated/l10n.dart';
 
-class PublishTripScreen extends StatefulWidget {
+class PublishTripScreen extends ConsumerStatefulWidget {
   const PublishTripScreen({Key? key}) : super(key: key);
 
   @override
-  State<PublishTripScreen> createState() => _PublishTripScreenState();
+  ConsumerState<PublishTripScreen> createState() => _PublishTripScreenState();
 }
 
-class _PublishTripScreenState extends State<PublishTripScreen> {
+class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
   final _formKey = GlobalKey<FormState>();
   final IntercityRepositoryImpl _repository = IntercityRepositoryImpl(client: http.Client());
   final GooglePlacesService _placesService = GooglePlacesService();
@@ -40,10 +48,12 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
   final TextEditingController _fareController = TextEditingController();
   final TextEditingController _distanceController = TextEditingController();
   final TextEditingController _nightFareMultiplierController = TextEditingController(text: '1.2');
+  final TextEditingController _vehicleTypeController = TextEditingController(); // Controller for Vehicle Type Display
 
   // State Variables
   List<IntercityRouteModel> _availableRoutes = [];
-  List<String> _serviceTypes = ['CAR_NORMAL', 'CAR_PREMIUM_EXPRESS', 'AUTO_NORMAL', 'TATA_MAGIC_LITE'];
+  List<IntercityServiceType> _serviceTypes = [];
+  String? _selectedVehicleTypeEnum;
 
   // We keep these to attempt route matching, but they are no longer directly driven by dropdowns
   int? _selectedRouteId;
@@ -55,13 +65,11 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
   Key _toInputKey = UniqueKey();
 
   String _selectedBookingType = 'SHARE_POOL';
-  String? _selectedVehicleType;
-
   DateTime? _scheduledDeparture;
   bool _isReturnTrip = false;
   DateTime? _returnTripDeparture;
   bool _isNightFareEnabled = false;
-  bool _isPremiumNotification = false;
+  bool _isPremiumNotification = false; // Restored
   bool _isLoading = true;
   bool _isSubmitting = false;
 
@@ -72,9 +80,6 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
   @override
   void initState() {
     super.initState();
-    if (_serviceTypes.isNotEmpty) {
-      _selectedVehicleType = _serviceTypes.first;
-    }
     _fetchInitialData();
 
     // Add listeners for auto-calculation
@@ -94,32 +99,123 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
     _dropLocationController.dispose();
     _fromController.dispose();
     _toController.dispose();
+    _vehicleTypeController.dispose();
     _debounce?.cancel();
     super.dispose();
   }
 
   Future<void> _fetchInitialData() async {
     try {
-      final routes = await _repository.getRoutes();
-      final types = await _repository.getServiceTypes();
+      // 1. Fetch Driver Details (Critical for Vehicle Type)
+      final driverDetailsResult = await ref.read(authRepoProvider).getDriverDetails();
 
-      if (mounted) {
-        setState(() {
-          _availableRoutes = routes;
-          if (types.isNotEmpty) {
-            _serviceTypes = types;
-            _selectedVehicleType = _serviceTypes.first;
+      String? preselectedServiceType;
+
+      // Process Driver Details immediately
+      driverDetailsResult.fold(
+        (failure) {
+          print('⚠️ PublishTripScreen: Failed to fetch driver details: ${failure.message}');
+          // Fallback to local storage if API fails
+          // Logic moved to after service types are fetched to ensure we match against valid options
+          print('⚠️ PublishTripScreen: Failed to fetch driver details: ${failure.message}');
+        },
+        (response) {
+          if (response.data != null && response.data!.user != null) {
+            final user = response.data!.user!;
+            if (user.serviceType != null) {
+              print('🔍 PublishTripScreen: Found driver service type from API: ${user.serviceType}');
+              preselectedServiceType = user.serviceType;
+
+              if (mounted) {
+                setState(() {
+                  _vehicleTypeController.text = preselectedServiceType!;
+                });
+              }
+            }
           }
-          _isLoading = false;
-        });
+        },
+      );
+
+      // 2. Fetch Routes and Service Types (Secondary Data)
+      // We wrap these in try-catch so they don't block the screen if they fail
+      try {
+        final results = await Future.wait([_repository.getRoutes(), _repository.getServiceTypes()]);
+
+        final routes = results[0] as List<IntercityRouteModel>;
+        final serviceTypes = results[1] as List<IntercityServiceType>;
+
+        if (mounted) {
+          setState(() {
+            _availableRoutes = routes;
+            _serviceTypes = serviceTypes;
+            _isLoading = false;
+
+            // Pre-select logic
+            if (_selectedVehicleTypeEnum == null && _serviceTypes.isNotEmpty) {
+              // Try to match with preselectedServiceType if available
+              if (preselectedServiceType != null) {
+                final match =
+                    _serviceTypes.where((t) => t.vehicleType == preselectedServiceType).firstOrNull ??
+                    _serviceTypes
+                        .where(
+                          (t) =>
+                              t.vehicleType.contains(preselectedServiceType!) ||
+                              preselectedServiceType!.contains(t.vehicleType),
+                        )
+                        .firstOrNull;
+
+                if (match != null) {
+                  _selectedVehicleTypeEnum = match.vehicleType;
+                } else {
+                  _selectedVehicleTypeEnum = _serviceTypes.first.vehicleType;
+                }
+              } else {
+                _selectedVehicleTypeEnum = _serviceTypes.first.vehicleType;
+              }
+              // Sync controller (optional, mainly for legacy validaton if any)
+              _vehicleTypeController.text = _selectedVehicleTypeEnum ?? '';
+            }
+          });
+        }
+      } catch (e) {
+        print('⚠️ PublishTripScreen: Error fetching routes/types: $e');
+        if (mounted) setState(() => _isLoading = false);
+      }
+
+      // 3. Fallback: If no preselected type found yet, check local storage
+      if (_selectedVehicleTypeEnum == null && _serviceTypes.isNotEmpty) {
+        final localType = await _checkLocalStorageForServiceType(_serviceTypes);
+        if (mounted && localType != null) {
+          setState(() {
+            _selectedVehicleTypeEnum = localType;
+            _vehicleTypeController.text = localType;
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        // Fallback already set, so just log
         print('Error loading data: $e');
       }
     }
+  }
+
+  Future<String?> _checkLocalStorageForServiceType(List<IntercityServiceType> serviceTypes) async {
+    try {
+      final user = await LocalStorageService().getSavedUser();
+      if (user != null && user.serviceType != null) {
+        final driverServiceType = user.serviceType!;
+        final match =
+            serviceTypes.where((t) => t.vehicleType == driverServiceType).firstOrNull ??
+            serviceTypes
+                .where((t) => t.vehicleType.contains(driverServiceType) || driverServiceType.contains(t.vehicleType))
+                .firstOrNull;
+        return match?.vehicleType;
+      }
+    } catch (e) {
+      print('⚠️ PublishTripScreen: Error getting user service type from storage: $e');
+    }
+    return null;
   }
 
   void _calculateDistance() {
@@ -142,8 +238,6 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
     });
   }
 
-  // Attempt to identify route ID based on loose matching of text
-  // This is a "nice to have" since we removed strict dropdowns
   void _attemptRouteMatch() {
     final from = _fromController.text.toLowerCase();
     final to = _toController.text.toLowerCase();
@@ -204,10 +298,12 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
     _attemptRouteMatch();
 
     try {
-      final tripData = {
+      final Map<String, dynamic> tripData = {
+        'returnTrip': _isReturnTrip,
+        'nightFareEnabled': _isNightFareEnabled,
+        'premiumNotification': _isPremiumNotification,
         'bookingType': _selectedBookingType,
-        'vehicleType': _selectedVehicleType,
-        'routeId': _selectedRouteId,
+        'vehicleType': _selectedVehicleTypeEnum,
         'pickupAddress': _pickupLocationController.text.isNotEmpty
             ? _pickupLocationController.text
             : _pickupFullAddressController.text, // Fallback
@@ -218,19 +314,25 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
         'pickupLongitude': double.tryParse(_pickupLngController.text) ?? 0.0,
         'dropLatitude': double.tryParse(_dropLatController.text) ?? 0.0,
         'dropLongitude': double.tryParse(_dropLngController.text) ?? 0.0,
-        'seats': int.parse(_seatsController.text),
+        'scheduledDeparture': _scheduledDeparture!.toUtc().toIso8601String(),
         'totalFare': double.tryParse(_fareController.text) ?? 0.0,
-        'estimatedDistance': double.tryParse(_distanceController.text) ?? 0.0,
+        'seats': int.parse(_seatsController.text),
         'distanceKm': double.tryParse(_distanceController.text) ?? 0.0,
-        'scheduledDeparture': _scheduledDeparture!.toIso8601String(),
-        'returnTrip': _isReturnTrip,
-        'returnDate': _returnTripDeparture?.toIso8601String(),
-        'nightFareEnabled': _isNightFareEnabled,
-        'nightFareMultiplier': _isNightFareEnabled
-            ? (double.tryParse(_nightFareMultiplierController.text) ?? 1.2)
-            : null,
-        'premiumNotification': _isPremiumNotification,
       };
+
+      if (_selectedRouteId != null) {
+        tripData['routeId'] = _selectedRouteId;
+      }
+
+      if (_isReturnTrip && _returnTripDeparture != null) {
+        tripData['returnTripDeparture'] = _returnTripDeparture!.toUtc().toIso8601String();
+      }
+
+      if (_isNightFareEnabled) {
+        tripData['nightFareMultiplier'] = double.tryParse(_nightFareMultiplierController.text) ?? 1.2;
+      }
+
+      print('🚀 Publishing Trip Payload: ${jsonEncode(tripData)}');
 
       await _repository.publishTrip(tripData);
       if (mounted) {
@@ -417,7 +519,6 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
 
                   const SizedBox(height: 24),
                   _buildSectionHeader(AppLocalizations.of(context).intercityTripDetails),
@@ -435,6 +536,7 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
                                   t == 'SHARE_POOL'
                                       ? AppLocalizations.of(context).intercitySharePool
                                       : AppLocalizations.of(context).intercityPrivate,
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                                 ),
                               ),
                             )
@@ -444,17 +546,31 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
                       const SizedBox(height: 24),
 
                       DropdownButtonFormField<String>(
-                        value: _selectedVehicleType,
+                        value: _selectedVehicleTypeEnum,
                         decoration: _inputDecoration(localize(context).intercityVehicleType),
+                        isExpanded: true,
                         items: _serviceTypes
-                            .map((t) => DropdownMenuItem(value: t, child: Text(_getVehicleTypeText(context, t))))
+                            .map(
+                              (type) => DropdownMenuItem(
+                                value: type.vehicleType,
+                                child: Text(
+                                  type.displayName,
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            )
                             .toList(),
-                        onChanged: (val) => setState(() => _selectedVehicleType = val!),
-                        validator: (val) => val == null ? AppLocalizations.of(context).intercityRequiredError : null,
+                        onChanged: (val) {
+                          setState(() {
+                            _selectedVehicleTypeEnum = val;
+                            _vehicleTypeController.text = val ?? '';
+                          });
+                        },
+                        validator: (val) =>
+                            val == null || val.isEmpty ? AppLocalizations.of(context).intercityRequiredError : null,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
 
                   const SizedBox(height: 24),
                   _buildSectionHeader(AppLocalizations.of(context).intercityRouteSelection),
@@ -473,7 +589,7 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
                           _pickupFullAddressController.text = address;
                           _pickupLatController.text = details['lat'].toString();
                           _pickupLngController.text = details['lng'].toString();
-                          _pickupInputKey = UniqueKey(); // Force visual update
+                          _pickupInputKey = UniqueKey();
                         });
                         _attemptRouteMatch();
                       }
@@ -702,18 +818,18 @@ class _PublishTripScreenState extends State<PublishTripScreen> {
     child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
   );
 
-  String _getVehicleTypeText(BuildContext context, String type) {
-    switch (type) {
-      case 'CAR_NORMAL':
-        return localize(context).intercityVehicleCarNormal;
-      case 'CAR_PREMIUM_EXPRESS':
-        return localize(context).intercityVehicleCarPremium;
-      case 'AUTO_NORMAL':
-        return localize(context).intercityVehicleAuto;
-      case 'TATA_MAGIC_LITE':
-        return localize(context).intercityVehicleTataMagic;
-      default:
-        return type;
-    }
-  }
+  // String _getVehicleTypeText(BuildContext context, String type) {
+  //   switch (type) {
+  //     case 'CAR_NORMAL':
+  //       return localize(context).intercityVehicleCarNormal;
+  //     case 'CAR_PREMIUM_EXPRESS':
+  //       return localize(context).intercityVehicleCarPremium;
+  //     case 'AUTO_NORMAL':
+  //       return localize(context).intercityVehicleAuto;
+  //     case 'TATA_MAGIC_LITE':
+  //       return localize(context).intercityVehicleTataMagic;
+  //     default:
+  //       return type;
+  //   }
+  // }
 }

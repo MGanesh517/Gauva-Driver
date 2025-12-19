@@ -11,7 +11,7 @@ import 'package:gauva_driver/core/widgets/error_view.dart';
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
 
 import '../../../core/widgets/buttons/app_primary_button.dart';
-import '../../../core/widgets/custom_dropdown.dart';
+
 import '../../../data/models/gender_model/gender_model.dart';
 import '../../../data/models/user_model/user_model.dart';
 import '../../../generated/l10n.dart';

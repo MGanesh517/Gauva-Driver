@@ -191,6 +191,7 @@ class AuthRepoImpl extends BaseRepository implements IAuthRepository {
     required double latitude,
     required double longitude,
     required String vehicleType,
+    required String serviceType,
     required String vehicleNumber,
     required String vehicleColor,
     required String vehicleModel,
@@ -219,6 +220,7 @@ class AuthRepoImpl extends BaseRepository implements IAuthRepository {
         latitude: latitude,
         longitude: longitude,
         vehicleType: vehicleType,
+        serviceType: serviceType,
         vehicleNumber: vehicleNumber,
         vehicleColor: vehicleColor,
         vehicleModel: vehicleModel,
@@ -276,6 +278,19 @@ class AuthRepoImpl extends BaseRepository implements IAuthRepository {
   Future<Either<Failure, CommonResponse>> driverLogout() async {
     return await safeApiCall(() async {
       final response = await authService.driverLogout();
+      return CommonResponse.fromJson(response.data);
+    });
+  }
+
+  @override
+  Future<Either<Failure, CommonResponse>> saveFcmToken({required String token}) async {
+    return await safeApiCall(() async {
+      final response = await authService.saveFcmToken(token: token);
+      // Backend returns { "status": "ok" } which doesn't match CommonResponse structure directly
+      // So we manually construct a success response
+      if (response.statusCode == 200 || response.data['status'] == 'ok') {
+        return const CommonResponse(success: true, message: 'FCM Token registered successfully');
+      }
       return CommonResponse.fromJson(response.data);
     });
   }

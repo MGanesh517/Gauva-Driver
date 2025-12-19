@@ -40,6 +40,7 @@ abstract class IAuthService {
     required double latitude,
     required double longitude,
     required String vehicleType,
+    required String serviceType,
     required String vehicleNumber,
     required String vehicleColor,
     required String vehicleModel,
@@ -63,4 +64,5 @@ abstract class IAuthService {
   Future<Response> driverLoginOtpSend({required String phoneNumber});
   Future<Response> driverLoginOtpVerify({required String idToken, required String role});
   Future<Response> driverLogout();
+  Future<Response> saveFcmToken({required String token});
 }

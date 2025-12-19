@@ -6,13 +6,15 @@ import 'package:gap/gap.dart';
 import 'package:gauva_driver/common/shimmer_loader.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/theme/color_palette.dart';
+import 'package:gauva_driver/core/utils/app_colors.dart';
 import 'package:gauva_driver/core/utils/build_network_image.dart';
 import 'package:gauva_driver/core/utils/delete_account_dialogue.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:gauva_driver/data/services/navigation_service.dart';
-import 'package:gauva_driver/presentation/account_page/provider/terms_and_privacy_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
 
 import '../../../core/routes/app_routes.dart';
@@ -24,7 +26,6 @@ import '../../../data/models/user_model/user_model.dart';
 import '../../../gen/assets.gen.dart';
 import '../provider/select_country_provider.dart';
 import '../provider/theme_provider.dart';
-import '../widgets/about_dialogue.dart';
 
 class AccountPage extends ConsumerStatefulWidget {
   const AccountPage({super.key});
@@ -64,6 +65,15 @@ class _AccountPageState extends ConsumerState<AccountPage> {
       ),
     ),
   );
+}
+
+Future<void> _launchURL(String url) async {
+  print('Launching URL: $url');
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    // Handle error silently or show toast if needed, but simple launch is usually reliable
+    debugPrint('Could not launch $url');
+  }
 }
 
 Widget userDetails(BuildContext context) => Padding(
@@ -118,19 +128,43 @@ Widget userDetails(BuildContext context) => Padding(
                       CircleAvatar(
                         radius: 33.r,
                         backgroundColor: Colors.white,
-                        child: driverDetails?.profilePicture != null
-                            ? Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: driverDetails!.profilePicture!,
+                        child: ClipOval(
+                          child: (driverDetails?.profilePicture != null && driverDetails!.profilePicture!.isNotEmpty)
+                              ? CachedNetworkImage(
+                                  imageUrl: driverDetails.profilePicture!,
+                                  height: 60.h,
+                                  width: 60.w,
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) => Container(
                                     height: 60.h,
                                     width: 60.w,
-                                    fit: BoxFit.fill,
+                                    color: ColorPalette.primary50,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      (driverDetails.name != null && driverDetails.name!.isNotEmpty)
+                                          ? driverDetails.name![0].toUpperCase()
+                                          : 'D',
+                                      style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  height: 60.h,
+                                  width: 60.w,
+                                  color: ColorPalette.primary50,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    (driverDetails?.name != null && driverDetails!.name!.isNotEmpty)
+                                        ? driverDetails.name![0].toUpperCase()
+                                        : 'D',
+                                    style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: Colors.white),
                                   ),
                                 ),
-                              )
-                            : const SizedBox.shrink(),
+                        ),
                       ),
                       Gap(8.h),
                       Text(
@@ -301,31 +335,41 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
             title: localize(context).language,
             trailing: ValueListenableBuilder<String>(
               valueListenable: LocalStorageService().languageNotifier,
-              builder: (context, currentLang, child) {
-                return DropdownButton<String>(
-                  value: currentLang,
-                  underline: const SizedBox(),
-                  icon: const Icon(Icons.arrow_drop_down),
-                  items: const [
-                    DropdownMenuItem(value: 'en', child: Text('English')),
-                    DropdownMenuItem(value: 'te', child: Text('Telugu')),
-                  ],
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      LocalStorageService().selectLanguage(newValue);
-                    }
-                  },
-                );
-              },
+              builder: (context, currentLang, child) => DropdownButton<String>(
+                value: currentLang,
+                underline: const SizedBox(),
+                icon: const Icon(Icons.arrow_drop_down),
+                items: [
+                  DropdownMenuItem(
+                    value: 'en',
+                    child: Text(
+                      'English',
+                      style: context.bodyMedium?.copyWith(fontSize: 14.sp, color: AppColors.primary),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'te',
+                    child: Text(
+                      'Telugu',
+                      style: context.bodyMedium?.copyWith(fontSize: 14.sp, color: AppColors.primary),
+                    ),
+                  ),
+                ],
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    LocalStorageService().selectLanguage(newValue);
+                  }
+                },
+              ),
             ),
           ),
-          Gap(8.h),
-          accountButton(
-            context,
-            leading: Assets.images.theme.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
-            title: localize(context).theme,
-            trailing: const ThemeSwitchTile(),
-          ),
+          // Gap(8.h),
+          // accountButton(
+          //   context,
+          //   leading: Assets.images.theme.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
+          //   title: localize(context).theme,
+          //   trailing: const ThemeSwitchTile(),
+          // ),
           Gap(8.h),
           accountButton(
             context,
@@ -338,20 +382,14 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
             context,
             leading: Assets.images.terms.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).terms_conditions,
-            onTap: () {
-              ref.read(termsAndConditionProvider.notifier).termsAndCondition();
-              termsAndConditionDialogue(context);
-            },
+            onTap: () => _launchURL('https://www.gauvaservices.in/terms'),
           ),
           Gap(8.h),
           accountButton(
             context,
             leading: Assets.images.privacy.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).privacy_policy,
-            onTap: () {
-              ref.read(privacyAndPolicyProvider.notifier).privacyPolicy();
-              termsAndConditionDialogue(context, showTermsAndCondition: false);
-            },
+            onTap: () => _launchURL('https://www.gauvaservices.in/privacy-policy'),
           ),
           Gap(8.h),
           Consumer(

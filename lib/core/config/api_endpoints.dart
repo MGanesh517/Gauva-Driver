@@ -64,4 +64,5 @@ class ApiEndpoints {
   static const String completeRide = '/v1/ride'; // /{rideId}/complete
   static const String getRideDetails = '/v1/ride'; // /{rideId}
   static const String goToPickup = 'driver/order'; // /{id}/go_to_pickup
+  static const String saveFcmToken = '/notifications/token';
 }

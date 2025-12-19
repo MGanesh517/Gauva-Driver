@@ -68,6 +68,7 @@ abstract class IAuthRepository {
     required double latitude,
     required double longitude,
     required String vehicleType,
+    required String serviceType,
     required String vehicleNumber,
     required String vehicleColor,
     required String vehicleModel,
@@ -94,4 +95,5 @@ abstract class IAuthRepository {
   Future<Either<Failure, CommonResponse>> driverLoginOtpSend({required String phoneNumber});
   Future<Either<Failure, LoginWithPassResponse>> driverLoginOtpVerify({required String idToken, required String role});
   Future<Either<Failure, CommonResponse>> driverLogout();
+  Future<Either<Failure, CommonResponse>> saveFcmToken({required String token});
 }

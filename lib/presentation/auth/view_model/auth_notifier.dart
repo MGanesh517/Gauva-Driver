@@ -107,10 +107,12 @@ class LoginWithPassNotifier extends StateNotifier<AppState<LoginWithPassResponse
           return;
         }
         await LocalStorageService().saveToken(data.data?.token);
-        
+
         // Save user data and verify it was saved
         final userData = data.data?.user?.toJson();
-        print('💾 Auth (LoginWithPass): Saving user data - User ID: ${userData?['id']}, User data exists: ${userData != null}');
+        print(
+          '💾 Auth (LoginWithPass): Saving user data - User ID: ${userData?['id']}, User data exists: ${userData != null}',
+        );
         if (userData != null) {
           await LocalStorageService().saveUser(data: userData);
           // Verify user was saved
@@ -119,7 +121,7 @@ class LoginWithPassNotifier extends StateNotifier<AppState<LoginWithPassResponse
         } else {
           print('⚠️ Auth (LoginWithPass): User data is null, cannot save');
         }
-        
+
         LocalStorageService().setRegistrationProgress(AppRoutes.dashboard);
 
         await ref.read(tripActivityNotifierProvider.notifier).checkTripActivity();
@@ -225,6 +227,11 @@ class OtpVerifyNotifier extends StateNotifier<AppState<OtpVerifyResponse>> {
       print('❌ Auth: Token is null or empty after OTP verification, cannot save!');
     }
     if (user != null) await LocalStorageService().saveUser(data: user);
+
+    // Sync FCM Token
+    if (token != null && token.isNotEmpty && deviceToken != null) {
+      authRepoProvider.saveFcmToken(token: deviceToken);
+    }
 
     // Navigate based on new driver flag
     final isNewDriver = loginData?.data?.isNewDriver ?? false;
@@ -569,6 +576,7 @@ class DriverRegisterNotifier extends StateNotifier<AppState<LoginWithPassRespons
     required double latitude,
     required double longitude,
     required String vehicleType,
+    required String serviceType,
     required String vehicleNumber,
     required String vehicleColor,
     required String vehicleModel,
@@ -597,6 +605,7 @@ class DriverRegisterNotifier extends StateNotifier<AppState<LoginWithPassRespons
       latitude: latitude,
       longitude: longitude,
       vehicleType: vehicleType,
+      serviceType: serviceType,
       vehicleNumber: vehicleNumber,
       vehicleColor: vehicleColor,
       vehicleModel: vehicleModel,
@@ -628,6 +637,12 @@ class DriverRegisterNotifier extends StateNotifier<AppState<LoginWithPassRespons
         if (data.data?.user != null) {
           await LocalStorageService().saveUser(data: data.data!.user!.toJson());
         }
+        // Sync FCM Token
+        final deviceToken = await deviceTokenFirebase();
+        if (deviceToken != null) {
+          authRepo.saveFcmToken(token: deviceToken);
+        }
+
         LocalStorageService().setRegistrationProgress(AppRoutes.dashboard);
         showNotification(message: data.message ?? 'Registration successful', isSuccess: true);
         state = AppState.success(data);
@@ -678,6 +693,12 @@ class DriverLoginEmailPasswordNotifier extends StateNotifier<AppState<LoginWithP
         if (data.data?.user != null) {
           await LocalStorageService().saveUser(data: data.data!.user!.toJson());
         }
+        // Sync FCM Token
+        final deviceToken = await deviceTokenFirebase();
+        if (deviceToken != null) {
+          authRepo.saveFcmToken(token: deviceToken);
+        }
+
         LocalStorageService().setRegistrationProgress(AppRoutes.dashboard);
         showNotification(message: data.message ?? 'Login successful', isSuccess: true);
         state = AppState.success(data);
@@ -729,6 +750,12 @@ class DriverLoginOtpNotifier extends StateNotifier<AppState<CommonResponse>> {
         if (data.data?.user != null) {
           await LocalStorageService().saveUser(data: data.data!.user!.toJson());
         }
+        // Sync FCM Token
+        final deviceToken = await deviceTokenFirebase();
+        if (deviceToken != null) {
+          authRepo.saveFcmToken(token: deviceToken);
+        }
+
         LocalStorageService().setRegistrationProgress(AppRoutes.dashboard);
         showNotification(message: data.message ?? 'Login successful', isSuccess: true);
         await ref.read(tripActivityNotifierProvider.notifier).checkTripActivity();
