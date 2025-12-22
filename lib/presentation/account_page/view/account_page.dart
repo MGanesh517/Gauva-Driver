@@ -382,14 +382,26 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
             context,
             leading: Assets.images.terms.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).terms_conditions,
-            onTap: () => _launchURL('https://www.gauvaservices.in/terms'),
+            onTap: () => _launchURL('https://gleaming-begonia-69d7b2.netlify.app/terms'),
           ),
+          Gap(8.h),
           Gap(8.h),
           accountButton(
             context,
             leading: Assets.images.privacy.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).privacy_policy,
-            onTap: () => _launchURL('https://www.gauvaservices.in/privacy-policy'),
+            onTap: () => _launchURL('https://gleaming-begonia-69d7b2.netlify.app/privacy-policy'),
+          ),
+          Gap(8.h),
+          accountButton(
+            context,
+            leading: Icon(
+              Icons.description_outlined,
+              size: 24.sp,
+              color: isDarkMode() ? Colors.white : ColorPalette.primary50,
+            ),
+            title: "Rate Card",
+            onTap: () => NavigationService.pushNamed(AppRoutes.rateCard),
           ),
           Gap(8.h),
           Consumer(

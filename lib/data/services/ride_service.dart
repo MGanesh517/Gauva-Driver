@@ -42,7 +42,7 @@ class RideService implements IRideService {
   Future<Response> checkActiveTrip() async {
     // Use the new API endpoint: GET /api/v1/driver/rides/started
     // This doesn't require driverId in the path as it's extracted from the token
-    return await dioClient.dio.get('/v1/driver/rides/started');
+    return await dioClient.dio.get(ApiEndpoints.getCurrentRides);
   }
 
   @override

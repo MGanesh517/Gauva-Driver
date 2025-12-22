@@ -428,14 +428,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           text: 'Terms & Conditions',
                           style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => _launchURL('https://www.gauvaservices.in/terms'),
+                            ..onTap = () => _launchURL('https://gleaming-begonia-69d7b2.netlify.app/terms'),
                         ),
                         const TextSpan(text: ' and '),
                         TextSpan(
                           text: 'Privacy Policy',
                           style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => _launchURL('https://www.gauvaservices.in/privacy-policy'),
+                            ..onTap = () => _launchURL('https://gleaming-begonia-69d7b2.netlify.app/privacy-policy'),
                         ),
                       ],
                     ),

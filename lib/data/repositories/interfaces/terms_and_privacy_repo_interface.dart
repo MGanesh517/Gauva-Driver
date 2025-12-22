@@ -7,4 +7,5 @@ import '../../../core/errors/failure.dart';
 abstract class ITermsAndPrivacyRepo {
   Future<Either<Failure, TermsAndConditionModel>> termsAndCondition();
   Future<Either<Failure, PrivacyAndPolicyModel>> privacyAndPolicy();
+  Future<Either<Failure, String>> rateCard();
 }

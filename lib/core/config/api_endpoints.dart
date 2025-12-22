@@ -65,4 +65,6 @@ class ApiEndpoints {
   static const String getRideDetails = '/v1/ride'; // /{rideId}
   static const String goToPickup = 'driver/order'; // /{id}/go_to_pickup
   static const String saveFcmToken = '/notifications/token';
+  static const String getWebSocketUrl = '/customer/config/websocket-url';
+  static const String rateCard = '/public/legal-documents/rate-card/driver';
 }

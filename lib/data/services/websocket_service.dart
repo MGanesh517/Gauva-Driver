@@ -46,11 +46,12 @@ class WebSocketService {
     print('🔍 WebSocket: Accessing newRideRequestStream getter');
     return _newRideRequestController.stream;
   }
+
   Stream<Map<String, dynamic>> get fleetStatsStream => _fleetStatsController.stream;
   Stream<void> get onReconnected => _onReconnectedController.stream;
 
   /// Connect to Raw All-in-One WebSocket
-  Future<void> connect(String jwtToken) async {
+  Future<void> connect(String jwtToken, {String? url}) async {
     // Store token for auto-reconnect
     _jwtToken = jwtToken;
     _shouldReconnect = true;
@@ -73,7 +74,7 @@ class WebSocketService {
     }
 
     try {
-      final wsUrl = Environment.stompWebSocketUrl;
+      final wsUrl = url ?? Environment.stompWebSocketUrl;
 
       print('🔌 WebSocket Service: Connecting to Raw WebSocket at $wsUrl');
       print('🔑 WebSocket Service: Using token (length: ${jwtToken.length})');
@@ -106,9 +107,9 @@ class WebSocketService {
         },
         cancelOnError: false, // Keep listening even on errors
       );
-      
+
       print('✅ WebSocket: Stream listener attached - continuously listening for messages');
-      
+
       // Start health check timer (every 30 seconds)
       _healthCheckTimer?.cancel();
       _healthCheckTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
@@ -172,7 +173,7 @@ class WebSocketService {
       if (decoded is Map<String, dynamic>) {
         final event = decoded['event'];
         final data = decoded['data'];
-        
+
         // Enhanced logging for new_ride_request events
         if (event == 'new_ride_request') {
           print('🔍 WebSocket: Detected new_ride_request event in raw message!');
@@ -187,19 +188,17 @@ class WebSocketService {
           print('✅ WebSocket: Connection established and listening continuously');
           return;
         }
-        
+
         // Handle "joined" event/confirmation
         if (event == 'joined') {
-          final room = data?['room'] ?? 
-                      data?['type'] ?? 
-                      (decoded['room'] ?? decoded['type']);
+          final room = data?['room'] ?? data?['type'] ?? (decoded['room'] ?? decoded['type']);
           print('✅ WebSocket: Successfully joined room: $room');
           if (data != null && data is Map) {
             print('✅ WebSocket: Join confirmation data: $data');
           }
           return;
         }
-        
+
         // Handle "pong" event (response to ping)
         if (event == 'pong') {
           print('💓 WebSocket: Pong received - connection is alive');
@@ -246,22 +245,23 @@ class WebSocketService {
               print('🆕 Data Type: ${mapData.runtimeType}');
               print('🆕 Data Keys: ${mapData.keys.toList()}');
               print('🆕 Attempting to extract Ride ID...');
-              
+
               // Try multiple possible ID fields
-              final rideId = mapData['rideId'] ?? 
-                            mapData['id'] ?? 
-                            mapData['orderId'] ??
-                            mapData['order_id'] ??
-                            mapData['ride']?['id'] ??
-                            mapData['ride']?['rideId'] ??
-                            mapData['order']?['id'] ??
-                            mapData['order']?['orderId'];
-              
+              final rideId =
+                  mapData['rideId'] ??
+                  mapData['id'] ??
+                  mapData['orderId'] ??
+                  mapData['order_id'] ??
+                  mapData['ride']?['id'] ??
+                  mapData['ride']?['rideId'] ??
+                  mapData['order']?['id'] ??
+                  mapData['order']?['orderId'];
+
               print('🆕 Extracted Ride ID: $rideId (type: ${rideId?.runtimeType})');
               print('🆕 Adding to newRideRequestStream...');
-              
+
               _newRideRequestController.add(mapData);
-              
+
               print('🆕 ✅ Successfully added to newRideRequestStream');
               print('🆕 ✅ Any active listeners will receive this event');
               print('🆕 ==========================================');
@@ -291,19 +291,15 @@ class WebSocketService {
 
     try {
       Map<String, dynamic> payload;
-      
+
       // Special handling for join/leave events - type and id should be at root level
       if (eventName == 'join' || eventName == 'leave') {
-        payload = {
-          'event': eventName,
-          'type': data['type'],
-          'id': data['id'],
-        };
+        payload = {'event': eventName, 'type': data['type'], 'id': data['id']};
       } else {
         // For all other events, use standard format with data object
         payload = {'event': eventName, 'data': data};
       }
-      
+
       final message = jsonEncode(payload);
       print('📤 WebSocket Sending: $message');
       _channel!.sink.add(message);

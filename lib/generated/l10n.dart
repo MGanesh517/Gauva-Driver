@@ -2020,14 +2020,12 @@ class AppLocalizations {
   }
 
   /// `Rider Waiting — Move Now`
-  String get rider_waiting_move_now {
-    return Intl.message(
+  String get rider_waiting_move_now => Intl.message(
       'Rider Waiting — Move Now',
       name: 'rider_waiting_move_now',
       desc: '',
       args: [],
     );
-  }
 
   /// `Time to pick up your rider! Follow the navigation and arrive without delay`
   String get time_to_pickup {

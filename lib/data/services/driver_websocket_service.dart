@@ -1,8 +1,14 @@
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
+import 'dart:convert';
 import 'package:gauva_driver/data/services/websocket_service.dart';
+import '../../domain/interfaces/config_service_interface.dart';
 
 class DriverWebSocketService extends WebSocketService {
+  final IConfigService configService;
+
+  DriverWebSocketService({required this.configService});
+
   String? driverId;
   int? currentRideId;
   StreamSubscription<Position>? _positionSubscription;
@@ -28,8 +34,33 @@ class DriverWebSocketService extends WebSocketService {
     this.driverId = driverId.toString();
 
     try {
+      // Fetch dynamic WebSocket URL
+      String? wsUrl;
+      // try {
+      //   print('🔍 Driver WebSocket: Fetching dynamic WebSocket URL...');
+      //   final response = await configService.getWebSocketUrl();
+      //   // Assuming response.data is the JSON map as per user prompt:
+      //   // final config = jsonDecode(response.body); // Dio returns data directly usually
+      //   // final wsUrl = config['websocketUrl'];
+      //   // With Dio, response.data is already usually a Map or dynamic
+      //
+      //   // Handle Dio response data
+      //   final data = response.data;
+      //   if (data is Map<String, dynamic>) {
+      //     wsUrl = data['websocketUrl'];
+      //   } else if (data is String) {
+      //     // Should not happen with Dio usually if json, but for safety
+      //     final decoded = jsonDecode(data);
+      //     wsUrl = decoded['websocketUrl'];
+      //   }
+      //
+      //   print('✅ Driver WebSocket: Fetched URL: $wsUrl');
+      // } catch (e) {
+      //   print('⚠️ Driver WebSocket: Failed to fetch dynamic URL ($e). using default.');
+      // }
+
       // Connect to Raw WebSocket
-      await connect(jwtToken);
+      await connect(jwtToken, url: wsUrl);
 
       // Wait for connection with verification
       print('⏳ Driver WebSocket: Waiting for connection to establish...');

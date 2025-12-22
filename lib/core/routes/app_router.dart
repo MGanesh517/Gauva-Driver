@@ -20,6 +20,7 @@ import 'package:gauva_driver/presentation/ride_history/view/ride_history_view.da
 import 'package:gauva_driver/presentation/ride_history_detail/view/ride_history_detail.dart';
 import 'package:gauva_driver/presentation/splash/views/splash_page.dart';
 import 'package:gauva_driver/presentation/wallet/views/wallet.dart';
+import 'package:gauva_driver/presentation/account_page/view/rate_card_page.dart';
 
 import '../../presentation/home_page/view/home_page.dart';
 import '../../presentation/payout_method/view/add_payment_gateway.dart';
@@ -86,6 +87,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const NoInternetPage());
       case '/broken-page':
         return MaterialPageRoute(builder: (_) => const BrokenPage());
+      case '/rate-card':
+        return MaterialPageRoute(builder: (_) => const RateCardPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(body: ErrorView(message: 'No route defined for ${settings.name}')),

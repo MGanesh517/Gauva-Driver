@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gauva_driver/common/shimmer_loader.dart';
+
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/theme/color_palette.dart';
 import 'package:gauva_driver/core/utils/is_arabic.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 
 import '../../../core/enums/driver_status.dart';
-import '../../../core/state/driver_status_state.dart';
+
 import '../../../core/utils/localize.dart';
 import '../../booking/provider/driver_providers.dart';
 
@@ -96,69 +96,111 @@ class AnimatedSwitchBackground extends StatelessWidget {
 }
 
 // Main widget
-class OnlineOfflineSwitch extends ConsumerWidget {
+class OnlineOfflineSwitch extends ConsumerStatefulWidget {
   const OnlineOfflineSwitch({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Watch both the state and the notifier to ensure UI updates
-    final status = ref.watch(driverStatusNotifierProvider);
-    final isOnlineFromNotifier = isOnlineNotifier.value;
+  ConsumerState<OnlineOfflineSwitch> createState() => _OnlineOfflineSwitchState();
+}
 
-    final switchState = _getSwitchState(ref, status);
+class _OnlineOfflineSwitchState extends ConsumerState<OnlineOfflineSwitch> {
+  // Local state for optimistic updates
+  late bool _isOnline;
 
-    return GestureDetector(
-      onTap: () => _handleTap(ref, isOnlineFromNotifier),
-      child: _buildSwitchContainer(context, switchState),
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with the current value from the global notifier as a safe bet,
+    // or default to false. We will sync with provider in build/didChangeDependencies.
+    _isOnline = isOnlineNotifier.value;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncStateWithProvider();
+  }
+
+  void _syncStateWithProvider() {
+    final status = ref.read(driverStatusNotifierProvider);
+    status.maybeWhen(
+      online: () => _isOnline = true,
+      offline: () => _isOnline = false,
+      onTrip: () => _isOnline = true,
+      orderRequest: (_) => _isOnline = true,
+      loading: () {
+        // Did not update local state on loading to preserve optimistic value
+      },
+      orElse: () {},
     );
   }
 
-  SwitchState _getSwitchState(WidgetRef ref, DriverStatusState status) {
-    final bool isLoading = status.whenOrNull(loading: () => true) ?? false;
-    final bool isOnlineFromState = status.whenOrNull(online: () => true, orderRequest: (d) => true) ?? false;
+  @override
+  Widget build(BuildContext context) {
+    // Listen to state changes to sync local state when operation completes
+    ref.listen(driverStatusNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        online: () => setState(() => _isOnline = true),
+        offline: () => setState(() => _isOnline = false),
+        onTrip: () => setState(() => _isOnline = true),
+        orderRequest: (_) => setState(() => _isOnline = true),
+        orElse: () {},
+      );
+    });
 
-    // Debug logging
-    print('🎨 UI Switch State - isLoading: $isLoading, isOnlineFromState: $isOnlineFromState, status: $status');
+    final status = ref.watch(driverStatusNotifierProvider);
+    final isLoading = status.maybeWhen(loading: () => true, orElse: () => false);
 
-    return SwitchState(isLoading: isLoading, isOnline: isOnlineFromState);
+    // If strictly loading, we rely on _isOnline (optimistic or previous).
+    // If not loading, _isOnline should match the state (enforced by listener above).
+
+    return GestureDetector(
+      onTap: () => _handleTap(isLoading),
+      child: Container(
+        height: SwitchConstants.height.h,
+        width: SwitchConstants.width.w,
+        padding: EdgeInsets.all(SwitchConstants.padding.r),
+        decoration: BoxDecoration(
+          color: context.surface,
+          borderRadius: BorderRadius.circular(SwitchConstants.borderRadius.r),
+          border: Border.all(color: SwitchConstants.borderColor, width: SwitchConstants.borderWidth.w),
+        ),
+        child: _buildActiveState(context, _isOnline, isLoading),
+      ),
+    );
   }
 
-  void _handleTap(WidgetRef ref, bool isOnline) {
-    final newStatus = isOnline ? DriverStatus.offline.name : DriverStatus.online.name;
+  void _handleTap(bool isLoading) {
+    if (isLoading) return;
 
+    // Optimistic Update
+    setState(() {
+      _isOnline = !_isOnline;
+    });
+
+    final newStatus = _isOnline ? DriverStatus.online.name : DriverStatus.offline.name;
     ref.read(driverStatusNotifierProvider.notifier).updateOnlineStatus(newStatus);
   }
 
-  Widget _buildSwitchContainer(BuildContext context, SwitchState switchState) => Container(
-    height: SwitchConstants.height.h,
-    width: SwitchConstants.width.w,
-    padding: EdgeInsets.all(SwitchConstants.padding.r),
-    decoration: BoxDecoration(
-      color: context.surface,
-      borderRadius: BorderRadius.circular(SwitchConstants.borderRadius.r),
-      border: Border.all(color: SwitchConstants.borderColor, width: SwitchConstants.borderWidth.w),
-    ),
-    child: switchState.isLoading ? _buildLoadingState() : _buildActiveState(context, switchState),
-  );
-
-  Widget _buildLoadingState() => buildShimmer(
-    height: SwitchConstants.height,
-    width: double.infinity,
-    borderRadius: BorderRadius.circular(SwitchConstants.borderRadius),
-  );
-
-  Widget _buildActiveState(BuildContext context, SwitchState switchState) {
+  Widget _buildActiveState(BuildContext context, bool isOnline, bool isLoading) {
     final isDark = isDarkMode();
 
     return Stack(
+      alignment: Alignment.center,
       children: [
-        AnimatedSwitchBackground(isOnline: switchState.isOnline),
+        AnimatedSwitchBackground(isOnline: isOnline),
         Row(
           children: [
-            SwitchTextItem(text: localize(context).offline, isActive: !switchState.isOnline, isDarkMode: isDark),
-            SwitchTextItem(text: localize(context).lets_ride, isActive: switchState.isOnline, isDarkMode: isDark),
+            SwitchTextItem(text: localize(context).offline, isActive: !isOnline, isDarkMode: isDark),
+            SwitchTextItem(text: localize(context).lets_ride, isActive: isOnline, isDarkMode: isDark),
           ],
         ),
+        if (isLoading)
+          const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+          ),
       ],
     );
   }

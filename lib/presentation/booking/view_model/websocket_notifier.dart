@@ -3,11 +3,15 @@ import 'package:gauva_driver/data/services/driver_websocket_service.dart';
 import 'package:gauva_driver/data/services/local_storage_service.dart';
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
 
+import 'package:gauva_driver/presentation/splash/provider/app_config_providers.dart';
+
 class WebSocketNotifier extends StateNotifier<void> {
   final Ref ref;
-  final DriverWebSocketService _driverWebSocketService = DriverWebSocketService();
+  late final DriverWebSocketService _driverWebSocketService;
 
-  WebSocketNotifier(this.ref) : super(null);
+  WebSocketNotifier(this.ref) : super(null) {
+    _driverWebSocketService = DriverWebSocketService(configService: ref.read(configServiceProvider));
+  }
 
   /// Setup WebSocket and subscribe to necessary topics
   Future<void> setupWebSocketListeners() async {

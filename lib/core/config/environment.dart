@@ -3,13 +3,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 enum EnvironmentType { dev, prod }
 
 class Environment {
-  static const String dev = 'development';
-  static const String prod = 'production';
-  static final String _baseUrl =
-      dotenv.env['API_BASE_URL'] ?? 'https://gauva-f6f6d9ddagfqc9fw.southindia-01.azurewebsites.net';
+  static const String _devBaseUrl = 'https://gauva-f6f6d9ddagfqc9fw.canadacentral-01.azurewebsites.net';
+  static const String _prodBaseUrl = 'https://gauva-f6f6d9ddagfqc9fw.southindia-01.azurewebsites.net';
+
+  static final String _baseUrl = dotenv.env['API_BASE_URL'] ?? _devBaseUrl;
   static final String? _socketIOUrl = dotenv.env['SOCKET_IO_URL'];
 
-  static const EnvironmentType currentEnvironment = EnvironmentType.dev;
+  static const EnvironmentType currentEnvironment = EnvironmentType.prod;
 
   static String? _overrideApiUrl;
 
@@ -24,7 +24,7 @@ class Environment {
       case EnvironmentType.dev:
         return '$_baseUrl/api';
       case EnvironmentType.prod:
-        return '$_baseUrl/api';
+        return '$_prodBaseUrl/api';
     }
   }
 
@@ -34,7 +34,7 @@ class Environment {
       case EnvironmentType.dev:
         return _baseUrl;
       case EnvironmentType.prod:
-        return _baseUrl;
+        return _prodBaseUrl;
     }
   }
 
@@ -77,7 +77,7 @@ class Environment {
     }
     // Default Socket.IO URL - use base URL with socket.io path
     // Note: This may not work on Azure if Socket.IO is on port 9090
-    return _cleanWebSocketUrl(_baseUrl, '/socket.io/?EIO=3&transport=websocket');
+    return _cleanWebSocketUrl(baseUrl, '/socket.io/?EIO=3&transport=websocket');
   }
 
   /// Check if Socket.IO is enabled (can be controlled via environment variable)
@@ -90,6 +90,6 @@ class Environment {
   /// Get STOMP WebSocket URL
   /// WebSocket Connection URL: wss://gauva-f6f6d9ddagfqc9fw.southindia-01.azurewebsites.net/ws
   static String get stompWebSocketUrl {
-    return _cleanWebSocketUrl(_baseUrl, '/ws');
+    return _cleanWebSocketUrl(baseUrl, '/ws');
   }
 }

@@ -20,4 +20,10 @@ class ConfigServiceImpl implements IConfigService {
     final String url = '${Environment.baseUrl}/api${ApiEndpoints.getCarModels}';
     return await dioClient.dio.get(url);
   }
+
+  @override
+  Future<Response> getWebSocketUrl() async {
+    final String url = '${Environment.baseUrl}/api${ApiEndpoints.getWebSocketUrl}';
+    return await dioClient.dio.get(url);
+  }
 }

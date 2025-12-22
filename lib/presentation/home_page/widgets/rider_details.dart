@@ -121,18 +121,18 @@ Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
               )
             : Row(
                 children: [
-                  Consumer(
-                    builder: (context, ref, _) => getBackground(
-                      icon: Ionicons.chatbubble_ellipses_outline,
-                      backgroundColor: const Color(0xFFF6F7F9),
-                      iconColor: isDarkMode() ? Colors.white : const Color(0xFF24262D),
-                      onTap: () {
-                        NavigationService.pushNamed(AppRoutes.chatSheet);
-                        // tripNotifier.goToChat();
-                      },
-                    ),
-                  ),
-                  Gap(16.w),
+                  // Consumer(
+                  //   builder: (context, ref, _) => getBackground(
+                  //     icon: Ionicons.chatbubble_ellipses_outline,
+                  //     backgroundColor: const Color(0xFFF6F7F9),
+                  //     iconColor: isDarkMode() ? Colors.white : const Color(0xFF24262D),
+                  //     onTap: () {
+                  //       NavigationService.pushNamed(AppRoutes.chatSheet);
+                  //       // tripNotifier.goToChat();
+                  //     },
+                  //   ),
+                  // ),
+                  // Gap(16.w),
                   getBackground(
                     icon: Ionicons.call_outline,
                     backgroundColor: const Color(0xFFF1F7FE),

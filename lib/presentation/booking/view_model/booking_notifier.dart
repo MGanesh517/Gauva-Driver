@@ -280,8 +280,24 @@ class BookingNotifier extends StateNotifier<BookingState> {
     return byteData!.buffer.asUint8List();
   }
 
-  Future<BitmapDescriptor> getMarkerIcon() async =>
-      await BitmapDescriptor.asset(const ImageConfiguration(size: Size(44, 44)), Assets.images.carTopView.path);
+  Future<BitmapDescriptor> getMarkerIcon() async {
+    final userData = await LocalStorageService().getSavedUser();
+    String assetPath = Assets.images.carTopView.path;
+
+    if (userData?.serviceType != null) {
+      final type = userData!.serviceType!.toUpperCase();
+      if (type == 'BIKE') {
+        assetPath = Assets.vehicles.bike.path;
+      } else if (type == 'AUTO') {
+        assetPath = 'assets/vehicles/auto.png';
+      } else if (type == 'CAR' || type == 'SMALL_SEDAN') {
+        assetPath = Assets.vehicles.car.path;
+      } else if (type == 'MEGA') {
+        assetPath = Assets.vehicles.suv.path;
+      }
+    }
+    return await BitmapDescriptor.asset(const ImageConfiguration(size: Size(44, 44)), assetPath);
+  }
 
   Future<BitmapDescriptor> getPickupMarkerIcon({required String address}) async =>
       await AppMarkerPickup(address: address).toBitmapDescriptor(imageSize: const Size(700, 600));

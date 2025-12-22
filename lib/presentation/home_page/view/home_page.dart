@@ -15,6 +15,7 @@ import '../../../core/utils/is_dark_mode.dart';
 import '../../../data/services/local_storage_service.dart';
 import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/home_providers.dart';
+import '../../booking/provider/ride_providers.dart';
 import '../../booking/provider/websocket_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -33,6 +34,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.read(bookingNotifierProvider.notifier).initialize();
     Future.microtask(() {
       ref.read(homeProvider.notifier).getDashboard();
+      // ref.read(tripActivityNotifierProvider.notifier).checkTripActivity();
 
       // Setup WebSocket listener - try immediately, then retry if needed
       _setupWebSocketListener();
@@ -45,11 +47,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       final webSocketNotifier = ref.read(webSocketNotifierProvider.notifier);
 
       print('🔌 HomePage: Setting up WebSocket listener for new ride requests...');
-      
+
       // Check connection status
       final isConnected = webSocketNotifier.isConnected;
       print('🔌 HomePage: WebSocket connection status: $isConnected');
-      
+
       if (!isConnected) {
         print('⚠️ HomePage: WebSocket not connected. Will retry in 3 seconds...');
         Future.delayed(const Duration(seconds: 3), () {
@@ -66,7 +68,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       // Listen to new ride request stream
       print('🔌 HomePage: Creating subscription to newRideRequestStream...');
       print('🔌 HomePage: Stream reference: ${webSocketNotifier.newRideRequestStream}');
-      
+
       _rideRequestSubscription = webSocketNotifier.newRideRequestStream.listen(
         (data) {
           print('🆕 ==========================================');
@@ -78,25 +80,26 @@ class _HomePageState extends ConsumerState<HomePage> {
 
           // Extract ride ID from the WebSocket message
           // The data structure might be: {rideId: 19, ride: {...}} or {id: 19, ...}
-          final rideId = data['rideId'] ?? 
-                        data['id'] ?? 
-                        data['orderId'] ??
-                        data['order_id'] ??
-                        data['ride']?['id'] ??
-                        data['ride']?['rideId'];
+          final rideId =
+              data['rideId'] ??
+              data['id'] ??
+              data['orderId'] ??
+              data['order_id'] ??
+              data['ride']?['id'] ??
+              data['ride']?['rideId'];
 
           if (rideId != null) {
             print('✅ HomePage: Extracted ride ID: $rideId');
             print('✅ HomePage: Triggering order request flow for ride $rideId');
-            
+
             // Play sound when new ride request arrives
             _playRideRequestSound();
-            
+
             // Use the same flow as Pusher to ensure consistency
             // This will start the timer, reset state, show dialogue, and fetch order details
-            ref.read(driverStatusNotifierProvider.notifier).orderRequest(
-              data: {'order_id': rideId is int ? rideId : int.tryParse(rideId.toString()) ?? rideId}
-            );
+            ref
+                .read(driverStatusNotifierProvider.notifier)
+                .orderRequest(data: {'order_id': rideId is int ? rideId : int.tryParse(rideId.toString()) ?? rideId});
           } else {
             print('⚠️ HomePage: No ride ID found in WebSocket data');
             print('⚠️ HomePage: Available keys: ${data.keys.toList()}');
@@ -131,7 +134,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       print('✅ HomePage: Subscription isPaused: ${_rideRequestSubscription?.isPaused ?? 'N/A'}');
       print('✅ HomePage: Stream is ready - waiting for new_ride_request events...');
       print('✅ HomePage: ✅✅✅ LISTENER IS ACTIVE AND READY ✅✅✅');
-      
+
       // Verify subscription is not null
       if (_rideRequestSubscription == null) {
         print('❌ HomePage: CRITICAL ERROR - Subscription is null after creation!');
@@ -163,14 +166,9 @@ class _HomePageState extends ConsumerState<HomePage> {
         );
       } else {
         // Android: Use Rapidosound.mp3 from assets
-        FlutterRingtonePlayer().play(
-          fromAsset: 'assets/Rapidosound.mp3',
-          looping: false,
-          volume: 1.0,
-          asAlarm: true,
-        );
+        FlutterRingtonePlayer().play(fromAsset: 'assets/Rapidosound.mp3', looping: false, volume: 1.0, asAlarm: true);
       }
-      
+
       // Vibrate phone
       await _vibratePhone();
     } catch (e) {
@@ -211,7 +209,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 4.h),
         decoration: BoxDecoration(color: isDarkMode() ? Colors.black : Colors.white),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [top(context), Gap(12.h), onlineOfflinePage(context)]),
+        child: Column(children: [top(context), Gap(12.h), onlineOfflinePage(context)]),
       ),
     ),
   );

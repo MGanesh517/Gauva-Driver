@@ -13,4 +13,7 @@ class TermsAndPrivacyService implements ITermsAndPrivacy {
 
   @override
   Future<Response> privacyPolicy() async => await dioClient.dio.get(ApiEndpoints.privacyPolicy);
+
+  @override
+  Future<Response> rateCard() async => await dioClient.dio.get(ApiEndpoints.rateCard);
 }
