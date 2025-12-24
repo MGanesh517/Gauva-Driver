@@ -28,9 +28,7 @@ class AppLocalizations {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<AppLocalizations> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -61,12 +59,7 @@ class AppLocalizations {
 
   /// `Welcome Back!`
   String get welcomeBack {
-    return Intl.message(
-      'Welcome Back!',
-      name: 'welcomeBack',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Welcome Back!', name: 'welcomeBack', desc: '', args: []);
   }
 
   /// `Enter your phone number to continue your ride and stay updated.`
@@ -91,62 +84,32 @@ class AppLocalizations {
 
   /// `Log in / Sign up`
   String get loginSignup {
-    return Intl.message(
-      'Log in / Sign up',
-      name: 'loginSignup',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Log in / Sign up', name: 'loginSignup', desc: '', args: []);
   }
 
   /// `Enter phone number`
   String get enterPhoneNumber {
-    return Intl.message(
-      'Enter phone number',
-      name: 'enterPhoneNumber',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter phone number', name: 'enterPhoneNumber', desc: '', args: []);
   }
 
   /// `Phone number must be at least 6 digits`
   String get phoneMinLengthError {
-    return Intl.message(
-      'Phone number must be at least 6 digits',
-      name: 'phoneMinLengthError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Phone number must be at least 6 digits', name: 'phoneMinLengthError', desc: '', args: []);
   }
 
   /// `Enter Your OTP`
   String get otp_enter_title {
-    return Intl.message(
-      'Enter Your OTP',
-      name: 'otp_enter_title',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter Your OTP', name: 'otp_enter_title', desc: '', args: []);
   }
 
   /// `We sent OTP code to your phone number`
   String get otp_sent_message {
-    return Intl.message(
-      'We sent OTP code to your phone number',
-      name: 'otp_sent_message',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('We sent OTP code to your phone number', name: 'otp_sent_message', desc: '', args: []);
   }
 
   /// `Write Your OTP`
   String get otp_input_hint {
-    return Intl.message(
-      'Write Your OTP',
-      name: 'otp_input_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Write Your OTP', name: 'otp_input_hint', desc: '', args: []);
   }
 
   /// `Resend`
@@ -181,62 +144,32 @@ class AppLocalizations {
 
   /// `Set a Strong Password`
   String get password_hint {
-    return Intl.message(
-      'Set a Strong Password',
-      name: 'password_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Set a Strong Password', name: 'password_hint', desc: '', args: []);
   }
 
   /// `Use at least {length} characters`
   String password_requirements(Object length) {
-    return Intl.message(
-      'Use at least $length characters',
-      name: 'password_requirements',
-      desc: '',
-      args: [length],
-    );
+    return Intl.message('Use at least $length characters', name: 'password_requirements', desc: '', args: [length]);
   }
 
   /// `Confirm Password`
   String get confirm_password {
-    return Intl.message(
-      'Confirm Password',
-      name: 'confirm_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm Password', name: 'confirm_password', desc: '', args: []);
   }
 
   /// `Passwords do not match.`
   String get password_mismatch {
-    return Intl.message(
-      'Passwords do not match.',
-      name: 'password_mismatch',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Passwords do not match.', name: 'password_mismatch', desc: '', args: []);
   }
 
   /// `This field is required`
   String get field_required {
-    return Intl.message(
-      'This field is required',
-      name: 'field_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('This field is required', name: 'field_required', desc: '', args: []);
   }
 
   /// `Must be at least {length} characters`
   String min_length_error(Object length) {
-    return Intl.message(
-      'Must be at least $length characters',
-      name: 'min_length_error',
-      desc: '',
-      args: [length],
-    );
+    return Intl.message('Must be at least $length characters', name: 'min_length_error', desc: '', args: [length]);
   }
 
   /// `Name`
@@ -271,32 +204,17 @@ class AppLocalizations {
 
   /// `Select Gender`
   String get gender_select {
-    return Intl.message(
-      'Select Gender',
-      name: 'gender_select',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Gender', name: 'gender_select', desc: '', args: []);
   }
 
   /// `Personal Info`
   String get personal_info {
-    return Intl.message(
-      'Personal Info',
-      name: 'personal_info',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Personal Info', name: 'personal_info', desc: '', args: []);
   }
 
   /// `Add Driver Personal Info`
   String get add_driver_personal_info {
-    return Intl.message(
-      'Add Driver Personal Info',
-      name: 'add_driver_personal_info',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Driver Personal Info', name: 'add_driver_personal_info', desc: '', args: []);
   }
 
   /// `Enter your details to complete your profile and enhance your experience.`
@@ -311,22 +229,12 @@ class AppLocalizations {
 
   /// `Profile Image`
   String get profile_image {
-    return Intl.message(
-      'Profile Image',
-      name: 'profile_image',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile Image', name: 'profile_image', desc: '', args: []);
   }
 
   /// `Profile image is required`
   String get profile_image_required {
-    return Intl.message(
-      'Profile image is required',
-      name: 'profile_image_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile image is required', name: 'profile_image_required', desc: '', args: []);
   }
 
   /// `Next`
@@ -336,22 +244,12 @@ class AppLocalizations {
 
   /// `All field required`
   String get all_field_required {
-    return Intl.message(
-      'All field required',
-      name: 'all_field_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All field required', name: 'all_field_required', desc: '', args: []);
   }
 
   /// `Emergency Phone`
   String get emergency_phone {
-    return Intl.message(
-      'Emergency Phone',
-      name: 'emergency_phone',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Emergency Phone', name: 'emergency_phone', desc: '', args: []);
   }
 
   /// `Address`
@@ -361,22 +259,12 @@ class AppLocalizations {
 
   /// `Driver Documents`
   String get driver_documents {
-    return Intl.message(
-      'Driver Documents',
-      name: 'driver_documents',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Driver Documents', name: 'driver_documents', desc: '', args: []);
   }
 
   /// `Add Driver Documents`
   String get add_driver_documents {
-    return Intl.message(
-      'Add Driver Documents',
-      name: 'add_driver_documents',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Driver Documents', name: 'add_driver_documents', desc: '', args: []);
   }
 
   /// `Upload your driver documents to complete verification and start driving. Quick, easy, and secure!`
@@ -391,82 +279,42 @@ class AppLocalizations {
 
   /// `Vehicle Name`
   String get vehicle_name {
-    return Intl.message(
-      'Vehicle Name',
-      name: 'vehicle_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Name', name: 'vehicle_name', desc: '', args: []);
   }
 
   /// `Enter vehicle name`
   String get enter_vehicle_name {
-    return Intl.message(
-      'Enter vehicle name',
-      name: 'enter_vehicle_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter vehicle name', name: 'enter_vehicle_name', desc: '', args: []);
   }
 
   /// `Vehicle Type`
   String get vehicle_type {
-    return Intl.message(
-      'Vehicle Type',
-      name: 'vehicle_type',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Type', name: 'vehicle_type', desc: '', args: []);
   }
 
   /// `Select vehicle type`
   String get select_vehicle_type {
-    return Intl.message(
-      'Select vehicle type',
-      name: 'select_vehicle_type',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select vehicle type', name: 'select_vehicle_type', desc: '', args: []);
   }
 
   /// `Vehicle Color`
   String get vehicle_color {
-    return Intl.message(
-      'Vehicle Color',
-      name: 'vehicle_color',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Color', name: 'vehicle_color', desc: '', args: []);
   }
 
   /// `Select vehicle color`
   String get select_vehicle_color {
-    return Intl.message(
-      'Select vehicle color',
-      name: 'select_vehicle_color',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select vehicle color', name: 'select_vehicle_color', desc: '', args: []);
   }
 
   /// `Plate Number`
   String get plate_number {
-    return Intl.message(
-      'Plate Number',
-      name: 'plate_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Plate Number', name: 'plate_number', desc: '', args: []);
   }
 
   /// `Enter plate no`
   String get enter_plate_number {
-    return Intl.message(
-      'Enter plate no',
-      name: 'enter_plate_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter plate no', name: 'enter_plate_number', desc: '', args: []);
   }
 
   /// `NID Photo`
@@ -476,22 +324,12 @@ class AppLocalizations {
 
   /// `Driving License`
   String get driving_license {
-    return Intl.message(
-      'Driving License',
-      name: 'driving_license',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Driving License', name: 'driving_license', desc: '', args: []);
   }
 
   /// `Vehicle Papers`
   String get vehicle_papers {
-    return Intl.message(
-      'Vehicle Papers',
-      name: 'vehicle_papers',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Papers', name: 'vehicle_papers', desc: '', args: []);
   }
 
   /// `Upload`
@@ -501,72 +339,37 @@ class AppLocalizations {
 
   /// `Driving License is required`
   String get driving_license_required {
-    return Intl.message(
-      'Driving License is required',
-      name: 'driving_license_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Driving License is required', name: 'driving_license_required', desc: '', args: []);
   }
 
   /// `Vehicle Papers required`
   String get vehicle_papers_required {
-    return Intl.message(
-      'Vehicle Papers required',
-      name: 'vehicle_papers_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Papers required', name: 'vehicle_papers_required', desc: '', args: []);
   }
 
   /// `NID image is required`
   String get nid_image_required {
-    return Intl.message(
-      'NID image is required',
-      name: 'nid_image_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NID image is required', name: 'nid_image_required', desc: '', args: []);
   }
 
   /// `Production Year`
   String get production_year {
-    return Intl.message(
-      'Production Year',
-      name: 'production_year',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Production Year', name: 'production_year', desc: '', args: []);
   }
 
   /// `Vehicle Production Year`
   String get vehicle_production_year {
-    return Intl.message(
-      'Vehicle Production Year',
-      name: 'vehicle_production_year',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Production Year', name: 'vehicle_production_year', desc: '', args: []);
   }
 
   /// `Vehicle Plate Number`
   String get vehicle_plate_number {
-    return Intl.message(
-      'Vehicle Plate Number',
-      name: 'vehicle_plate_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Plate Number', name: 'vehicle_plate_number', desc: '', args: []);
   }
 
   /// `Your Best Photo Here`
   String get your_best_photo_here {
-    return Intl.message(
-      'Your Best Photo Here',
-      name: 'your_best_photo_here',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Best Photo Here', name: 'your_best_photo_here', desc: '', args: []);
   }
 
   /// `Update`
@@ -576,12 +379,7 @@ class AppLocalizations {
 
   /// `Please wait...`
   String get please_wait {
-    return Intl.message(
-      'Please wait...',
-      name: 'please_wait',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please wait...', name: 'please_wait', desc: '', args: []);
   }
 
   /// `Home`
@@ -606,32 +404,17 @@ class AppLocalizations {
 
   /// `No wallet data available`
   String get no_wallet_data_available {
-    return Intl.message(
-      'No wallet data available',
-      name: 'no_wallet_data_available',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No wallet data available', name: 'no_wallet_data_available', desc: '', args: []);
   }
 
   /// `Wallet Balance`
   String get wallet_balance {
-    return Intl.message(
-      'Wallet Balance',
-      name: 'wallet_balance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Wallet Balance', name: 'wallet_balance', desc: '', args: []);
   }
 
   /// `Payment Gateway`
   String get payment_gateway {
-    return Intl.message(
-      'Payment Gateway',
-      name: 'payment_gateway',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payment Gateway', name: 'payment_gateway', desc: '', args: []);
   }
 
   /// `Add New`
@@ -641,12 +424,7 @@ class AppLocalizations {
 
   /// `No Cards yet!`
   String get no_cards_yet {
-    return Intl.message(
-      'No Cards yet!',
-      name: 'no_cards_yet',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No Cards yet!', name: 'no_cards_yet', desc: '', args: []);
   }
 
   /// `Today`
@@ -656,12 +434,7 @@ class AppLocalizations {
 
   /// `Complete Ride`
   String get complete_ride {
-    return Intl.message(
-      'Complete Ride',
-      name: 'complete_ride',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Complete Ride', name: 'complete_ride', desc: '', args: []);
   }
 
   /// `Cancel Ride`
@@ -671,22 +444,12 @@ class AppLocalizations {
 
   /// `No rides yet.`
   String get no_rides_yet {
-    return Intl.message(
-      'No rides yet.',
-      name: 'no_rides_yet',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No rides yet.', name: 'no_rides_yet', desc: '', args: []);
   }
 
   /// `Error: {msg}`
   String error_with_msg(Object msg) {
-    return Intl.message(
-      'Error: $msg',
-      name: 'error_with_msg',
-      desc: '',
-      args: [msg],
-    );
+    return Intl.message('Error: $msg', name: 'error_with_msg', desc: '', args: [msg]);
   }
 
   /// `My Profile`
@@ -696,32 +459,17 @@ class AppLocalizations {
 
   /// `Change Password`
   String get change_password {
-    return Intl.message(
-      'Change Password',
-      name: 'change_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Change Password', name: 'change_password', desc: '', args: []);
   }
 
   /// `Terms & Conditions`
   String get terms_conditions {
-    return Intl.message(
-      'Terms & Conditions',
-      name: 'terms_conditions',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Terms & Conditions', name: 'terms_conditions', desc: '', args: []);
   }
 
   /// `Privacy Policy`
   String get privacy_policy {
-    return Intl.message(
-      'Privacy Policy',
-      name: 'privacy_policy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Privacy Policy', name: 'privacy_policy', desc: '', args: []);
   }
 
   /// `Log Out`
@@ -731,12 +479,7 @@ class AppLocalizations {
 
   /// `Delete Account`
   String get delete_account {
-    return Intl.message(
-      'Delete Account',
-      name: 'delete_account',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete Account', name: 'delete_account', desc: '', args: []);
   }
 
   /// `Language`
@@ -746,12 +489,7 @@ class AppLocalizations {
 
   /// `Are You Sure You Want to {msg} from App`
   String are_you_sure_msg(Object msg) {
-    return Intl.message(
-      'Are You Sure You Want to $msg from App',
-      name: 'are_you_sure_msg',
-      desc: '',
-      args: [msg],
-    );
+    return Intl.message('Are You Sure You Want to $msg from App', name: 'are_you_sure_msg', desc: '', args: [msg]);
   }
 
   /// `We hope to see you again soon for your next ride!`
@@ -776,12 +514,7 @@ class AppLocalizations {
 
   /// `Location Permission Needed`
   String get location_permission_needed {
-    return Intl.message(
-      'Location Permission Needed',
-      name: 'location_permission_needed',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Location Permission Needed', name: 'location_permission_needed', desc: '', args: []);
   }
 
   /// `Please enable location access to use this feature.`
@@ -796,22 +529,12 @@ class AppLocalizations {
 
   /// `Grant Permission`
   String get grant_permission {
-    return Intl.message(
-      'Grant Permission',
-      name: 'grant_permission',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Grant Permission', name: 'grant_permission', desc: '', args: []);
   }
 
   /// `Let’s Find You Faster!`
   String get find_you_faster {
-    return Intl.message(
-      'Let’s Find You Faster!',
-      name: 'find_you_faster',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Let’s Find You Faster!', name: 'find_you_faster', desc: '', args: []);
   }
 
   /// `Enable location access to get matched with nearby drivers quickly and easily.`
@@ -826,9 +549,19 @@ class AppLocalizations {
 
   /// `Skip for Now`
   String get skip_for_now {
+    return Intl.message('Skip for Now', name: 'skip_for_now', desc: '', args: []);
+  }
+
+  /// `Use of Location Information`
+  String get prominent_disclosure_title {
+    return Intl.message('Use of Location Information', name: 'prominent_disclosure_title', desc: '', args: []);
+  }
+
+  /// `This app collects location data to enable identification of nearby rides and tracking of your trip progress even when the app is closed or not in use.`
+  String get prominent_disclosure_message {
     return Intl.message(
-      'Skip for Now',
-      name: 'skip_for_now',
+      'This app collects location data to enable identification of nearby rides and tracking of your trip progress even when the app is closed or not in use.',
+      name: 'prominent_disclosure_message',
       desc: '',
       args: [],
     );
@@ -839,14 +572,14 @@ class AppLocalizations {
     return Intl.message('Allow', name: 'allow', desc: '', args: []);
   }
 
+  /// `Agree`
+  String get agree {
+    return Intl.message('Agree', name: 'agree', desc: '', args: []);
+  }
+
   /// `Select Pickup location`
   String get select_pickup_location {
-    return Intl.message(
-      'Select Pickup location',
-      name: 'select_pickup_location',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Pickup location', name: 'select_pickup_location', desc: '', args: []);
   }
 
   /// `Confirm`
@@ -871,22 +604,12 @@ class AppLocalizations {
 
   /// `Ride Preferences`
   String get ride_preferences {
-    return Intl.message(
-      'Ride Preferences',
-      name: 'ride_preferences',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ride Preferences', name: 'ride_preferences', desc: '', args: []);
   }
 
   /// `No Service Available`
   String get no_service_available {
-    return Intl.message(
-      'No Service Available',
-      name: 'no_service_available',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No Service Available', name: 'no_service_available', desc: '', args: []);
   }
 
   /// `Apply`
@@ -906,22 +629,12 @@ class AppLocalizations {
 
   /// `Initializing...`
   String get initializing {
-    return Intl.message(
-      'Initializing...',
-      name: 'initializing',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Initializing...', name: 'initializing', desc: '', args: []);
   }
 
   /// `Select a Service!`
   String get select_service {
-    return Intl.message(
-      'Select a Service!',
-      name: 'select_service',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select a Service!', name: 'select_service', desc: '', args: []);
   }
 
   /// `Start Ride`
@@ -931,72 +644,37 @@ class AppLocalizations {
 
   /// `Ride requested`
   String get ride_requested {
-    return Intl.message(
-      'Ride requested',
-      name: 'ride_requested',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ride requested', name: 'ride_requested', desc: '', args: []);
   }
 
   /// `Searching for an online driver..`
   String get searching_for_driver {
-    return Intl.message(
-      'Searching for an online driver..',
-      name: 'searching_for_driver',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Searching for an online driver..', name: 'searching_for_driver', desc: '', args: []);
   }
 
   /// `Type a message`
   String get type_a_message {
-    return Intl.message(
-      'Type a message',
-      name: 'type_a_message',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Type a message', name: 'type_a_message', desc: '', args: []);
   }
 
   /// `Tell Us Why You're Cancelling The Ride`
   String get cancel_title {
-    return Intl.message(
-      'Tell Us Why You\'re Cancelling The Ride',
-      name: 'cancel_title',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tell Us Why You\'re Cancelling The Ride', name: 'cancel_title', desc: '', args: []);
   }
 
   /// `Let us know the reason for canceling your ride.`
   String get cancel_subtitle {
-    return Intl.message(
-      'Let us know the reason for canceling your ride.',
-      name: 'cancel_subtitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Let us know the reason for canceling your ride.', name: 'cancel_subtitle', desc: '', args: []);
   }
 
   /// `Go back to ride`
   String get go_back_to_ride {
-    return Intl.message(
-      'Go back to ride',
-      name: 'go_back_to_ride',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Go back to ride', name: 'go_back_to_ride', desc: '', args: []);
   }
 
   /// `Cancel the ride`
   String get cancel_the_ride {
-    return Intl.message(
-      'Cancel the ride',
-      name: 'cancel_the_ride',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel the ride', name: 'cancel_the_ride', desc: '', args: []);
   }
 
   /// `Trips`
@@ -1006,22 +684,12 @@ class AppLocalizations {
 
   /// `Estimated Time`
   String get estimated_time {
-    return Intl.message(
-      'Estimated Time',
-      name: 'estimated_time',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Estimated Time', name: 'estimated_time', desc: '', args: []);
   }
 
   /// `Your Ride is Complete`
   String get ride_complete {
-    return Intl.message(
-      'Your Ride is Complete',
-      name: 'ride_complete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Ride is Complete', name: 'ride_complete', desc: '', args: []);
   }
 
   /// `We hope you had a smooth ride. Please complete your payment and rate your experience.`
@@ -1041,22 +709,12 @@ class AppLocalizations {
 
   /// `Select payment method`
   String get select_payment_method {
-    return Intl.message(
-      'Select payment method',
-      name: 'select_payment_method',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select payment method', name: 'select_payment_method', desc: '', args: []);
   }
 
   /// `Thank You! Payment Completed`
   String get payment_completed {
-    return Intl.message(
-      'Thank You! Payment Completed',
-      name: 'payment_completed',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Thank You! Payment Completed', name: 'payment_completed', desc: '', args: []);
   }
 
   /// `paid via {method}. We hope you had a great ride! Don't forget to leave a rating.`
@@ -1071,22 +729,12 @@ class AppLocalizations {
 
   /// `Share Your Experience!`
   String get share_experience {
-    return Intl.message(
-      'Share Your Experience!',
-      name: 'share_experience',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Share Your Experience!', name: 'share_experience', desc: '', args: []);
   }
 
   /// `Enter your Experience!`
   String get enter_experience {
-    return Intl.message(
-      'Enter your Experience!',
-      name: 'enter_experience',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your Experience!', name: 'enter_experience', desc: '', args: []);
   }
 
   /// `Submit`
@@ -1096,12 +744,7 @@ class AppLocalizations {
 
   /// `Service Charge`
   String get service_charge {
-    return Intl.message(
-      'Service Charge',
-      name: 'service_charge',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Service Charge', name: 'service_charge', desc: '', args: []);
   }
 
   /// `Discount`
@@ -1111,32 +754,17 @@ class AppLocalizations {
 
   /// `Total Amount`
   String get total_amount {
-    return Intl.message(
-      'Total Amount',
-      name: 'total_amount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total Amount', name: 'total_amount', desc: '', args: []);
   }
 
   /// `Please Select Payment Type`
   String get please_select_payment_type {
-    return Intl.message(
-      'Please Select Payment Type',
-      name: 'please_select_payment_type',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please Select Payment Type', name: 'please_select_payment_type', desc: '', args: []);
   }
 
   /// `No address found`
   String get no_address_found {
-    return Intl.message(
-      'No address found',
-      name: 'no_address_found',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No address found', name: 'no_address_found', desc: '', args: []);
   }
 
   /// `Full Name`
@@ -1146,12 +774,7 @@ class AppLocalizations {
 
   /// `Mobile Number`
   String get mobile_number {
-    return Intl.message(
-      'Mobile Number',
-      name: 'mobile_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Mobile Number', name: 'mobile_number', desc: '', args: []);
   }
 
   /// `Email`
@@ -1166,12 +789,7 @@ class AppLocalizations {
 
   /// `Gender is required`
   String get gender_required {
-    return Intl.message(
-      'Gender is required',
-      name: 'gender_required',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Gender is required', name: 'gender_required', desc: '', args: []);
   }
 
   /// `Save`
@@ -1181,62 +799,32 @@ class AppLocalizations {
 
   /// `Current Password`
   String get current_password {
-    return Intl.message(
-      'Current Password',
-      name: 'current_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Current Password', name: 'current_password', desc: '', args: []);
   }
 
   /// `New Password`
   String get new_password {
-    return Intl.message(
-      'New Password',
-      name: 'new_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('New Password', name: 'new_password', desc: '', args: []);
   }
 
   /// `Confirm New Password`
   String get confirm_new_password {
-    return Intl.message(
-      'Confirm New Password',
-      name: 'confirm_new_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm New Password', name: 'confirm_new_password', desc: '', args: []);
   }
 
   /// `{msg} All rights reserved.`
   String all_rights_reserved(Object msg) {
-    return Intl.message(
-      '$msg All rights reserved.',
-      name: 'all_rights_reserved',
-      desc: '',
-      args: [msg],
-    );
+    return Intl.message('$msg All rights reserved.', name: 'all_rights_reserved', desc: '', args: [msg]);
   }
 
   /// `Registration DONE!`
   String get registration_done {
-    return Intl.message(
-      'Registration DONE!',
-      name: 'registration_done',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Registration DONE!', name: 'registration_done', desc: '', args: []);
   }
 
   /// `Your Profile is Under Review`
   String get profile_under_review {
-    return Intl.message(
-      'Your Profile is Under Review',
-      name: 'profile_under_review',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Profile is Under Review', name: 'profile_under_review', desc: '', args: []);
   }
 
   /// `Your profile has been submitted and is being reviewed. You will be notified when it is approved.`
@@ -1251,12 +839,7 @@ class AppLocalizations {
 
   /// `Enter your Password`
   String get enter_password {
-    return Intl.message(
-      'Enter your Password',
-      name: 'enter_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your Password', name: 'enter_password', desc: '', args: []);
   }
 
   /// `Please enter your account password to continue.`
@@ -1306,32 +889,17 @@ class AppLocalizations {
 
   /// `Login with your Password`
   String get login_with_your_password {
-    return Intl.message(
-      'Login with your Password',
-      name: 'login_with_your_password',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Login with your Password', name: 'login_with_your_password', desc: '', args: []);
   }
 
   /// `Use your password here`
   String get use_your_password_here {
-    return Intl.message(
-      'Use your password here',
-      name: 'use_your_password_here',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Use your password here', name: 'use_your_password_here', desc: '', args: []);
   }
 
   /// `Use OTP Instead`
   String get use_otp_instead {
-    return Intl.message(
-      'Use OTP Instead',
-      name: 'use_otp_instead',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Use OTP Instead', name: 'use_otp_instead', desc: '', args: []);
   }
 
   /// `Either phone number is null or password is empty`
@@ -1346,12 +914,7 @@ class AppLocalizations {
 
   /// `Add Balance to Your Wallet`
   String get add_balance_to_your_wallet {
-    return Intl.message(
-      'Add Balance to Your Wallet',
-      name: 'add_balance_to_your_wallet',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Balance to Your Wallet', name: 'add_balance_to_your_wallet', desc: '', args: []);
   }
 
   /// `Top up your wallet securely and enjoy seamless payments.`
@@ -1366,42 +929,22 @@ class AppLocalizations {
 
   /// `No Payment methods available`
   String get no_payment_methods_available {
-    return Intl.message(
-      'No Payment methods available',
-      name: 'no_payment_methods_available',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No Payment methods available', name: 'no_payment_methods_available', desc: '', args: []);
   }
 
   /// `Select Card type`
   String get select_card_type {
-    return Intl.message(
-      'Select Card type',
-      name: 'select_card_type',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Card type', name: 'select_card_type', desc: '', args: []);
   }
 
   /// `Enter Amount`
   String get enter_amount {
-    return Intl.message(
-      'Enter Amount',
-      name: 'enter_amount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter Amount', name: 'enter_amount', desc: '', args: []);
   }
 
   /// `Enter a valid amount`
   String get enter_a_valid_amount {
-    return Intl.message(
-      'Enter a valid amount',
-      name: 'enter_a_valid_amount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter a valid amount', name: 'enter_a_valid_amount', desc: '', args: []);
   }
 
   /// `Add Wallet`
@@ -1411,42 +954,22 @@ class AppLocalizations {
 
   /// `Form is not valid`
   String get form_is_not_valid {
-    return Intl.message(
-      'Form is not valid',
-      name: 'form_is_not_valid',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Form is not valid', name: 'form_is_not_valid', desc: '', args: []);
   }
 
   /// `Add Payment Gateway`
   String get add_payment_gateway {
-    return Intl.message(
-      'Add Payment Gateway',
-      name: 'add_payment_gateway',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add Payment Gateway', name: 'add_payment_gateway', desc: '', args: []);
   }
 
   /// `Cardholder Name`
   String get cardholder_name {
-    return Intl.message(
-      'Cardholder Name',
-      name: 'cardholder_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cardholder Name', name: 'cardholder_name', desc: '', args: []);
   }
 
   /// `Enter cardholder name`
   String get enter_cardholder_name {
-    return Intl.message(
-      'Enter cardholder name',
-      name: 'enter_cardholder_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter cardholder name', name: 'enter_cardholder_name', desc: '', args: []);
   }
 
   /// `Card no`
@@ -1461,12 +984,7 @@ class AppLocalizations {
 
   /// `Enter valid card number`
   String get enter_valid_card_number {
-    return Intl.message(
-      'Enter valid card number',
-      name: 'enter_valid_card_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter valid card number', name: 'enter_valid_card_number', desc: '', args: []);
   }
 
   /// `Exp. Date`
@@ -1486,12 +1004,7 @@ class AppLocalizations {
 
   /// `Enter 3-digit CVV`
   String get enter_3_digit_cvv {
-    return Intl.message(
-      'Enter 3-digit CVV',
-      name: 'enter_3_digit_cvv',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter 3-digit CVV', name: 'enter_3_digit_cvv', desc: '', args: []);
   }
 
   /// `Country`
@@ -1501,12 +1014,7 @@ class AppLocalizations {
 
   /// `Select a country`
   String get select_a_country {
-    return Intl.message(
-      'Select a country',
-      name: 'select_a_country',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select a country', name: 'select_a_country', desc: '', args: []);
   }
 
   /// `Connection timeout with API server`
@@ -1521,32 +1029,17 @@ class AppLocalizations {
 
   /// `Receive timeout with API server`
   String get receive_timeout_with_api_server {
-    return Intl.message(
-      'Receive timeout with API server',
-      name: 'receive_timeout_with_api_server',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Receive timeout with API server', name: 'receive_timeout_with_api_server', desc: '', args: []);
   }
 
   /// `Send timeout with API server`
   String get send_timeout_with_api_server {
-    return Intl.message(
-      'Send timeout with API server',
-      name: 'send_timeout_with_api_server',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Send timeout with API server', name: 'send_timeout_with_api_server', desc: '', args: []);
   }
 
   /// `Bad certificate with API server`
   String get bad_certificate_with_api_server {
-    return Intl.message(
-      'Bad certificate with API server',
-      name: 'bad_certificate_with_api_server',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Bad certificate with API server', name: 'bad_certificate_with_api_server', desc: '', args: []);
   }
 
   /// `Received an invalid response from the server.`
@@ -1591,22 +1084,12 @@ class AppLocalizations {
 
   /// `An unexpected error occurred`
   String get unexpected_error_occurred {
-    return Intl.message(
-      'An unexpected error occurred',
-      name: 'unexpected_error_occurred',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('An unexpected error occurred', name: 'unexpected_error_occurred', desc: '', args: []);
   }
 
   /// `Unexpected response format`
   String get unexpected_response_format {
-    return Intl.message(
-      'Unexpected response format',
-      name: 'unexpected_response_format',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unexpected response format', name: 'unexpected_response_format', desc: '', args: []);
   }
 
   /// `Bad request`
@@ -1636,42 +1119,22 @@ class AppLocalizations {
 
   /// `Validation error`
   String get validation_error {
-    return Intl.message(
-      'Validation error',
-      name: 'validation_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Validation error', name: 'validation_error', desc: '', args: []);
   }
 
   /// `Internal server error`
   String get internal_server_error {
-    return Intl.message(
-      'Internal server error',
-      name: 'internal_server_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Internal server error', name: 'internal_server_error', desc: '', args: []);
   }
 
   /// `Something went wrong`
   String get something_went_wrong {
-    return Intl.message(
-      'Something went wrong',
-      name: 'something_went_wrong',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Something went wrong', name: 'something_went_wrong', desc: '', args: []);
   }
 
   /// `No internet connection.`
   String get no_internet_connection {
-    return Intl.message(
-      'No internet connection.',
-      name: 'no_internet_connection',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No internet connection.', name: 'no_internet_connection', desc: '', args: []);
   }
 
   /// `Request timed out. Please try again.`
@@ -1686,32 +1149,17 @@ class AppLocalizations {
 
   /// `Something went wrong!`
   String get something_went_wrong_exclamation {
-    return Intl.message(
-      'Something went wrong!',
-      name: 'something_went_wrong_exclamation',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Something went wrong!', name: 'something_went_wrong_exclamation', desc: '', args: []);
   }
 
   /// `Resource not found.`
   String get resource_not_found {
-    return Intl.message(
-      'Resource not found.',
-      name: 'resource_not_found',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Resource not found.', name: 'resource_not_found', desc: '', args: []);
   }
 
   /// `Unexpected Application Crash`
   String get unexpected_application_crash {
-    return Intl.message(
-      'Unexpected Application Crash',
-      name: 'unexpected_application_crash',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unexpected Application Crash', name: 'unexpected_application_crash', desc: '', args: []);
   }
 
   /// `The app encountered an unexpected error and had to close. This could be caused by insufficient device memory, a bug in the app, or a corrupted file. Please restart the app or reinstall it if the issue continues.`
@@ -1726,12 +1174,7 @@ class AppLocalizations {
 
   /// `Contact Support`
   String get contact_support {
-    return Intl.message(
-      'Contact Support',
-      name: 'contact_support',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Contact Support', name: 'contact_support', desc: '', args: []);
   }
 
   /// `Offline`
@@ -1751,42 +1194,22 @@ class AppLocalizations {
 
   /// `Your Balance`
   String get your_balance {
-    return Intl.message(
-      'Your Balance',
-      name: 'your_balance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Balance', name: 'your_balance', desc: '', args: []);
   }
 
   /// `Today's Earning`
   String get todays_earning {
-    return Intl.message(
-      'Today\'s Earning',
-      name: 'todays_earning',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Today\'s Earning', name: 'todays_earning', desc: '', args: []);
   }
 
   /// `Ride complete`
   String get your_ride_complete {
-    return Intl.message(
-      'Ride complete',
-      name: 'your_ride_complete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ride complete', name: 'your_ride_complete', desc: '', args: []);
   }
 
   /// `Today's Activity`
   String get todays_activity {
-    return Intl.message(
-      'Today\'s Activity',
-      name: 'todays_activity',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Today\'s Activity', name: 'todays_activity', desc: '', args: []);
   }
 
   /// `View All`
@@ -1796,42 +1219,22 @@ class AppLocalizations {
 
   /// `Ride History`
   String get ride_history {
-    return Intl.message(
-      'Ride History',
-      name: 'ride_history',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ride History', name: 'ride_history', desc: '', args: []);
   }
 
   /// `Payment Received`
   String get payment_received {
-    return Intl.message(
-      'Payment Received',
-      name: 'payment_received',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payment Received', name: 'payment_received', desc: '', args: []);
   }
 
   /// `Payment Withdraw`
   String get payment_withdraw {
-    return Intl.message(
-      'Payment Withdraw',
-      name: 'payment_withdraw',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payment Withdraw', name: 'payment_withdraw', desc: '', args: []);
   }
 
   /// `Current Balance`
   String get current_balance {
-    return Intl.message(
-      'Current Balance',
-      name: 'current_balance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Current Balance', name: 'current_balance', desc: '', args: []);
   }
 
   /// `Withdraw`
@@ -1841,12 +1244,7 @@ class AppLocalizations {
 
   /// `Withdraw Your Earnings`
   String get withdraw_your_earnings {
-    return Intl.message(
-      'Withdraw Your Earnings',
-      name: 'withdraw_your_earnings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Withdraw Your Earnings', name: 'withdraw_your_earnings', desc: '', args: []);
   }
 
   /// `You've earned it! Choose where you want to send your money and hit withdraw.`
@@ -1861,22 +1259,12 @@ class AppLocalizations {
 
   /// `Please enter amount`
   String get please_enter_amount {
-    return Intl.message(
-      'Please enter amount',
-      name: 'please_enter_amount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter amount', name: 'please_enter_amount', desc: '', args: []);
   }
 
   /// `Withdrawal Request Submitted Successfully!`
   String get withdrawal_success {
-    return Intl.message(
-      'Withdrawal Request Submitted Successfully!',
-      name: 'withdrawal_success',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Withdrawal Request Submitted Successfully!', name: 'withdrawal_success', desc: '', args: []);
   }
 
   /// `Success! You've requested {amount} withdrawal. Funds will be transferred to your selected account shortly.`
@@ -1891,32 +1279,17 @@ class AppLocalizations {
 
   /// `Transactions`
   String get transactions {
-    return Intl.message(
-      'Transactions',
-      name: 'transactions',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Transactions', name: 'transactions', desc: '', args: []);
   }
 
   /// `Withdraw History`
   String get withdraw_history {
-    return Intl.message(
-      'Withdraw History',
-      name: 'withdraw_history',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Withdraw History', name: 'withdraw_history', desc: '', args: []);
   }
 
   /// `No transactions found`
   String get no_transactions_found {
-    return Intl.message(
-      'No transactions found',
-      name: 'no_transactions_found',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No transactions found', name: 'no_transactions_found', desc: '', args: []);
   }
 
   /// `ID: `
@@ -1936,42 +1309,22 @@ class AppLocalizations {
 
   /// `Total Distance`
   String get total_distance {
-    return Intl.message(
-      'Total Distance',
-      name: 'total_distance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total Distance', name: 'total_distance', desc: '', args: []);
   }
 
   /// `Average Rating`
   String get average_rating {
-    return Intl.message(
-      'Average Rating',
-      name: 'average_rating',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Average Rating', name: 'average_rating', desc: '', args: []);
   }
 
   /// `Payout Method`
   String get payout_method {
-    return Intl.message(
-      'Payout Method',
-      name: 'payout_method',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payout Method', name: 'payout_method', desc: '', args: []);
   }
 
   /// `Payment Method`
   String get payment_method {
-    return Intl.message(
-      'Payment Method',
-      name: 'payment_method',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payment Method', name: 'payment_method', desc: '', args: []);
   }
 
   /// `Theme`
@@ -1981,32 +1334,17 @@ class AppLocalizations {
 
   /// `Select Profile Image`
   String get select_profile_image {
-    return Intl.message(
-      'Select Profile Image',
-      name: 'select_profile_image',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Profile Image', name: 'select_profile_image', desc: '', args: []);
   }
 
   /// `Upload image`
   String get upload_image {
-    return Intl.message(
-      'Upload image',
-      name: 'upload_image',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Upload image', name: 'upload_image', desc: '', args: []);
   }
 
   /// `Or select an avatar from the list below:`
   String get or_select_avatar {
-    return Intl.message(
-      'Or select an avatar from the list below:',
-      name: 'or_select_avatar',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Or select an avatar from the list below:', name: 'or_select_avatar', desc: '', args: []);
   }
 
   /// `Accept Ride`
@@ -2020,12 +1358,9 @@ class AppLocalizations {
   }
 
   /// `Rider Waiting — Move Now`
-  String get rider_waiting_move_now => Intl.message(
-      'Rider Waiting — Move Now',
-      name: 'rider_waiting_move_now',
-      desc: '',
-      args: [],
-    );
+  String get rider_waiting_move_now {
+    return Intl.message('Rider Waiting — Move Now', name: 'rider_waiting_move_now', desc: '', args: []);
+  }
 
   /// `Time to pick up your rider! Follow the navigation and arrive without delay`
   String get time_to_pickup {
@@ -2039,22 +1374,12 @@ class AppLocalizations {
 
   /// `Go to Pickup Location`
   String get go_to_pickup_location {
-    return Intl.message(
-      'Go to Pickup Location',
-      name: 'go_to_pickup_location',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Go to Pickup Location', name: 'go_to_pickup_location', desc: '', args: []);
   }
 
   /// `You’ve Arrived at the Pickup Point`
   String get arrived_pickup_point {
-    return Intl.message(
-      'You’ve Arrived at the Pickup Point',
-      name: 'arrived_pickup_point',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('You’ve Arrived at the Pickup Point', name: 'arrived_pickup_point', desc: '', args: []);
   }
 
   /// `You’ve reached the pickup location. Please wait a few minutes for the rider to approach your vehicle.`
@@ -2069,22 +1394,12 @@ class AppLocalizations {
 
   /// `Tap to Confirm Your Arrival`
   String get tap_to_confirm_arrival {
-    return Intl.message(
-      'Tap to Confirm Your Arrival',
-      name: 'tap_to_confirm_arrival',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tap to Confirm Your Arrival', name: 'tap_to_confirm_arrival', desc: '', args: []);
   }
 
   /// `Pickup Rider`
   String get pickup_rider {
-    return Intl.message(
-      'Pickup Rider',
-      name: 'pickup_rider',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pickup Rider', name: 'pickup_rider', desc: '', args: []);
   }
 
   /// `Double-check the rider’s name and verify their destination before proceeding.`
@@ -2099,32 +1414,17 @@ class AppLocalizations {
 
   /// `Confirm Pickup`
   String get confirm_pickup {
-    return Intl.message(
-      'Confirm Pickup',
-      name: 'confirm_pickup',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm Pickup', name: 'confirm_pickup', desc: '', args: []);
   }
 
   /// `All Set? Start the Ride Now`
   String get all_set_start_ride {
-    return Intl.message(
-      'All Set? Start the Ride Now',
-      name: 'all_set_start_ride',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All Set? Start the Ride Now', name: 'all_set_start_ride', desc: '', args: []);
   }
 
   /// `Your Ride Has Started!`
   String get ride_started {
-    return Intl.message(
-      'Your Ride Has Started!',
-      name: 'ride_started',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Ride Has Started!', name: 'ride_started', desc: '', args: []);
   }
 
   /// `Start the journey by following the in-app navigation. Make sure both parties are comfortable before beginning.`
@@ -2139,12 +1439,7 @@ class AppLocalizations {
 
   /// `Tap to Start Ride`
   String get tap_to_start_ride {
-    return Intl.message(
-      'Tap to Start Ride',
-      name: 'tap_to_start_ride',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tap to Start Ride', name: 'tap_to_start_ride', desc: '', args: []);
   }
 
   /// `Follow the directions, stay calm, and create a comfortable ride environment.`
@@ -2179,12 +1474,7 @@ class AppLocalizations {
 
   /// `Reached Destination`
   String get reached_destination {
-    return Intl.message(
-      'Reached Destination',
-      name: 'reached_destination',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reached Destination', name: 'reached_destination', desc: '', args: []);
   }
 
   /// `The trip has ended. Wait for the passenger to complete their payment before closing the ride.`
@@ -2199,42 +1489,22 @@ class AppLocalizations {
 
   /// `Report Issue`
   String get reportIssue {
-    return Intl.message(
-      'Report Issue',
-      name: 'reportIssue',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Report Issue', name: 'reportIssue', desc: '', args: []);
   }
 
   /// `Ride Details`
   String get rideDetails {
-    return Intl.message(
-      'Ride Details',
-      name: 'rideDetails',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Ride Details', name: 'rideDetails', desc: '', args: []);
   }
 
   /// `Text been copied`
   String get textCopied {
-    return Intl.message(
-      'Text been copied',
-      name: 'textCopied',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Text been copied', name: 'textCopied', desc: '', args: []);
   }
 
   /// `Something Went Wrong? Report an Issue`
   String get reportIssueTitle {
-    return Intl.message(
-      'Something Went Wrong? Report an Issue',
-      name: 'reportIssueTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Something Went Wrong? Report an Issue', name: 'reportIssueTitle', desc: '', args: []);
   }
 
   /// `Tell us what went wrong. We’ll look into it immediately.`
@@ -2254,12 +1524,7 @@ class AppLocalizations {
 
   /// `Select Report type`
   String get selectReportType {
-    return Intl.message(
-      'Select Report type',
-      name: 'selectReportType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Report type', name: 'selectReportType', desc: '', args: []);
   }
 
   /// `Details`
@@ -2269,32 +1534,17 @@ class AppLocalizations {
 
   /// `Write Issue Details`
   String get writeIssueDetails {
-    return Intl.message(
-      'Write Issue Details',
-      name: 'writeIssueDetails',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Write Issue Details', name: 'writeIssueDetails', desc: '', args: []);
   }
 
   /// `Please insert all Data`
   String get insertAllData {
-    return Intl.message(
-      'Please insert all Data',
-      name: 'insertAllData',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please insert all Data', name: 'insertAllData', desc: '', args: []);
   }
 
   /// `Your Issue Submitted Successfully`
   String get issueSubmitted {
-    return Intl.message(
-      'Your Issue Submitted Successfully',
-      name: 'issueSubmitted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Your Issue Submitted Successfully', name: 'issueSubmitted', desc: '', args: []);
   }
 
   /// `Thanks for reporting. Our team will review your issue and get back to you shortly.`
@@ -2309,12 +1559,7 @@ class AppLocalizations {
 
   /// `Request Entity Too Large`
   String get requestEntityTooLarge {
-    return Intl.message(
-      'Request Entity Too Large',
-      name: 'requestEntityTooLarge',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Request Entity Too Large', name: 'requestEntityTooLarge', desc: '', args: []);
   }
 
   /// `Ride Charge`
@@ -2344,32 +1589,17 @@ class AppLocalizations {
 
   /// `Logging in Somewhere Else`
   String get loggingInSomewhereElse {
-    return Intl.message(
-      'Logging in Somewhere Else',
-      name: 'loggingInSomewhereElse',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Logging in Somewhere Else', name: 'loggingInSomewhereElse', desc: '', args: []);
   }
 
   /// `Stay on This Device`
   String get stayOnThisDevice {
-    return Intl.message(
-      'Stay on This Device',
-      name: 'stayOnThisDevice',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Stay on This Device', name: 'stayOnThisDevice', desc: '', args: []);
   }
 
   /// `Pick from Gallery`
   String get pickFromGallery {
-    return Intl.message(
-      'Pick from Gallery',
-      name: 'pickFromGallery',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pick from Gallery', name: 'pickFromGallery', desc: '', args: []);
   }
 
   /// `Take a Photo`
@@ -2389,182 +1619,92 @@ class AppLocalizations {
 
   /// `You can cancel ride in`
   String get you_can_cancel_ride_in {
-    return Intl.message(
-      'You can cancel ride in',
-      name: 'you_can_cancel_ride_in',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('You can cancel ride in', name: 'you_can_cancel_ride_in', desc: '', args: []);
   }
 
   /// `Create New Trip`
   String get intercityCreateNewTrip {
-    return Intl.message(
-      'Create New Trip',
-      name: 'intercityCreateNewTrip',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Create New Trip', name: 'intercityCreateNewTrip', desc: '', args: []);
   }
 
   /// `PUBLISH TRIP`
   String get intercityPublishTrip {
-    return Intl.message(
-      'PUBLISH TRIP',
-      name: 'intercityPublishTrip',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('PUBLISH TRIP', name: 'intercityPublishTrip', desc: '', args: []);
   }
 
   /// `Trip Details`
   String get intercityTripDetails {
-    return Intl.message(
-      'Trip Details',
-      name: 'intercityTripDetails',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trip Details', name: 'intercityTripDetails', desc: '', args: []);
   }
 
   /// `Booking Type`
   String get intercityBookingType {
-    return Intl.message(
-      'Booking Type',
-      name: 'intercityBookingType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Booking Type', name: 'intercityBookingType', desc: '', args: []);
   }
 
   /// `Share Pool`
   String get intercitySharePool {
-    return Intl.message(
-      'Share Pool',
-      name: 'intercitySharePool',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Share Pool', name: 'intercitySharePool', desc: '', args: []);
   }
 
   /// `Private`
   String get intercityPrivate {
-    return Intl.message(
-      'Private',
-      name: 'intercityPrivate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Private', name: 'intercityPrivate', desc: '', args: []);
   }
 
   /// `Vehicle Type`
   String get intercityVehicleType {
-    return Intl.message(
-      'Vehicle Type',
-      name: 'intercityVehicleType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Type', name: 'intercityVehicleType', desc: '', args: []);
   }
 
   /// `Route Selection`
   String get intercityRouteSelection {
-    return Intl.message(
-      'Route Selection',
-      name: 'intercityRouteSelection',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Route Selection', name: 'intercityRouteSelection', desc: '', args: []);
   }
 
   /// `From City/Area (Search)`
   String get intercityFromCity {
-    return Intl.message(
-      'From City/Area (Search)',
-      name: 'intercityFromCity',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('From City/Area (Search)', name: 'intercityFromCity', desc: '', args: []);
   }
 
   /// `To City/Area (Search)`
   String get intercityToCity {
-    return Intl.message(
-      'To City/Area (Search)',
-      name: 'intercityToCity',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('To City/Area (Search)', name: 'intercityToCity', desc: '', args: []);
   }
 
   /// `Locations & Coords`
   String get intercityLocationsCoords {
-    return Intl.message(
-      'Locations & Coords',
-      name: 'intercityLocationsCoords',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Locations & Coords', name: 'intercityLocationsCoords', desc: '', args: []);
   }
 
   /// `Pickup Address (Edit if needed)`
   String get intercityPickupAddress {
-    return Intl.message(
-      'Pickup Address (Edit if needed)',
-      name: 'intercityPickupAddress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pickup Address (Edit if needed)', name: 'intercityPickupAddress', desc: '', args: []);
   }
 
   /// `Drop Address (Edit if needed)`
   String get intercityDropAddress {
-    return Intl.message(
-      'Drop Address (Edit if needed)',
-      name: 'intercityDropAddress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Drop Address (Edit if needed)', name: 'intercityDropAddress', desc: '', args: []);
   }
 
   /// `Schedule & Fare`
   String get intercityScheduleFare {
-    return Intl.message(
-      'Schedule & Fare',
-      name: 'intercityScheduleFare',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Schedule & Fare', name: 'intercityScheduleFare', desc: '', args: []);
   }
 
   /// `Departure Time`
   String get intercityDepartureTime {
-    return Intl.message(
-      'Departure Time',
-      name: 'intercityDepartureTime',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Departure Time', name: 'intercityDepartureTime', desc: '', args: []);
   }
 
   /// `Select Date & Time`
   String get intercitySelectDateTime {
-    return Intl.message(
-      'Select Date & Time',
-      name: 'intercitySelectDateTime',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select Date & Time', name: 'intercitySelectDateTime', desc: '', args: []);
   }
 
   /// `Total Fare (₹)`
   String get intercityTotalFareInput {
-    return Intl.message(
-      'Total Fare (₹)',
-      name: 'intercityTotalFareInput',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total Fare (₹)', name: 'intercityTotalFareInput', desc: '', args: []);
   }
 
   /// `Seats`
@@ -2574,182 +1714,92 @@ class AppLocalizations {
 
   /// `Distance (km)`
   String get intercityDistance {
-    return Intl.message(
-      'Distance (km)',
-      name: 'intercityDistance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Distance (km)', name: 'intercityDistance', desc: '', args: []);
   }
 
   /// `Return Trip`
   String get intercityReturnTrip {
-    return Intl.message(
-      'Return Trip',
-      name: 'intercityReturnTrip',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Return Trip', name: 'intercityReturnTrip', desc: '', args: []);
   }
 
   /// `Night Fare`
   String get intercityNightFare {
-    return Intl.message(
-      'Night Fare',
-      name: 'intercityNightFare',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Night Fare', name: 'intercityNightFare', desc: '', args: []);
   }
 
   /// `Return Departure`
   String get intercityReturnDeparture {
-    return Intl.message(
-      'Return Departure',
-      name: 'intercityReturnDeparture',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Return Departure', name: 'intercityReturnDeparture', desc: '', args: []);
   }
 
   /// `Night Fare Multiplier`
   String get intercityNightFareMultiplier {
-    return Intl.message(
-      'Night Fare Multiplier',
-      name: 'intercityNightFareMultiplier',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Night Fare Multiplier', name: 'intercityNightFareMultiplier', desc: '', args: []);
   }
 
   /// `Trip published successfully!`
   String get intercityTripPublishedSuccess {
-    return Intl.message(
-      'Trip published successfully!',
-      name: 'intercityTripPublishedSuccess',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trip published successfully!', name: 'intercityTripPublishedSuccess', desc: '', args: []);
   }
 
   /// `Please select departure time`
   String get intercitySelectDepartureTimeError {
-    return Intl.message(
-      'Please select departure time',
-      name: 'intercitySelectDepartureTimeError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please select departure time', name: 'intercitySelectDepartureTimeError', desc: '', args: []);
   }
 
   /// `Required`
   String get intercityRequiredError {
-    return Intl.message(
-      'Required',
-      name: 'intercityRequiredError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Required', name: 'intercityRequiredError', desc: '', args: []);
   }
 
   /// `My Trips`
   String get intercityMyTrips {
-    return Intl.message(
-      'My Trips',
-      name: 'intercityMyTrips',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('My Trips', name: 'intercityMyTrips', desc: '', args: []);
   }
 
   /// `No published trips found.`
   String get intercityNoPublishedTrips {
-    return Intl.message(
-      'No published trips found.',
-      name: 'intercityNoPublishedTrips',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No published trips found.', name: 'intercityNoPublishedTrips', desc: '', args: []);
   }
 
   /// `Start Trip`
   String get intercityStartTrip {
-    return Intl.message(
-      'Start Trip',
-      name: 'intercityStartTrip',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Start Trip', name: 'intercityStartTrip', desc: '', args: []);
   }
 
   /// `Complete`
   String get intercityComplete {
-    return Intl.message(
-      'Complete',
-      name: 'intercityComplete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Complete', name: 'intercityComplete', desc: '', args: []);
   }
 
   /// `Passengers`
   String get intercityPassengers {
-    return Intl.message(
-      'Passengers',
-      name: 'intercityPassengers',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Passengers', name: 'intercityPassengers', desc: '', args: []);
   }
 
   /// `Verified`
   String get intercityVerified {
-    return Intl.message(
-      'Verified',
-      name: 'intercityVerified',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Verified', name: 'intercityVerified', desc: '', args: []);
   }
 
   /// `Onboarded`
   String get intercityOnboarded {
-    return Intl.message(
-      'Onboarded',
-      name: 'intercityOnboarded',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Onboarded', name: 'intercityOnboarded', desc: '', args: []);
   }
 
   /// `Verify OTP`
   String get intercityVerifyOtp {
-    return Intl.message(
-      'Verify OTP',
-      name: 'intercityVerifyOtp',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Verify OTP', name: 'intercityVerifyOtp', desc: '', args: []);
   }
 
   /// `Enter OTP`
   String get intercityEnterOtpDialog {
-    return Intl.message(
-      'Enter OTP',
-      name: 'intercityEnterOtpDialog',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter OTP', name: 'intercityEnterOtpDialog', desc: '', args: []);
   }
 
   /// `6-Digit OTP`
   String get intercityOtpHint {
-    return Intl.message(
-      '6-Digit OTP',
-      name: 'intercityOtpHint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('6-Digit OTP', name: 'intercityOtpHint', desc: '', args: []);
   }
 
   /// `Cancel`
@@ -2764,22 +1814,12 @@ class AppLocalizations {
 
   /// `OTP Verified Successfully`
   String get intercityOtpVerifiedSuccess {
-    return Intl.message(
-      'OTP Verified Successfully',
-      name: 'intercityOtpVerifiedSuccess',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('OTP Verified Successfully', name: 'intercityOtpVerifiedSuccess', desc: '', args: []);
   }
 
   /// `Verification Failed: {error}`
   String intercityVerificationFailed(Object error) {
-    return Intl.message(
-      'Verification Failed: $error',
-      name: 'intercityVerificationFailed',
-      desc: '',
-      args: [error],
-    );
+    return Intl.message('Verification Failed: $error', name: 'intercityVerificationFailed', desc: '', args: [error]);
   }
 
   /// `Map`
@@ -2789,282 +1829,142 @@ class AppLocalizations {
 
   /// `Trip started successfully`
   String get intercityTripStarted {
-    return Intl.message(
-      'Trip started successfully',
-      name: 'intercityTripStarted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trip started successfully', name: 'intercityTripStarted', desc: '', args: []);
   }
 
   /// `Error: {error}`
   String intercityError(String error) {
-    return Intl.message(
-      'Error: $error',
-      name: 'intercityError',
-      desc: '',
-      args: [error],
-    );
+    return Intl.message('Error: $error', name: 'intercityError', desc: '', args: [error]);
   }
 
   /// `Trip completed successfully`
   String get intercityTripCompleted {
-    return Intl.message(
-      'Trip completed successfully',
-      name: 'intercityTripCompleted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trip completed successfully', name: 'intercityTripCompleted', desc: '', args: []);
   }
 
   /// `Could not launch map`
   String get intercityMapLaunchError {
-    return Intl.message(
-      'Could not launch map',
-      name: 'intercityMapLaunchError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Could not launch map', name: 'intercityMapLaunchError', desc: '', args: []);
   }
 
   /// `No bookings for this trip`
   String get intercityNoBookings {
-    return Intl.message(
-      'No bookings for this trip',
-      name: 'intercityNoBookings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No bookings for this trip', name: 'intercityNoBookings', desc: '', args: []);
   }
 
   /// `Bookings`
   String get intercityBookings {
-    return Intl.message(
-      'Bookings',
-      name: 'intercityBookings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Bookings', name: 'intercityBookings', desc: '', args: []);
   }
 
   /// `Intercity Driver`
   String get intercityDriverTitle {
-    return Intl.message(
-      'Intercity Driver',
-      name: 'intercityDriverTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Intercity Driver', name: 'intercityDriverTitle', desc: '', args: []);
   }
 
   /// `Intercity`
   String get intercityLabel {
-    return Intl.message(
-      'Intercity',
-      name: 'intercityLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Intercity', name: 'intercityLabel', desc: '', args: []);
   }
 
   /// `No pending bookings.`
   String get intercityNoPendingBookings {
-    return Intl.message(
-      'No pending bookings.',
-      name: 'intercityNoPendingBookings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No pending bookings.', name: 'intercityNoPendingBookings', desc: '', args: []);
   }
 
   /// `PENDING`
   String get intercityStatusPending {
-    return Intl.message(
-      'PENDING',
-      name: 'intercityStatusPending',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('PENDING', name: 'intercityStatusPending', desc: '', args: []);
   }
 
   /// `Unknown Passenger`
   String get intercityUnknownPassenger {
-    return Intl.message(
-      'Unknown Passenger',
-      name: 'intercityUnknownPassenger',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unknown Passenger', name: 'intercityUnknownPassenger', desc: '', args: []);
   }
 
   /// `Seats`
   String get intercityLabelSeats {
-    return Intl.message(
-      'Seats',
-      name: 'intercityLabelSeats',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Seats', name: 'intercityLabelSeats', desc: '', args: []);
   }
 
   /// `Amount`
   String get intercityLabelAmount {
-    return Intl.message(
-      'Amount',
-      name: 'intercityLabelAmount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Amount', name: 'intercityLabelAmount', desc: '', args: []);
   }
 
   /// `Payment`
   String get intercityLabelPayment {
-    return Intl.message(
-      'Payment',
-      name: 'intercityLabelPayment',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Payment', name: 'intercityLabelPayment', desc: '', args: []);
   }
 
   /// `CASH`
   String get intercityPaymentCash {
-    return Intl.message(
-      'CASH',
-      name: 'intercityPaymentCash',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('CASH', name: 'intercityPaymentCash', desc: '', args: []);
   }
 
   /// `Reject`
   String get intercityActionReject {
-    return Intl.message(
-      'Reject',
-      name: 'intercityActionReject',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reject', name: 'intercityActionReject', desc: '', args: []);
   }
 
   /// `Accept`
   String get intercityActionAccept {
-    return Intl.message(
-      'Accept',
-      name: 'intercityActionAccept',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Accept', name: 'intercityActionAccept', desc: '', args: []);
   }
 
   /// `Booking accepted`
   String get intercityMsgBookingAccepted {
-    return Intl.message(
-      'Booking accepted',
-      name: 'intercityMsgBookingAccepted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Booking accepted', name: 'intercityMsgBookingAccepted', desc: '', args: []);
   }
 
   /// `Booking rejected`
   String get intercityMsgBookingRejected {
-    return Intl.message(
-      'Booking rejected',
-      name: 'intercityMsgBookingRejected',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Booking rejected', name: 'intercityMsgBookingRejected', desc: '', args: []);
   }
 
   /// `Retry`
   String get intercityActionRetry {
-    return Intl.message(
-      'Retry',
-      name: 'intercityActionRetry',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Retry', name: 'intercityActionRetry', desc: '', args: []);
   }
 
   /// `UNKNOWN`
   String get intercityStatusUnknown {
-    return Intl.message(
-      'UNKNOWN',
-      name: 'intercityStatusUnknown',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('UNKNOWN', name: 'intercityStatusUnknown', desc: '', args: []);
   }
 
   /// `PUBLISHED`
   String get intercityStatusPublished {
-    return Intl.message(
-      'PUBLISHED',
-      name: 'intercityStatusPublished',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('PUBLISHED', name: 'intercityStatusPublished', desc: '', args: []);
   }
 
   /// `DISPATCHED`
   String get intercityStatusDispatched {
-    return Intl.message(
-      'DISPATCHED',
-      name: 'intercityStatusDispatched',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('DISPATCHED', name: 'intercityStatusDispatched', desc: '', args: []);
   }
 
   /// `MIN REACHED`
   String get intercityStatusMinReached {
-    return Intl.message(
-      'MIN REACHED',
-      name: 'intercityStatusMinReached',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('MIN REACHED', name: 'intercityStatusMinReached', desc: '', args: []);
   }
 
   /// `IN PROGRESS`
   String get intercityStatusInProgress {
-    return Intl.message(
-      'IN PROGRESS',
-      name: 'intercityStatusInProgress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('IN PROGRESS', name: 'intercityStatusInProgress', desc: '', args: []);
   }
 
   /// `COMPLETED`
   String get intercityStatusCompleted {
-    return Intl.message(
-      'COMPLETED',
-      name: 'intercityStatusCompleted',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('COMPLETED', name: 'intercityStatusCompleted', desc: '', args: []);
   }
 
   /// `CANCELLED`
   String get intercityStatusCancelled {
-    return Intl.message(
-      'CANCELLED',
-      name: 'intercityStatusCancelled',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('CANCELLED', name: 'intercityStatusCancelled', desc: '', args: []);
   }
 
   /// `FILLING`
   String get intercityStatusFilling {
-    return Intl.message(
-      'FILLING',
-      name: 'intercityStatusFilling',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('FILLING', name: 'intercityStatusFilling', desc: '', args: []);
   }
 
   /// `Car`
@@ -3074,12 +1974,7 @@ class AppLocalizations {
 
   /// `Onboarded: `
   String get intercityOnboardedLabel {
-    return Intl.message(
-      'Onboarded: ',
-      name: 'intercityOnboardedLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Onboarded: ', name: 'intercityOnboardedLabel', desc: '', args: []);
   }
 
   /// `Select trip details. Search locations using Google Maps. Distance is auto-calculated.`
@@ -3094,122 +1989,62 @@ class AppLocalizations {
 
   /// `Pickup Lat`
   String get intercityPickupLat {
-    return Intl.message(
-      'Pickup Lat',
-      name: 'intercityPickupLat',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pickup Lat', name: 'intercityPickupLat', desc: '', args: []);
   }
 
   /// `Pickup Lng`
   String get intercityPickupLng {
-    return Intl.message(
-      'Pickup Lng',
-      name: 'intercityPickupLng',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pickup Lng', name: 'intercityPickupLng', desc: '', args: []);
   }
 
   /// `Drop Lat`
   String get intercityDropLat {
-    return Intl.message(
-      'Drop Lat',
-      name: 'intercityDropLat',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Drop Lat', name: 'intercityDropLat', desc: '', args: []);
   }
 
   /// `Drop Lng`
   String get intercityDropLng {
-    return Intl.message(
-      'Drop Lng',
-      name: 'intercityDropLng',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Drop Lng', name: 'intercityDropLng', desc: '', args: []);
   }
 
   /// `Car Normal`
   String get intercityVehicleCarNormal {
-    return Intl.message(
-      'Car Normal',
-      name: 'intercityVehicleCarNormal',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Car Normal', name: 'intercityVehicleCarNormal', desc: '', args: []);
   }
 
   /// `Car Premium Express`
   String get intercityVehicleCarPremium {
-    return Intl.message(
-      'Car Premium Express',
-      name: 'intercityVehicleCarPremium',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Car Premium Express', name: 'intercityVehicleCarPremium', desc: '', args: []);
   }
 
   /// `Auto Normal`
   String get intercityVehicleAuto {
-    return Intl.message(
-      'Auto Normal',
-      name: 'intercityVehicleAuto',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Auto Normal', name: 'intercityVehicleAuto', desc: '', args: []);
   }
 
   /// `Tata Magic Lite`
   String get intercityVehicleTataMagic {
-    return Intl.message(
-      'Tata Magic Lite',
-      name: 'intercityVehicleTataMagic',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tata Magic Lite', name: 'intercityVehicleTataMagic', desc: '', args: []);
   }
 
   /// `Enter your email and password to continue`
   String get login_subtitle {
-    return Intl.message(
-      'Enter your email and password to continue',
-      name: 'login_subtitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your email and password to continue', name: 'login_subtitle', desc: '', args: []);
   }
 
   /// `Enter your email`
   String get email_hint {
-    return Intl.message(
-      'Enter your email',
-      name: 'email_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your email', name: 'email_hint', desc: '', args: []);
   }
 
   /// `Please enter your password`
   String get enter_password_error {
-    return Intl.message(
-      'Please enter your password',
-      name: 'enter_password_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter your password', name: 'enter_password_error', desc: '', args: []);
   }
 
   /// `Don't have an account? `
   String get dont_have_account {
-    return Intl.message(
-      'Don\'t have an account? ',
-      name: 'dont_have_account',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Don\'t have an account? ', name: 'dont_have_account', desc: '', args: []);
   }
 
   /// `Sign Up`
@@ -3219,102 +2054,52 @@ class AppLocalizations {
 
   /// `Personal Information`
   String get step_personal_info {
-    return Intl.message(
-      'Personal Information',
-      name: 'step_personal_info',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Personal Information', name: 'step_personal_info', desc: '', args: []);
   }
 
   /// `Vehicle Information`
   String get step_vehicle_info {
-    return Intl.message(
-      'Vehicle Information',
-      name: 'step_vehicle_info',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Information', name: 'step_vehicle_info', desc: '', args: []);
   }
 
   /// `License & Documents`
   String get step_license_docs {
-    return Intl.message(
-      'License & Documents',
-      name: 'step_license_docs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('License & Documents', name: 'step_license_docs', desc: '', args: []);
   }
 
   /// `Bank Details`
   String get step_bank_details {
-    return Intl.message(
-      'Bank Details',
-      name: 'step_bank_details',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Bank Details', name: 'step_bank_details', desc: '', args: []);
   }
 
   /// `Create Account`
   String get step_create_account {
-    return Intl.message(
-      'Create Account',
-      name: 'step_create_account',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Create Account', name: 'step_create_account', desc: '', args: []);
   }
 
   /// `Enter your basic details`
   String get step_subtitle_personal {
-    return Intl.message(
-      'Enter your basic details',
-      name: 'step_subtitle_personal',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your basic details', name: 'step_subtitle_personal', desc: '', args: []);
   }
 
   /// `Tell us about your vehicle`
   String get step_subtitle_vehicle {
-    return Intl.message(
-      'Tell us about your vehicle',
-      name: 'step_subtitle_vehicle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tell us about your vehicle', name: 'step_subtitle_vehicle', desc: '', args: []);
   }
 
   /// `Upload required documents`
   String get step_subtitle_docs {
-    return Intl.message(
-      'Upload required documents',
-      name: 'step_subtitle_docs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Upload required documents', name: 'step_subtitle_docs', desc: '', args: []);
   }
 
   /// `Enter your bank account details`
   String get step_subtitle_bank {
-    return Intl.message(
-      'Enter your bank account details',
-      name: 'step_subtitle_bank',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter your bank account details', name: 'step_subtitle_bank', desc: '', args: []);
   }
 
   /// `Fill in your details to get started`
   String get step_subtitle_default {
-    return Intl.message(
-      'Fill in your details to get started',
-      name: 'step_subtitle_default',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fill in your details to get started', name: 'step_subtitle_default', desc: '', args: []);
   }
 
   /// `Back`
@@ -3324,52 +2109,27 @@ class AppLocalizations {
 
   /// `Please upload profile photo`
   String get upload_profile_photo_error {
-    return Intl.message(
-      'Please upload profile photo',
-      name: 'upload_profile_photo_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload profile photo', name: 'upload_profile_photo_error', desc: '', args: []);
   }
 
   /// `Please enter your full name`
   String get enter_full_name_error {
-    return Intl.message(
-      'Please enter your full name',
-      name: 'enter_full_name_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter your full name', name: 'enter_full_name_error', desc: '', args: []);
   }
 
   /// `Please enter your email`
   String get enter_email_error {
-    return Intl.message(
-      'Please enter your email',
-      name: 'enter_email_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter your email', name: 'enter_email_error', desc: '', args: []);
   }
 
   /// `Please enter a valid email address`
   String get enter_valid_email_error {
-    return Intl.message(
-      'Please enter a valid email address',
-      name: 'enter_valid_email_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter a valid email address', name: 'enter_valid_email_error', desc: '', args: []);
   }
 
   /// `Please enter phone number`
   String get enter_phone_error {
-    return Intl.message(
-      'Please enter phone number',
-      name: 'enter_phone_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter phone number', name: 'enter_phone_error', desc: '', args: []);
   }
 
   /// `Please enter a valid 10-digit phone number`
@@ -3384,192 +2144,97 @@ class AppLocalizations {
 
   /// `Phone number must contain only numbers`
   String get phone_numeric_error {
-    return Intl.message(
-      'Phone number must contain only numbers',
-      name: 'phone_numeric_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Phone number must contain only numbers', name: 'phone_numeric_error', desc: '', args: []);
   }
 
   /// `Password must be at least 6 characters`
   String get password_length_error {
-    return Intl.message(
-      'Password must be at least 6 characters',
-      name: 'password_length_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Password must be at least 6 characters', name: 'password_length_error', desc: '', args: []);
   }
 
   /// `Please enter vehicle type`
   String get enter_vehicle_type_error {
-    return Intl.message(
-      'Please enter vehicle type',
-      name: 'enter_vehicle_type_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter vehicle type', name: 'enter_vehicle_type_error', desc: '', args: []);
   }
 
   /// `Please enter vehicle number`
   String get enter_vehicle_number_error {
-    return Intl.message(
-      'Please enter vehicle number',
-      name: 'enter_vehicle_number_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter vehicle number', name: 'enter_vehicle_number_error', desc: '', args: []);
   }
 
   /// `Please enter vehicle color`
   String get enter_vehicle_color_error {
-    return Intl.message(
-      'Please enter vehicle color',
-      name: 'enter_vehicle_color_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter vehicle color', name: 'enter_vehicle_color_error', desc: '', args: []);
   }
 
   /// `Please enter vehicle model`
   String get enter_vehicle_model_error {
-    return Intl.message(
-      'Please enter vehicle model',
-      name: 'enter_vehicle_model_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter vehicle model', name: 'enter_vehicle_model_error', desc: '', args: []);
   }
 
   /// `Please enter license number`
   String get enter_license_number_error {
-    return Intl.message(
-      'Please enter license number',
-      name: 'enter_license_number_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter license number', name: 'enter_license_number_error', desc: '', args: []);
   }
 
   /// `Please enter Aadhaar number`
   String get enter_aadhaar_number_error {
-    return Intl.message(
-      'Please enter Aadhaar number',
-      name: 'enter_aadhaar_number_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter Aadhaar number', name: 'enter_aadhaar_number_error', desc: '', args: []);
   }
 
   /// `Aadhaar number must be exactly 12 digits`
   String get aadhaar_length_error {
-    return Intl.message(
-      'Aadhaar number must be exactly 12 digits',
-      name: 'aadhaar_length_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Aadhaar number must be exactly 12 digits', name: 'aadhaar_length_error', desc: '', args: []);
   }
 
   /// `Please enter RC number`
   String get enter_rc_number_error {
-    return Intl.message(
-      'Please enter RC number',
-      name: 'enter_rc_number_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter RC number', name: 'enter_rc_number_error', desc: '', args: []);
   }
 
   /// `Please upload license front photo`
   String get upload_license_front_error {
-    return Intl.message(
-      'Please upload license front photo',
-      name: 'upload_license_front_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload license front photo', name: 'upload_license_front_error', desc: '', args: []);
   }
 
   /// `Please upload license back photo`
   String get upload_license_back_error {
-    return Intl.message(
-      'Please upload license back photo',
-      name: 'upload_license_back_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload license back photo', name: 'upload_license_back_error', desc: '', args: []);
   }
 
   /// `Please upload RC front photo`
   String get upload_rc_front_error {
-    return Intl.message(
-      'Please upload RC front photo',
-      name: 'upload_rc_front_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload RC front photo', name: 'upload_rc_front_error', desc: '', args: []);
   }
 
   /// `Please upload RC back photo`
   String get upload_rc_back_error {
-    return Intl.message(
-      'Please upload RC back photo',
-      name: 'upload_rc_back_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload RC back photo', name: 'upload_rc_back_error', desc: '', args: []);
   }
 
   /// `Please upload Aadhaar front photo`
   String get upload_aadhaar_front_error {
-    return Intl.message(
-      'Please upload Aadhaar front photo',
-      name: 'upload_aadhaar_front_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload Aadhaar front photo', name: 'upload_aadhaar_front_error', desc: '', args: []);
   }
 
   /// `Please upload Aadhaar back photo`
   String get upload_aadhaar_back_error {
-    return Intl.message(
-      'Please upload Aadhaar back photo',
-      name: 'upload_aadhaar_back_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please upload Aadhaar back photo', name: 'upload_aadhaar_back_error', desc: '', args: []);
   }
 
   /// `Please enter account holder name`
   String get enter_account_holder_name_error {
-    return Intl.message(
-      'Please enter account holder name',
-      name: 'enter_account_holder_name_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter account holder name', name: 'enter_account_holder_name_error', desc: '', args: []);
   }
 
   /// `Please enter bank name`
   String get enter_bank_name_error {
-    return Intl.message(
-      'Please enter bank name',
-      name: 'enter_bank_name_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter bank name', name: 'enter_bank_name_error', desc: '', args: []);
   }
 
   /// `Please enter account number`
   String get enter_account_number_error {
-    return Intl.message(
-      'Please enter account number',
-      name: 'enter_account_number_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter account number', name: 'enter_account_number_error', desc: '', args: []);
   }
 
   /// `Account number must contain only numbers`
@@ -3594,12 +2259,7 @@ class AppLocalizations {
 
   /// `Please enter IFSC code`
   String get enter_ifsc_code_error {
-    return Intl.message(
-      'Please enter IFSC code',
-      name: 'enter_ifsc_code_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter IFSC code', name: 'enter_ifsc_code_error', desc: '', args: []);
   }
 
   /// `Please enter a valid IFSC code (e.g., ABCD0123456)`
@@ -3614,12 +2274,7 @@ class AppLocalizations {
 
   /// `Please enter UPI ID`
   String get enter_upi_id_error {
-    return Intl.message(
-      'Please enter UPI ID',
-      name: 'enter_upi_id_error',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Please enter UPI ID', name: 'enter_upi_id_error', desc: '', args: []);
   }
 
   /// `Please enter a valid UPI ID (e.g., name@paytm)`
@@ -3634,12 +2289,7 @@ class AppLocalizations {
 
   /// `Full name as per ID proof`
   String get full_name_hint {
-    return Intl.message(
-      'Full name as per ID proof',
-      name: 'full_name_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Full name as per ID proof', name: 'full_name_hint', desc: '', args: []);
   }
 
   /// `Enter your email address (e.g., name@example.com)`
@@ -3654,22 +2304,12 @@ class AppLocalizations {
 
   /// `Enter password (minimum 6 characters)`
   String get password_hint_min {
-    return Intl.message(
-      'Enter password (minimum 6 characters)',
-      name: 'password_hint_min',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter password (minimum 6 characters)', name: 'password_hint_min', desc: '', args: []);
   }
 
   /// `Select vehicle type (e.g., CAR, BIKE, SUV)`
   String get vehicle_type_hint {
-    return Intl.message(
-      'Select vehicle type (e.g., CAR, BIKE, SUV)',
-      name: 'vehicle_type_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Select vehicle type (e.g., CAR, BIKE, SUV)', name: 'vehicle_type_hint', desc: '', args: []);
   }
 
   /// `Enter vehicle registration number (e.g., MH12AB1234)`
@@ -3684,22 +2324,12 @@ class AppLocalizations {
 
   /// `Enter vehicle color (e.g., Red, Blue, White)`
   String get vehicle_color_hint {
-    return Intl.message(
-      'Enter vehicle color (e.g., Red, Blue, White)',
-      name: 'vehicle_color_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter vehicle color (e.g., Red, Blue, White)', name: 'vehicle_color_hint', desc: '', args: []);
   }
 
   /// `Vehicle Model`
   String get vehicle_model {
-    return Intl.message(
-      'Vehicle Model',
-      name: 'vehicle_model',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vehicle Model', name: 'vehicle_model', desc: '', args: []);
   }
 
   /// `Enter vehicle model (e.g., Swift, Activa, City)`
@@ -3714,12 +2344,7 @@ class AppLocalizations {
 
   /// `License Number`
   String get license_number {
-    return Intl.message(
-      'License Number',
-      name: 'license_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('License Number', name: 'license_number', desc: '', args: []);
   }
 
   /// `Enter driving license number (e.g., DL-0123456789)`
@@ -3734,62 +2359,32 @@ class AppLocalizations {
 
   /// `License Front`
   String get license_front {
-    return Intl.message(
-      'License Front',
-      name: 'license_front',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('License Front', name: 'license_front', desc: '', args: []);
   }
 
   /// `License Back`
   String get license_back {
-    return Intl.message(
-      'License Back',
-      name: 'license_back',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('License Back', name: 'license_back', desc: '', args: []);
   }
 
   /// `Aadhaar Number`
   String get aadhaar_number {
-    return Intl.message(
-      'Aadhaar Number',
-      name: 'aadhaar_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Aadhaar Number', name: 'aadhaar_number', desc: '', args: []);
   }
 
   /// `Enter 12-digit Aadhaar number`
   String get aadhaar_number_hint {
-    return Intl.message(
-      'Enter 12-digit Aadhaar number',
-      name: 'aadhaar_number_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter 12-digit Aadhaar number', name: 'aadhaar_number_hint', desc: '', args: []);
   }
 
   /// `Aadhaar Front`
   String get aadhaar_front {
-    return Intl.message(
-      'Aadhaar Front',
-      name: 'aadhaar_front',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Aadhaar Front', name: 'aadhaar_front', desc: '', args: []);
   }
 
   /// `Aadhaar Back`
   String get aadhaar_back {
-    return Intl.message(
-      'Aadhaar Back',
-      name: 'aadhaar_back',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Aadhaar Back', name: 'aadhaar_back', desc: '', args: []);
   }
 
   /// `RC Number`
@@ -3819,12 +2414,7 @@ class AppLocalizations {
 
   /// `Account Holder Name`
   String get account_holder_name {
-    return Intl.message(
-      'Account Holder Name',
-      name: 'account_holder_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Account Holder Name', name: 'account_holder_name', desc: '', args: []);
   }
 
   /// `Enter account holder name as per bank records`
@@ -3844,12 +2434,7 @@ class AppLocalizations {
 
   /// `Account Number`
   String get account_number {
-    return Intl.message(
-      'Account Number',
-      name: 'account_number',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Account Number', name: 'account_number', desc: '', args: []);
   }
 
   /// `IFSC Code`
@@ -3864,12 +2449,7 @@ class AppLocalizations {
 
   /// `Enter bank name (e.g., State Bank of India)`
   String get bank_name_hint {
-    return Intl.message(
-      'Enter bank name (e.g., State Bank of India)',
-      name: 'bank_name_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter bank name (e.g., State Bank of India)', name: 'bank_name_hint', desc: '', args: []);
   }
 
   /// `Enter bank account number (9-18 digits, numbers only)`
@@ -3884,42 +2464,22 @@ class AppLocalizations {
 
   /// `Enter IFSC code (e.g., SBIN0001234)`
   String get ifsc_code_hint {
-    return Intl.message(
-      'Enter IFSC code (e.g., SBIN0001234)',
-      name: 'ifsc_code_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter IFSC code (e.g., SBIN0001234)', name: 'ifsc_code_hint', desc: '', args: []);
   }
 
   /// `Enter UPI ID (e.g., name@paytm, name@phonepe)`
   String get upi_id_hint {
-    return Intl.message(
-      'Enter UPI ID (e.g., name@paytm, name@phonepe)',
-      name: 'upi_id_hint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Enter UPI ID (e.g., name@paytm, name@phonepe)', name: 'upi_id_hint', desc: '', args: []);
   }
 
   /// `Confirm OTP`
   String get verify_otp_action {
-    return Intl.message(
-      'Confirm OTP',
-      name: 'verify_otp_action',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm OTP', name: 'verify_otp_action', desc: '', args: []);
   }
 
   /// `No rides today`
   String get no_rides_today {
-    return Intl.message(
-      'No rides today',
-      name: 'no_rides_today',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No rides today', name: 'no_rides_today', desc: '', args: []);
   }
 }
 
@@ -3953,5 +2513,25 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
       }
     }
     return false;
+  }
+
+  /// `Agree`
+  String get agree {
+    return Intl.message('Agree', name: 'agree', desc: '', args: []);
+  }
+
+  /// `Use of Location Information`
+  String get prominent_disclosure_title {
+    return Intl.message('Use of Location Information', name: 'prominent_disclosure_title', desc: '', args: []);
+  }
+
+  /// `GAUVA Driver App collects...`
+  String get prominent_disclosure_message {
+    return Intl.message(
+      'GAUVA Driver App collects and uses your location data to provide core app functionality:\n\n* To match you with nearby ride requests\n* To enable live trip tracking during active rides\n* To ensure driver and rider safety and prevent fraud\n\nYour location is accessed only while the app is in use or a trip is active.\nWe do not collect location data when the app is closed.\n\nBy tapping “Agree & Continue”, you consent to the collection and use of your location data as described above.',
+      name: 'prominent_disclosure_message',
+      desc: '',
+      args: [],
+    );
   }
 }

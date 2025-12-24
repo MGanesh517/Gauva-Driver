@@ -55,6 +55,28 @@ class _LocationPermissionWrapperState extends State<LocationPermissionWrapper> w
   }
 
   Future<void> _requestPermission() async {
+    // Show Prominent Disclosure Dialog BEFORE requesting permission
+    final disclosureAccepted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(localize(context).prominent_disclosure_title),
+        content: Text(localize(context).prominent_disclosure_message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(localize(context).cancel), // Reuse cancel or "Deny"
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(localize(context).agree ?? "Agree"), // Ensure "Agree" exists or use "Allow"
+          ),
+        ],
+      ),
+    );
+
+    if (disclosureAccepted != true) return;
+
     final status = await Geolocator.requestPermission();
 
     if (status == LocationPermission.always || status == LocationPermission.whileInUse) {

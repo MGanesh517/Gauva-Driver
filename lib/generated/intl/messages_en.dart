@@ -89,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "add_wallet": MessageLookupByLibrary.simpleMessage("Add Wallet"),
     "address": MessageLookupByLibrary.simpleMessage("Address"),
+    "agree": MessageLookupByLibrary.simpleMessage("Agree"),
     "all_field_required": MessageLookupByLibrary.simpleMessage(
       "All field required",
     ),
@@ -646,6 +647,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile_under_review": MessageLookupByLibrary.simpleMessage(
       "Your Profile is Under Review",
+    ),
+    "prominent_disclosure_message": MessageLookupByLibrary.simpleMessage(
+      "This app collects location data to enable identification of nearby rides and tracking of your trip progress even when the app is closed or not in use.",
+    ),
+    "prominent_disclosure_title": MessageLookupByLibrary.simpleMessage(
+      "Use of Location Information",
     ),
     "rc_back": MessageLookupByLibrary.simpleMessage("RC Back"),
     "rc_front": MessageLookupByLibrary.simpleMessage("RC Front"),

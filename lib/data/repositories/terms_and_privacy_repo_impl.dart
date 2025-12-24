@@ -27,32 +27,31 @@ class TermsAndPrivacyRepoImpl extends BaseRepository implements ITermsAndPrivacy
   @override
   Future<Either<Failure, String>> rateCard() async => await safeApiCall(() async {
     final response = await termsAndPrivacyService.rateCard();
-    // Assuming the API returns the HTML string directly or in a 'data' field.
-    // Based on user prompt "html format data will come", it could be:
-    // 1. Raw HTML string
-    // 2. JSON: { data: "<html>...</html>" }
-    // 3. JSON: { data: { content: "<html>...</html>" } }
 
-    // I will try to handle both generic JSON 'data' or raw string
-    if (response.data is String) {
-      return response.data as String;
-    } else if (response.data is Map<String, dynamic>) {
-      // If it is like Terms/Privacy models:
-      if (response.data['data'] != null) {
-        if (response.data['data'] is String) {
-          return response.data['data'];
+    if (response.data is Map<String, dynamic>) {
+      final map = response.data as Map<String, dynamic>;
+
+      // Check for content directly in the root
+      if (map['content'] != null) {
+        return map['content'].toString();
+      }
+
+      // Check for nested 'data' object
+      if (map['data'] != null) {
+        final innerData = map['data'];
+        if (innerData is Map<String, dynamic>) {
+          return innerData['content']?.toString() ?? innerData['html']?.toString() ?? innerData.toString();
         }
-        // If it is structured like { data: { content: "..." } } - guess work here, looking at other models
-        // Terms model has data -> terms (String)
-        // So let's check keys
-        final data = response.data['data'];
-        if (data is Map<String, dynamic>) {
-          // Try to find a likely key
-          return data['content'] ?? data['html'] ?? data['rate_card'] ?? data.toString();
+        if (innerData is String) {
+          return innerData;
         }
       }
-      return response.data.toString();
     }
+
+    if (response.data is String) {
+      return response.data as String;
+    }
+
     return response.data.toString();
   });
 }
