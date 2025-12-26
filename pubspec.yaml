@@ -4,7 +4,7 @@ description: "GAUVA Driver App"
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+103
+version: 1.0.5+105
 
 environment:
   sdk: ^3.8.1
@@ -134,42 +134,9 @@ flutter:
     - assets/notification2.mp3
     - assets/Rapidosound.mp3
 
-  fonts:
-    - family: GeneralSans
-      fonts:
-        - asset: assets/fonts/generalsansextralight.ttf
-          weight: 200
-        - asset: assets/fonts/generalsanslight.ttf
-          weight: 300
-        - asset: assets/fonts/generalsansregular.ttf
-          weight: 400
-        - asset: assets/fonts/generalsansmedium.ttf
-          weight: 500
-        - asset: assets/fonts/generalsanssemibold.ttf
-          weight: 600
-        - asset: assets/fonts/generalsansbold.ttf
-          weight: 700
-
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/interthin.ttf
-          weight: 100
-        - asset: assets/fonts/interextralight.ttf
-          weight: 200
-        - asset: assets/fonts/interlight.ttf
-          weight: 300
-        - asset: assets/fonts/interregular.ttf
-          weight: 400
-        - asset: assets/fonts/intermedium.ttf
-          weight: 500
-        - asset: assets/fonts/intersemibold.ttf
-          weight: 600
-        - asset: assets/fonts/interbold.ttf
-          weight: 700
-        - asset: assets/fonts/interextrabold.ttf
-          weight: 800
-        - asset: assets/fonts/interblack.ttf
-          weight: 900
+  # Fonts are now loaded via Google Fonts package
+  # This reduces app size by ~1.5-3MB
+  # fonts: (removed - using google_fonts package)
 
 flutter_gen:
   assets:

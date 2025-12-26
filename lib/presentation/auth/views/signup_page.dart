@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,6 +61,17 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final TextEditingController _accountNumberController = TextEditingController();
   final TextEditingController _ifscCodeController = TextEditingController();
   final TextEditingController _upiIdController = TextEditingController();
+
+  // Image files for documents
+  File? _profilePhoto;
+  File? _licenseFront;
+  File? _licenseBack;
+  File? _rcFront;
+  File? _rcBack;
+  File? _aadhaarFront;
+  File? _aadhaarBack;
+
+  final ImagePicker _imagePicker = ImagePicker();
 
   final List<String> _vehicleTypes = ['BIKE', 'MEGA', 'AUTO', 'SMALL_SEDAN', 'CAR'];
 
@@ -246,10 +260,124 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   }
 
   void _onSubmit() {
+    // Validate terms acceptance
     if (!_isTermsAccepted) {
       showNotification(message: 'Please accept Terms & Conditions and Privacy Policy to continue');
       return;
     }
+
+    // Step 1 Validation: Personal Information
+    if (_nameController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter your full name');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (_emailController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter your email address');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailController.text.trim())) {
+      showNotification(message: 'Please enter a valid email address');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (_phoneNumber.trim().isEmpty) {
+      showNotification(message: 'Please enter your phone number');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (_passwordController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter a password');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (_passwordController.text.trim().length < 6) {
+      showNotification(message: 'Password must be at least 6 characters');
+      setState(() => _currentStep = 0);
+      return;
+    }
+    if (_profilePhoto == null) {
+      showNotification(message: 'Please upload your profile photo');
+      setState(() => _currentStep = 0);
+      return;
+    }
+
+    // Step 2 Validation: Vehicle Information
+    if (_vehicleTypeController.text.trim().isEmpty) {
+      showNotification(message: 'Please select vehicle type');
+      setState(() => _currentStep = 1);
+      return;
+    }
+    if (_vehicleNumberController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter vehicle number');
+      setState(() => _currentStep = 1);
+      return;
+    }
+    if (_vehicleColorController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter vehicle color');
+      setState(() => _currentStep = 1);
+      return;
+    }
+    if (_vehicleModelController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter vehicle model');
+      setState(() => _currentStep = 1);
+      return;
+    }
+
+    // Step 3 Validation: License & Documents
+    if (_licenseNumberController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter license number');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_licenseFront == null) {
+      showNotification(message: 'Please upload license front image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_licenseBack == null) {
+      showNotification(message: 'Please upload license back image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_aadhaarNumberController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter Aadhaar number');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_aadhaarNumberController.text.trim().length != 12) {
+      showNotification(message: 'Aadhaar number must be 12 digits');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_aadhaarFront == null) {
+      showNotification(message: 'Please upload Aadhaar front image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_aadhaarBack == null) {
+      showNotification(message: 'Please upload Aadhaar back image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_rcNumberController.text.trim().isEmpty) {
+      showNotification(message: 'Please enter RC number');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_rcFront == null) {
+      showNotification(message: 'Please upload RC front image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+    if (_rcBack == null) {
+      showNotification(message: 'Please upload RC back image');
+      setState(() => _currentStep = 2);
+      return;
+    }
+
+    // All validations passed, proceed with registration
     final String phoneCode = ref.read(selectedCountry).selectedPhoneCode?.phoneCode ?? '+91';
     final String phoneNumber = phoneCode + _phoneNumber.trim();
 
@@ -275,14 +403,33 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           accountNumber: _accountNumberController.text.trim(),
           ifscCode: _ifscCodeController.text.trim(),
           upiId: _upiIdController.text.trim(),
-          profilePhoto: null,
-          licenseFront: null,
-          licenseBack: null,
-          rcFront: null,
-          rcBack: null,
-          aadhaarFront: null,
-          aadhaarBack: null,
+          profilePhoto: _profilePhoto,
+          licenseFront: _licenseFront,
+          licenseBack: _licenseBack,
+          rcFront: _rcFront,
+          rcBack: _rcBack,
+          aadhaarFront: _aadhaarFront,
+          aadhaarBack: _aadhaarBack,
         );
+  }
+
+  Future<void> _pickImage(Function(File?) onImagePicked) async {
+    try {
+      final XFile? pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1920,
+        maxHeight: 1080,
+        imageQuality: 85,
+      );
+
+      if (pickedFile != null) {
+        setState(() {
+          onImagePicked(File(pickedFile.path));
+        });
+      }
+    } catch (e) {
+      showNotification(message: 'Error picking image: $e');
+    }
   }
 
   @override
@@ -546,6 +693,25 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         hintText: localize(context).full_name_hint,
       ),
       Gap(16.h),
+
+      // Profile Photo
+      Text(
+        'Profile Photo',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload Profile Photo',
+        imageFile: _profilePhoto,
+        onTap: () => _pickImage((file) => _profilePhoto = file),
+      ),
+      Gap(16.h),
       _buildTextField(
         context,
         isDark,
@@ -672,7 +838,44 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       ),
       Gap(16.h),
 
+      // License Front
+      Text(
+        'License Front',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload License Front',
+        imageFile: _licenseFront,
+        onTap: () => _pickImage((file) => _licenseFront = file),
+      ),
       Gap(16.h),
+
+      // License Back
+      Text(
+        'License Back',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload License Back',
+        imageFile: _licenseBack,
+        onTap: () => _pickImage((file) => _licenseBack = file),
+      ),
+      Gap(16.h),
+
       _buildTextField(
         context,
         isDark,
@@ -684,7 +887,44 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       ),
       Gap(16.h),
 
+      // Aadhaar Front
+      Text(
+        'Aadhaar Front',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload Aadhaar Front',
+        imageFile: _aadhaarFront,
+        onTap: () => _pickImage((file) => _aadhaarFront = file),
+      ),
       Gap(16.h),
+
+      // Aadhaar Back
+      Text(
+        'Aadhaar Back',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload Aadhaar Back',
+        imageFile: _aadhaarBack,
+        onTap: () => _pickImage((file) => _aadhaarBack = file),
+      ),
+      Gap(16.h),
+
       _buildTextField(
         context,
         isDark,
@@ -693,67 +933,46 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         hintText: localize(context).rc_number_hint,
       ),
       Gap(16.h),
+
+      // RC Front
+      Text(
+        'RC Front',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload RC Front',
+        imageFile: _rcFront,
+        onTap: () => _pickImage((file) => _rcFront = file),
+      ),
+      Gap(16.h),
+
+      // RC Back
+      Text(
+        'RC Back',
+        style: context.bodyMedium?.copyWith(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white : const Color(0xFF24262D),
+        ),
+      ),
+      Gap(8.h),
+      _buildImagePicker(
+        context,
+        isDark,
+        label: 'Upload RC Back',
+        imageFile: _rcBack,
+        onTap: () => _pickImage((file) => _rcBack = file),
+      ),
+      Gap(16.h),
     ],
   );
-
-  // // Step 4: Bank Information
-  // Widget _buildStep4(BuildContext context, bool isDark) => Column(
-  //   children: [
-  //     _buildTextField(
-  //       context,
-  //       isDark,
-  //       title: localize(context).account_holder_name,
-  //       controller: _accountHolderNameController,
-  //       hintText: localize(context).account_holder_name_hint,
-  //       isRequired: true,
-  //     ),
-  //     Gap(16.h),
-  //     _buildTextField(
-  //       context,
-  //       isDark,
-  //       title: localize(context).bank_name,
-  //       controller: _bankNameController,
-  //       hintText: localize(context).bank_name_hint,
-  //       isRequired: true,
-  //     ),
-  //     Gap(16.h),
-  //     _buildTextField(
-  //       context,
-  //       isDark,
-  //       title: localize(context).account_number,
-  //       controller: _accountNumberController,
-  //       hintText: localize(context).account_number_hint,
-  //       keyboardType: TextInputType.number,
-  //       isRequired: true,
-  //       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-  //     ),
-  //     Gap(16.h),
-  //     _buildTextField(
-  //       context,
-  //       isDark,
-  //       title: localize(context).ifsc_code,
-  //       controller: _ifscCodeController,
-  //       hintText: localize(context).ifsc_code_hint,
-  //       isRequired: true,
-  //       inputFormatters: [
-  //         FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
-  //         TextInputFormatter.withFunction(
-  //           (oldValue, newValue) => TextEditingValue(text: newValue.text.toUpperCase(), selection: newValue.selection),
-  //         ),
-  //       ],
-  //     ),
-  //     Gap(16.h),
-  //     _buildTextField(
-  //       context,
-  //       isDark,
-  //       title: localize(context).upi_id,
-  //       controller: _upiIdController,
-  //       hintText: localize(context).upi_id_hint,
-  //       keyboardType: TextInputType.emailAddress,
-  //       isRequired: true,
-  //     ),
-  //   ],
-  // );
 
   Widget _buildTextField(
     BuildContext context,
@@ -791,5 +1010,42 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         ),
       ),
     ],
+  );
+
+  Widget _buildImagePicker(
+    BuildContext context,
+    bool isDark, {
+    required String label,
+    required File? imageFile,
+    required VoidCallback onTap,
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: 120.h,
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF2A2D36) : const Color(0xFFF5F6F7),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: isDark ? const Color(0xFF3E4149) : const Color(0xFFE8EAED), width: 1),
+      ),
+      child: imageFile != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: Image.file(imageFile, fit: BoxFit.cover, width: double.infinity),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.cloud_upload_outlined, size: 40.sp, color: isDark ? Colors.white54 : const Color(0xFF687387)),
+                Gap(8.h),
+                Text(
+                  label,
+                  style: context.bodyMedium?.copyWith(
+                    fontSize: 14.sp,
+                    color: isDark ? Colors.white70 : const Color(0xFF687387),
+                  ),
+                ),
+              ],
+            ),
+    ),
   );
 }
