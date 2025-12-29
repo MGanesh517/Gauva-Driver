@@ -67,4 +67,9 @@ class ApiEndpoints {
   static const String saveFcmToken = '/notifications/token';
   static const String getWebSocketUrl = '/customer/config/websocket-url';
   static const String rateCard = '/public/legal-documents/rate-card/driver';
+
+  // Forgot Password endpoints
+  static const String forgotPassword = '/v1/auth/forgot-password';
+  static const String verifyPasswordResetOtp = '/v1/auth/verify-password-reset-otp';
+  static const String resetPasswordWithOtp = '/v1/auth/reset-password';
 }

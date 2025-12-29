@@ -65,4 +65,9 @@ abstract class IAuthService {
   Future<Response> driverLoginOtpVerify({required String idToken, required String role});
   Future<Response> driverLogout();
   Future<Response> saveFcmToken({required String token});
+
+  // Forgot Password methods
+  Future<Response> forgotPassword({required String email});
+  Future<Response> verifyPasswordResetOtp({required String email, required String otp});
+  Future<Response> resetPasswordWithOtp({required String email, required String otp, required String newPassword});
 }

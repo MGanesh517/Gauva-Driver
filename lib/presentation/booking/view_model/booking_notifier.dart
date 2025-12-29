@@ -11,7 +11,6 @@ import 'package:gauva_driver/core/widgets/markers/app_marker_drop_off.dart';
 import 'package:gauva_driver/data/models/order_response/order_model/points/points.dart';
 import 'package:gauva_driver/data/repositories/interfaces/i_geo_location_manager.dart';
 import 'package:gauva_driver/data/services/local_storage_service.dart';
-import 'package:gauva_driver/gen/assets.gen.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -282,20 +281,22 @@ class BookingNotifier extends StateNotifier<BookingState> {
 
   Future<BitmapDescriptor> getMarkerIcon() async {
     final userData = await LocalStorageService().getSavedUser();
-    String assetPath = Assets.images.carTopView.path;
+    String assetPath = 'assets/images/car-top-view.png'; // Default to car
 
     if (userData?.serviceType != null) {
       final type = userData!.serviceType!.toUpperCase();
-      if (type == 'BIKE') {
-        assetPath = Assets.vehicles.bike.path;
-      } else if (type == 'AUTO') {
-        assetPath = 'assets/vehicles/auto.png';
-      } else if (type == 'CAR' || type == 'SMALL_SEDAN') {
-        assetPath = Assets.vehicles.car.path;
-      } else if (type == 'MEGA') {
-        assetPath = Assets.vehicles.suv.path;
+      if (type == 'BIKE' || type == 'TWO_WHEELER') {
+        assetPath = 'assets/images/bike.ico';
+      } else if (type == 'AUTO' || type == 'THREE_WHEELER') {
+        assetPath = 'assets/images/auto1.ico';
+      } else if (type == 'CAR' || type == 'SMALL_SEDAN' || type == 'SEDAN' || type == 'FOUR_WHEELER') {
+        assetPath = 'assets/images/car-top-view.png';
+      } else if (type == 'MEGA' || type == 'SUV') {
+        assetPath = 'assets/images/car-top-view.png'; // Using car image for SUV/MEGA as well
       }
     }
+
+    print('🚗 Using marker icon: $assetPath for service type: ${userData?.serviceType}');
     return await BitmapDescriptor.asset(const ImageConfiguration(size: Size(44, 44)), assetPath);
   }
 

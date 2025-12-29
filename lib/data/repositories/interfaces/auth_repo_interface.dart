@@ -96,4 +96,13 @@ abstract class IAuthRepository {
   Future<Either<Failure, LoginWithPassResponse>> driverLoginOtpVerify({required String idToken, required String role});
   Future<Either<Failure, CommonResponse>> driverLogout();
   Future<Either<Failure, CommonResponse>> saveFcmToken({required String token});
+
+  // Forgot Password methods
+  Future<Either<Failure, CommonResponse>> forgotPassword({required String email});
+  Future<Either<Failure, CommonResponse>> verifyPasswordResetOtp({required String email, required String otp});
+  Future<Either<Failure, CommonResponse>> resetPasswordWithOtp({
+    required String email,
+    required String otp,
+    required String newPassword,
+  });
 }

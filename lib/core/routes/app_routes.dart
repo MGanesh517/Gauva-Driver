@@ -24,4 +24,6 @@ class AppRoutes {
   static const String noInternet = '/no-internet';
   static const String brokenPage = '/broken-page';
   static const String rateCard = '/rate-card';
+  static const String forgotPassword = '/forgot-password';
+  static const String resetPassword = '/reset-password';
 }

@@ -116,14 +116,12 @@ class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
         (failure) {
           print('⚠️ PublishTripScreen: Failed to fetch driver details: ${failure.message}');
           // Fallback to local storage if API fails
-          // Logic moved to after service types are fetched to ensure we match against valid options
-          print('⚠️ PublishTripScreen: Failed to fetch driver details: ${failure.message}');
         },
         (response) {
           if (response.data != null && response.data!.user != null) {
             final user = response.data!.user!;
             if (user.serviceType != null) {
-              print('🔍 PublishTripScreen: Found driver service type from API: ${user.serviceType}');
+              print('✅ PublishTripScreen: Found driver service type from profile API: ${user.serviceType}');
               preselectedServiceType = user.serviceType;
 
               if (mounted) {
@@ -131,7 +129,11 @@ class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
                   _vehicleTypeController.text = preselectedServiceType!;
                 });
               }
+            } else {
+              print('⚠️ PublishTripScreen: Service type is null in user profile');
             }
+          } else {
+            print('⚠️ PublishTripScreen: User data is null in driver details response');
           }
         },
       );

@@ -13,6 +13,7 @@ import 'package:vibration/vibration.dart';
 
 import '../../../core/utils/is_dark_mode.dart';
 import '../../../data/services/local_storage_service.dart';
+import '../../../core/services/version_check_service.dart';
 import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/home_providers.dart';
 import '../../booking/provider/ride_providers.dart';
@@ -38,6 +39,13 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       // Setup WebSocket listener - try immediately, then retry if needed
       _setupWebSocketListener();
+
+      // Check for app updates after a short delay
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          VersionCheckService.checkForUpdate(context);
+        }
+      });
     });
   }
 

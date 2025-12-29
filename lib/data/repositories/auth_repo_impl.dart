@@ -294,4 +294,33 @@ class AuthRepoImpl extends BaseRepository implements IAuthRepository {
       return CommonResponse.fromJson(response.data);
     });
   }
+
+  // Forgot Password implementations
+  @override
+  Future<Either<Failure, CommonResponse>> forgotPassword({required String email}) async {
+    return await safeApiCall(() async {
+      final response = await authService.forgotPassword(email: email);
+      return CommonResponse.fromJson(response.data);
+    });
+  }
+
+  @override
+  Future<Either<Failure, CommonResponse>> verifyPasswordResetOtp({required String email, required String otp}) async {
+    return await safeApiCall(() async {
+      final response = await authService.verifyPasswordResetOtp(email: email, otp: otp);
+      return CommonResponse.fromJson(response.data);
+    });
+  }
+
+  @override
+  Future<Either<Failure, CommonResponse>> resetPasswordWithOtp({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    return await safeApiCall(() async {
+      final response = await authService.resetPasswordWithOtp(email: email, otp: otp, newPassword: newPassword);
+      return CommonResponse.fromJson(response.data);
+    });
+  }
 }

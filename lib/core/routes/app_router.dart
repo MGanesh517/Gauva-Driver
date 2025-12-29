@@ -8,6 +8,8 @@ import 'package:gauva_driver/presentation/auth/views/login_with_password_page.da
 import 'package:gauva_driver/presentation/auth/views/set_password_page.dart';
 import 'package:gauva_driver/presentation/auth/views/signup_page.dart';
 import 'package:gauva_driver/presentation/auth/views/verify_otp_page.dart';
+import 'package:gauva_driver/presentation/auth/views/forgot_password_screen.dart';
+import 'package:gauva_driver/presentation/auth/views/reset_password_screen.dart';
 import 'package:gauva_driver/presentation/booking/views/booking_page.dart';
 import 'package:gauva_driver/presentation/booking/views/sheets/chat_sheet.dart';
 import 'package:gauva_driver/presentation/broken_page/view/broken_page.dart';
@@ -89,6 +91,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const BrokenPage());
       case '/rate-card':
         return MaterialPageRoute(builder: (_) => const RateCardPage());
+      case '/forgot-password':
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+      case '/reset-password':
+        final String email = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => ResetPasswordScreen(email: email));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(body: ErrorView(message: 'No route defined for ${settings.name}')),

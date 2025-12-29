@@ -410,4 +410,42 @@ class AuthServiceImpl extends IAuthService {
     print('🔑 Token: $token');
     return await dioClient.dio.post(url, data: {'token': token});
   }
+
+  // Forgot Password implementations
+  @override
+  Future<Response> forgotPassword({required String email}) async {
+    final url = ApiEndpoints.forgotPassword;
+    final fullUrl = '${dioClient.dio.options.baseUrl}$url';
+    print('🚀 Forgot Password URL: $fullUrl');
+    print('📧 Email: $email');
+
+    return await dioClient.dio.post(url, data: {'email': email, 'role': 'DRIVER'});
+  }
+
+  @override
+  Future<Response> verifyPasswordResetOtp({required String email, required String otp}) async {
+    final url = ApiEndpoints.verifyPasswordResetOtp;
+    final fullUrl = '${dioClient.dio.options.baseUrl}$url';
+    print('🚀 Verify Password Reset OTP URL: $fullUrl');
+    print('📧 Email: $email, OTP: ***');
+
+    return await dioClient.dio.post(url, data: {'email': email, 'role': 'DRIVER', 'otp': otp});
+  }
+
+  @override
+  Future<Response> resetPasswordWithOtp({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    final url = ApiEndpoints.resetPasswordWithOtp;
+    final fullUrl = '${dioClient.dio.options.baseUrl}$url';
+    print('🚀 Reset Password URL: $fullUrl');
+    print('📧 Email: $email, OTP: ***, New Password: ***');
+
+    return await dioClient.dio.post(
+      url,
+      data: {'email': email, 'role': 'DRIVER', 'otp': otp, 'newPassword': newPassword},
+    );
+  }
 }

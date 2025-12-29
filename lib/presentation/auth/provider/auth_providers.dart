@@ -17,6 +17,7 @@ import '../../../data/models/otp_verify_response/otp_verify_response.dart';
 import '../../../data/models/resend_otp_model/resend_otp_mode.dart';
 import '../../../data/repositories/auth_repo_impl.dart';
 import '../../../data/services/api/dio_client.dart';
+import 'forgot_password_notifier.dart';
 
 // DioClient provider to provide DioClient instance
 final dioClientProvider = Provider<DioClient>((ref) => DioClient());
@@ -98,4 +99,14 @@ final driverLoginEmailPasswordNotifierProvider =
 final driverLoginOtpNotifierProvider =
     StateNotifierProvider.autoDispose<DriverLoginOtpNotifier, AppState<CommonResponse>>(
       (ref) => DriverLoginOtpNotifier(authRepo: ref.read(authRepoProvider), ref: ref),
+    );
+
+// Forgot Password providers
+final forgotPasswordNotifierProvider = StateNotifierProvider.autoDispose<ForgotPasswordNotifier, ForgotPasswordState>(
+  (ref) => ForgotPasswordNotifier(ref.read(authRepoProvider)),
+);
+
+final forgotPasswordResetNotifierProvider =
+    StateNotifierProvider.autoDispose<ForgotPasswordResetNotifier, ForgotPasswordResetState>(
+      (ref) => ForgotPasswordResetNotifier(ref.read(authRepoProvider)),
     );
