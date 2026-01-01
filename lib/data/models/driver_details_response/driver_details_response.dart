@@ -68,7 +68,9 @@ class Data {
       'account_number': json['accountNumber'],
       'ifsc_code': json['ifscCode'],
       'upi_id': json['upiId'],
-      'service_type': vehicle?['serviceType'] ?? vehicle?['vehicleType'], // Map service type from vehicle object
+      'service_type': vehicle?['serviceType'] ?? vehicle?['vehicleType'],
+      'subscriptionActive': json['subscriptionActive'],
+      'subscriptionType': json['subscriptionType'],
     };
 
     return Data(

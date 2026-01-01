@@ -286,9 +286,9 @@ class BookingNotifier extends StateNotifier<BookingState> {
     if (userData?.serviceType != null) {
       final type = userData!.serviceType!.toUpperCase();
       if (type == 'BIKE' || type == 'TWO_WHEELER') {
-        assetPath = 'assets/images/bike.ico';
+        assetPath = 'assets/images/bike.png';
       } else if (type == 'AUTO' || type == 'THREE_WHEELER') {
-        assetPath = 'assets/images/auto1.ico';
+        assetPath = 'assets/images/auto.png';
       } else if (type == 'CAR' || type == 'SMALL_SEDAN' || type == 'SEDAN' || type == 'FOUR_WHEELER') {
         assetPath = 'assets/images/car-top-view.png';
       } else if (type == 'MEGA' || type == 'SUV') {

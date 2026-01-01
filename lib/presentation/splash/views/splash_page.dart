@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:gauva_driver/presentation/booking/provider/ride_providers.dart';
 import 'package:gauva_driver/data/services/local_storage_service.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../account_page/provider/country_list_provider.dart';
 
@@ -148,7 +147,8 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                     scale: _scaleAnimation,
                     child: Text(
                       'Gauva',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
+                        fontFamily: 'Inter',
                         fontSize: 64.sp,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 2,
@@ -168,7 +168,8 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                     opacity: _fadeAnimation,
                     child: Text(
                       'Partner',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
+                        fontFamily: 'Inter',
                         fontSize: 32.sp,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 4,

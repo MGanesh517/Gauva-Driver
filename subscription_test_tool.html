@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Subscription Testing Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #fff;
+            border: 1px solid #ddd;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .response pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .response.success {
+            border-left: 4px solid #28a745;
+            background: #d4edda;
+        }
+
+        .response.error {
+            border-left: 4px solid #dc3545;
+            background: #f8d7da;
+        }
+
+        .token-display {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .token-display strong {
+            color: #667eea;
+        }
+
+        .plan-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            transition: box-shadow 0.3s;
+        }
+
+        .plan-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .plan-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .plan-card .price {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .plan-card .details {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .plan-card .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .badge.active {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge.inactive {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge.unlimited {
+            background: #007bff;
+            color: white;
+        }
+
+        .badge.earning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .razorpay-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+        }
+
+        .razorpay-container h3 {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-indicator.active {
+            background: #28a745;
+        }
+
+        .status-indicator.inactive {
+            background: #dc3545;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Driver Subscription Testing Tool</h1>
+        <p class="subtitle">Test all driver subscription APIs</p>
+
+        <!-- Configuration Section -->
+        <div class="section">
+            <h2>⚙️ Configuration</h2>
+            <div class="form-group">
+                <label for="apiBaseUrl">API Base URL:</label>
+                <input type="text" id="apiBaseUrl" value="http://localhost:8080" placeholder="http://localhost:8080">
+            </div>
+            <div class="form-group">
+                <label for="driverToken">Driver JWT Token:</label>
+                <textarea id="driverToken" rows="3" placeholder="Paste driver JWT token here"></textarea>
+            </div>
+            <div class="token-display" id="tokenStatus" style="display: none;">
+                <strong>Token Status:</strong> <span id="tokenStatusText"></span>
+            </div>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="section">
+            <h2>🔐 Authentication</h2>
+            <div class="grid">
+                <div>
+                    <div class="form-group">
+                        <label for="driverIdentifier">Email or Phone:</label>
+                        <input type="text" id="driverIdentifier" placeholder="email@example.com or +91XXXXXXXXXX">
+                        <small style="color: #666; font-size: 12px;">Enter either email address or phone number</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverPassword">Password:</label>
+                        <input type="password" id="driverPassword" placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label for="userRole">User Role:</label>
+                        <select id="userRole">
+                            <option value="DRIVER" selected>Driver</option>
+                            <option value="NORMAL_USER">Normal User</option>
+                        </select>
+                    </div>
+                    <button onclick="loginDriver()">Login</button>
+                </div>
+                <div>
+                    <button onclick="validateToken()" class="btn-secondary">Validate Current Token</button>
+                    <button onclick="clearToken()" class="btn-danger">Clear Token</button>
+                </div>
+            </div>
+            <div class="response" id="authResponse" style="display: none;"></div>
+        </div>
+
+        <!-- Subscription Plans Section -->
+        <div class="section">
+            <h2>📋 Available Subscription Plans</h2>
+            <button onclick="fetchPlans()">Fetch Available Plans</button>
+            <div id="plansContainer"></div>
+            <div class="response" id="plansResponse" style="display: none;"></div>
+        </div>
+
+        <!-- Purchase Subscription Section -->
+        <div class="section">
+            <h2>💳 Purchase Subscription</h2>
+            <div class="form-group">
+                <label for="planId">Plan ID:</label>
+                <input type="number" id="planId" placeholder="Enter plan ID from available plans">
+            </div>
+            <button onclick="purchaseSubscription()">Purchase Subscription</button>
+            <div class="response" id="purchaseResponse" style="display: none;"></div>
+            <div id="razorpayContainer" style="display: none;"></div>
+        </div>
+
+        <!-- Current Subscription Section -->
+        <div class="section">
+            <h2>📊 Current Subscription</h2>
+            <button onclick="getCurrentSubscription()">Get Current Subscription</button>
+            <div class="response" id="currentSubscriptionResponse" style="display: none;"></div>
+        </div>
+
+        <!-- Subscription History Section -->
+        <div class="section">
+            <h2>📜 Subscription History</h2>
+            <button onclick="getSubscriptionHistory()">Get Subscription History</button>
+            <div class="response" id="historyResponse" style="display: none;"></div>
+        </div>
+
+        <!-- Test Actions Section -->
+        <div class="section">
+            <h2>🧪 Test Subscription Validation</h2>
+            <p style="color: #666; margin-bottom: 15px;">These actions will test if subscription validation is working:</p>
+            <button onclick="testGoOnline()" class="btn-success">Test Go Online</button>
+            <button onclick="testAcceptRide()" class="btn-success">Test Accept Ride (Mock)</button>
+            <div class="response" id="testResponse" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const API_BASE_URL_KEY = 'driver_subscription_api_base_url';
+        const DRIVER_TOKEN_KEY = 'driver_subscription_token';
+
+        // Load saved values
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUrl = localStorage.getItem(API_BASE_URL_KEY);
+            const savedToken = localStorage.getItem(DRIVER_TOKEN_KEY);
+            
+            if (savedUrl) {
+                document.getElementById('apiBaseUrl').value = savedUrl;
+            }
+            if (savedToken) {
+                document.getElementById('driverToken').value = savedToken;
+                updateTokenStatus('Token loaded from storage', true);
+            }
+        });
+
+        // Save values on change
+        document.getElementById('apiBaseUrl').addEventListener('change', (e) => {
+            localStorage.setItem(API_BASE_URL_KEY, e.target.value);
+        });
+
+        document.getElementById('driverToken').addEventListener('change', (e) => {
+            localStorage.setItem(DRIVER_TOKEN_KEY, e.target.value);
+            if (e.target.value) {
+                updateTokenStatus('Token updated', true);
+            } else {
+                updateTokenStatus('No token', false);
+            }
+        });
+
+        function getApiBaseUrl() {
+            return document.getElementById('apiBaseUrl').value.trim() || 'http://localhost:8080';
+        }
+
+        function getToken() {
+            const token = document.getElementById('driverToken').value.trim();
+            // Remove 'Bearer ' prefix if user pasted it
+            return token.startsWith('Bearer ') ? token.substring(7) : token;
+        }
+
+        function updateTokenStatus(message, hasToken) {
+            const statusDiv = document.getElementById('tokenStatus');
+            const statusText = document.getElementById('tokenStatusText');
+            statusDiv.style.display = 'block';
+            statusText.textContent = message;
+            statusText.style.color = hasToken ? '#28a745' : '#dc3545';
+        }
+
+        function showResponse(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `response ${isError ? 'error' : 'success'}`;
+            element.querySelector('pre').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function createResponseElement(elementId) {
+            let element = document.getElementById(elementId);
+            if (!element.querySelector('pre')) {
+                const pre = document.createElement('pre');
+                element.appendChild(pre);
+            }
+            return element;
+        }
+
+        async function makeRequest(url, method = 'GET', body = null) {
+            const token = getToken();
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            if (token) {
+                // Remove 'Bearer ' prefix if already present
+                const cleanToken = token.startsWith('Bearer ') ? token.substring(7) : token;
+                headers['Authorization'] = `Bearer ${cleanToken}`;
+                console.log('Sending request with token:', cleanToken.substring(0, 20) + '...');
+            } else {
+                console.warn('No token available for request');
+            }
+
+            const options = {
+                method,
+                headers
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            try {
+                console.log(`Making ${method} request to: ${url}`);
+                const response = await fetch(url, options);
+                const data = await response.json().catch(() => ({ 
+                    error: 'Invalid JSON response', 
+                    status: response.status,
+                    statusText: response.statusText
+                }));
+                
+                if (!response.ok) {
+                    console.error(`Request failed: ${response.status}`, data);
+                }
+                
+                return { success: response.ok, data, status: response.status };
+            } catch (error) {
+                console.error('Request error:', error);
+                return { success: false, data: { error: error.message }, status: 0 };
+            }
+        }
+
+        async function loginDriver() {
+            const identifier = document.getElementById('driverIdentifier').value.trim();
+            const password = document.getElementById('driverPassword').value.trim();
+            const role = document.getElementById('userRole').value;
+
+            if (!identifier || !password) {
+                alert('Please enter email/phone and password');
+                return;
+            }
+
+            const response = await makeRequest(
+                `${getApiBaseUrl()}/api/v1/auth/login`,
+                'POST',
+                { identifier, password, role }
+            );
+
+            const responseEl = createResponseElement('authResponse');
+            showResponse('authResponse', response.data, !response.success);
+
+            // Backend returns 'accessToken' not 'token'
+            const token = response.data.accessToken || response.data.token;
+            if (response.success && token) {
+                document.getElementById('driverToken').value = token;
+                localStorage.setItem(DRIVER_TOKEN_KEY, token);
+                updateTokenStatus('Login successful - Token saved', true);
+            } else if (response.success && !token) {
+                alert('Login successful but no token received. Response: ' + JSON.stringify(response.data));
+            }
+        }
+
+        async function validateToken() {
+            const token = getToken();
+            if (!token) {
+                alert('No token to validate');
+                return;
+            }
+
+            console.log('Validating token:', token.substring(0, 20) + '...');
+            const response = await makeRequest(`${getApiBaseUrl()}/api/v1/driver/profile`);
+
+            const responseEl = createResponseElement('authResponse');
+            showResponse('authResponse', response.data, !response.success);
+
+            if (response.success) {
+                updateTokenStatus('Token is valid', true);
+            } else {
+                updateTokenStatus('Token is invalid or expired', false);
+                if (response.status === 401) {
+                    alert('Token is invalid or expired. Please login again.');
+                }
+            }
+        }
+
+        function clearToken() {
+            document.getElementById('driverToken').value = '';
+            localStorage.removeItem(DRIVER_TOKEN_KEY);
+            updateTokenStatus('Token cleared', false);
+            document.getElementById('authResponse').style.display = 'none';
+        }
+
+        async function fetchPlans() {
+            const token = getToken();
+            if (!token) {
+                alert('Please login first to fetch subscription plans');
+                return;
+            }
+
+            console.log('Fetching subscription plans...');
+            const response = await makeRequest(`${getApiBaseUrl()}/api/v1/driver/subscriptions/plans`);
+
+            const responseEl = createResponseElement('plansResponse');
+            showResponse('plansResponse', response.data, !response.success);
+
+            const container = document.getElementById('plansContainer');
+            container.innerHTML = '';
+
+            if (!response.success) {
+                let errorMsg = 'Failed to fetch plans. ';
+                if (response.status === 401) {
+                    errorMsg += 'Authentication failed. Please login again.';
+                } else if (response.status === 403) {
+                    errorMsg += 'Access denied. Make sure you are logged in as a DRIVER.';
+                } else if (response.data && response.data.error) {
+                    errorMsg += response.data.error;
+                } else {
+                    errorMsg += `Status: ${response.status}`;
+                }
+                container.innerHTML = `<div style="padding: 20px; background: #f8d7da; border: 1px solid #dc3545; border-radius: 5px; color: #721c24;">
+                    <strong>Error:</strong> ${errorMsg}
+                </div>`;
+                return;
+            }
+
+            if (Array.isArray(response.data)) {
+                if (response.data.length === 0) {
+                    container.innerHTML = `<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 5px; color: #856404;">
+                        <strong>No Plans Available</strong><br>
+                        <p style="margin-top: 10px;">No active subscription plans found for your vehicle type.</p>
+                        <p style="margin-top: 5px; font-size: 12px;">Possible reasons:</p>
+                        <ul style="margin-top: 5px; font-size: 12px;">
+                            <li>No active plans exist for your vehicle type (BIKE/AUTO/CAR)</li>
+                            <li>Your driver account doesn't have a vehicle assigned</li>
+                            <li>Your vehicle doesn't have a vehicle type set</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 12px;">Contact admin to create subscription plans for your vehicle type.</p>
+                    </div>`;
+                } else {
+                    response.data.forEach(plan => {
+                        const card = document.createElement('div');
+                        card.className = 'plan-card';
+                        card.innerHTML = `
+                            <h3>${plan.displayName || 'Plan ' + plan.id}</h3>
+                            <div class="price">₹${plan.price}</div>
+                            <div>
+                                <span class="badge ${plan.active ? 'active' : 'inactive'}">${plan.active ? 'Active' : 'Inactive'}</span>
+                                <span class="badge ${plan.subscriptionType === 'UNLIMITED' ? 'unlimited' : 'earning'}">${plan.subscriptionType}</span>
+                                <span class="badge">${plan.vehicleType}</span>
+                            </div>
+                            ${plan.subscriptionType === 'UNLIMITED' ? `
+                                <div class="details">Duration: ${plan.durationDays || 0} days, ${plan.durationHours || 0} hours</div>
+                            ` : `
+                                <div class="details">Earning Limit: ₹${plan.earningLimit || 'N/A'}</div>
+                                <div class="details">Percentage: ${plan.percentage || 'N/A'}%</div>
+                            `}
+                            <div class="details">${plan.description || 'No description'}</div>
+                            <button onclick="selectPlan(${plan.id})" style="margin-top: 10px;">Select This Plan</button>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            } else {
+                container.innerHTML = `<div style="padding: 20px; background: #f8d7da; border: 1px solid #dc3545; border-radius: 5px; color: #721c24;">
+                    <strong>Unexpected Response:</strong> Expected an array but received: ${typeof response.data}
+                    <pre style="margin-top: 10px; font-size: 12px;">${JSON.stringify(response.data, null, 2)}</pre>
+                </div>`;
+            }
+        }
+
+        function selectPlan(planId) {
+            document.getElementById('planId').value = planId;
+            document.getElementById('purchaseResponse').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function purchaseSubscription() {
+            const planId = document.getElementById('planId').value.trim();
+
+            if (!planId) {
+                alert('Please enter a plan ID');
+                return;
+            }
+
+            const response = await makeRequest(
+                `${getApiBaseUrl()}/api/v1/driver/subscriptions/purchase`,
+                'POST',
+                { planId: parseInt(planId) }
+            );
+
+            const responseEl = createResponseElement('purchaseResponse');
+            showResponse('purchaseResponse', response.data, !response.success);
+
+            if (response.success && response.data.orderId) {
+                // Show Razorpay payment options
+                const razorpayContainer = document.getElementById('razorpayContainer');
+                razorpayContainer.style.display = 'block';
+                razorpayContainer.innerHTML = `
+                    <div class="razorpay-container">
+                        <h3>Razorpay Payment Order Created</h3>
+                        <p><strong>Order ID:</strong> ${response.data.orderId}</p>
+                        <p><strong>Amount:</strong> ₹${response.data.orderAmount}</p>
+                        <p><strong>Currency:</strong> ${response.data.orderCurrency}</p>
+                        <p><strong>Razorpay Key:</strong> ${response.data.razorpayKey}</p>
+                        <p><strong>Transaction ID:</strong> ${response.data.transactionId}</p>
+                        <p style="margin-top: 15px; color: #856404;">
+                            <strong>Note:</strong> Click "Pay with Razorpay" to complete payment using Razorpay Checkout.
+                            This will open Razorpay's payment gateway where you can use test cards.
+                        </p>
+                        <div style="background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 12px;">
+                            <strong>Test Cards (Razorpay Test Mode):</strong><br>
+                            Card: <code>4111 1111 1111 1111</code><br>
+                            CVV: Any 3 digits (e.g., 123)<br>
+                            Expiry: Any future date (e.g., 12/25)<br>
+                            Name: Any name
+                        </div>
+                        <button onclick="payWithRazorpay('${response.data.orderId}', ${response.data.orderAmount}, '${response.data.orderCurrency}', '${response.data.razorpayKey}', ${response.data.transactionId})" class="btn-success" style="margin-top: 10px;">
+                            💳 Pay with Razorpay
+                        </button>
+                        <button onclick="simulatePayment('${response.data.orderId}', ${response.data.transactionId}, ${response.data.orderAmount}, '${response.data.orderCurrency}', ${response.data.planId})" class="btn-secondary" style="margin-top: 10px;">
+                            📝 Simulate Payment (Webhook Test)
+                        </button>
+                        <div style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-size: 11px; color: #666;">
+                            <strong>Webhook URL:</strong> <code>${getApiBaseUrl()}/api/webhooks/razorpay</code><br>
+                            <strong>Note:</strong> In production, Razorpay automatically sends webhooks. For testing, use the "Simulate Payment" button above or configure webhook in Razorpay Dashboard.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function payWithRazorpay(orderId, amount, currency, razorpayKey, transactionId) {
+            // Check if Razorpay is loaded
+            if (typeof Razorpay === 'undefined') {
+                alert('Razorpay SDK not loaded. Please refresh the page.');
+                return;
+            }
+
+            const options = {
+                key: razorpayKey,
+                amount: Math.round(amount * 100), // Convert to paise
+                currency: currency,
+                name: 'Gauva Subscription',
+                description: 'Driver Subscription Payment',
+                order_id: orderId,
+                handler: function (response) {
+                    console.log('Payment successful:', response);
+                    alert(`Payment Successful!\n\nPayment ID: ${response.razorpay_payment_id}\nOrder ID: ${response.razorpay_order_id}\nSignature: ${response.razorpay_signature}\n\nTransaction ID: ${transactionId}\n\nPlease wait for webhook to process and then check your subscription status.`);
+                    
+                    // Refresh subscription status after a delay
+                    setTimeout(() => {
+                        getCurrentSubscription();
+                    }, 3000);
+                },
+                prefill: {
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    contact: '+919999999999'
+                },
+                notes: {
+                    transaction_id: transactionId.toString(),
+                    type: 'subscription'
+                },
+                theme: {
+                    color: '#667eea'
+                },
+                modal: {
+                    ondismiss: function() {
+                        console.log('Payment cancelled by user');
+                    }
+                }
+            };
+
+            const razorpay = new Razorpay(options);
+            razorpay.open();
+            
+            razorpay.on('payment.failed', function (response) {
+                console.error('Payment failed:', response);
+                alert(`Payment Failed!\n\nError: ${response.error.description}\nCode: ${response.error.code}\n\nPlease try again.`);
+            });
+        }
+
+        async function simulatePayment(orderId, transactionId, amount, currency, planId) {
+            // This simulates a webhook call - in production, Razorpay sends this automatically
+            const proceed = confirm(`This will simulate a successful payment webhook.\n\nOrder ID: ${orderId}\nTransaction ID: ${transactionId}\nPlan ID: ${planId}\nAmount: ₹${amount}\n\nNote: This requires backend webhook endpoint to be accessible.\n\nDo you want to continue?`);
+            
+            if (!proceed) return;
+
+            // Create a mock webhook payload for payment.captured event
+            const amountInPaise = Math.round(amount * 100);
+            const webhookPayload = {
+                event: "payment.captured",
+                payload: {
+                    payment: {
+                        entity: {
+                            id: "pay_test_" + Date.now(),
+                            amount: amountInPaise,
+                            currency: currency || "INR",
+                            status: "captured",
+                            order_id: orderId,
+                            notes: {
+                                type: "subscription",
+                                transaction_id: transactionId.toString(),
+                                plan_id: planId.toString()
+                            }
+                        }
+                    },
+                    order: {
+                        entity: {
+                            id: orderId,
+                            amount: amountInPaise,
+                            currency: currency || "INR",
+                            status: "paid",
+                            notes: {
+                                type: "subscription",
+                                transaction_id: transactionId.toString(),
+                                plan_id: planId.toString()
+                            }
+                        }
+                    }
+                }
+            };
+
+            try {
+                console.log('Sending webhook payload:', webhookPayload);
+                const response = await fetch(`${getApiBaseUrl()}/api/webhooks/razorpay`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Razorpay-Signature': 'test_signature' // Webhook signature (may be validated)
+                    },
+                    body: JSON.stringify(webhookPayload)
+                });
+
+                const responseData = await response.json().catch(() => ({ message: 'No JSON response', status: response.status }));
+                
+                if (response.ok) {
+                    alert(`✅ Webhook sent successfully!\n\nResponse: ${JSON.stringify(responseData)}\n\nPlease wait a few seconds and then click "Get Current Subscription" to check if subscription is activated.`);
+                    setTimeout(() => {
+                        getCurrentSubscription();
+                    }, 2000);
+                } else {
+                    alert(`❌ Webhook failed!\n\nStatus: ${response.status}\nResponse: ${JSON.stringify(responseData)}\n\nCheck backend logs for details.`);
+                }
+            } catch (error) {
+                alert(`❌ Error sending webhook: ${error.message}\n\nMake sure:\n1. Backend is running\n2. Webhook endpoint is accessible\n3. CORS is configured if needed\n\nWebhook URL: ${getApiBaseUrl()}/api/webhooks/razorpay`);
+            }
+        }
+
+        async function getCurrentSubscription() {
+            const response = await makeRequest(`${getApiBaseUrl()}/api/v1/driver/subscriptions/current`);
+
+            const responseEl = createResponseElement('currentSubscriptionResponse');
+            showResponse('currentSubscriptionResponse', response.data, !response.success);
+        }
+
+        async function getSubscriptionHistory() {
+            const response = await makeRequest(`${getApiBaseUrl()}/api/v1/driver/subscriptions/history`);
+
+            const responseEl = createResponseElement('historyResponse');
+            showResponse('historyResponse', response.data, !response.success);
+        }
+
+        async function testGoOnline() {
+            const response = await makeRequest(
+                `${getApiBaseUrl()}/api/v1/driver/status/online`,
+                'PUT',
+                { isOnline: true }
+            );
+
+            const responseEl = createResponseElement('testResponse');
+            showResponse('testResponse', response.data, !response.success);
+
+            if (!response.success && response.data.error && response.data.error.includes('subscription')) {
+                alert('Subscription validation is working! Driver cannot go online without active subscription.');
+            }
+        }
+
+        async function testAcceptRide() {
+            // This is a mock test - actual ride acceptance requires a ride ID
+            alert('To test accept ride, you need:\n1. An active ride request\n2. Call: POST /api/v1/ride/{rideId}/accept\n\nThis will test if subscription validation blocks ride acceptance.');
+            
+            const rideId = prompt('Enter a ride ID to test (or cancel for mock):');
+            if (!rideId) return;
+
+            const response = await makeRequest(
+                `${getApiBaseUrl()}/api/v1/ride/${rideId}/accept`,
+                'POST'
+            );
+
+            const responseEl = createResponseElement('testResponse');
+            showResponse('testResponse', response.data, !response.success);
+
+            if (!response.success && response.data.error && response.data.error.includes('subscription')) {
+                alert('Subscription validation is working! Driver cannot accept rides without active subscription.');
+            }
+        }
+    </script>
+</body>
+</html>

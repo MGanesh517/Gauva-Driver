@@ -63,9 +63,13 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
       },
       (data) {
         showNotification(message: data.message, isSuccess: true);
-        state = AppStateOrder.success(data.data);
+        showNotification(message: data.message, isSuccess: true);
+        final previousOrder = _getPreviousDataOrNull();
+        final newOrder = data.data;
+        final mergedOrder = previousOrder != null ? previousOrder.merge(newOrder) : newOrder;
+        state = AppStateOrder.success(mergedOrder);
         if (onSuccess != null) {
-          onSuccess(data.data);
+          onSuccess(mergedOrder);
         }
       },
     );
@@ -91,8 +95,12 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
       },
       (data) {
         showNotification(message: data.message, isSuccess: true);
-        state = AppStateOrder.success(data.data);
-        if (onSuccess != null) onSuccess(data.data);
+        showNotification(message: data.message, isSuccess: true);
+        final previousOrder = _getPreviousDataOrNull();
+        final newOrder = data.data;
+        final mergedOrder = previousOrder != null ? previousOrder.merge(newOrder) : newOrder;
+        state = AppStateOrder.success(mergedOrder);
+        if (onSuccess != null) onSuccess(mergedOrder);
       },
     );
     loadingNotifier.stopLoading();
@@ -123,6 +131,31 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
     currentStatus = '';
   }
 
+  Future<void> cancelRideDriver({
+    required int orderId,
+    required String reason,
+    Function(CommonResponse? data)? onSuccess,
+    Function(Failure data)? onError,
+  }) async {
+    currentStatus = 'cancelled';
+    final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
+
+    final result = await rideRepo.cancelRideDriver(rideId: orderId, reason: reason);
+
+    result.fold(
+      (failure) {
+        showNotification(message: failure.message);
+        if (onError != null) onError(failure);
+      },
+      (data) {
+        showNotification(message: data.message ?? 'Ride cancelled successfully', isSuccess: true);
+        if (onSuccess != null) onSuccess(data);
+      },
+    );
+    loadingNotifier.stopLoading();
+    currentStatus = '';
+  }
+
   Future<void> startRide({
     required int orderId,
     required int otp,
@@ -141,8 +174,12 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
       },
       (data) {
         showNotification(message: data.message, isSuccess: true);
-        state = AppStateOrder.success(data.data);
-        if (onSuccess != null) onSuccess(data.data);
+        showNotification(message: data.message, isSuccess: true);
+        final previousOrder = _getPreviousDataOrNull();
+        final newOrder = data.data;
+        final mergedOrder = previousOrder != null ? previousOrder.merge(newOrder) : newOrder;
+        state = AppStateOrder.success(mergedOrder);
+        if (onSuccess != null) onSuccess(mergedOrder);
       },
     );
     loadingNotifier.stopLoading();
@@ -166,8 +203,12 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
       },
       (data) {
         showNotification(message: data.message, isSuccess: true);
-        state = AppStateOrder.success(data.data);
-        if (onSuccess != null) onSuccess(data.data);
+        showNotification(message: data.message, isSuccess: true);
+        final previousOrder = _getPreviousDataOrNull();
+        final newOrder = data.data;
+        final mergedOrder = previousOrder != null ? previousOrder.merge(newOrder) : newOrder;
+        state = AppStateOrder.success(mergedOrder);
+        if (onSuccess != null) onSuccess(mergedOrder);
       },
     );
     loadingNotifier.stopLoading();
@@ -191,8 +232,12 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
       },
       (data) {
         showNotification(message: data.message ?? 'Going to pickup location', isSuccess: true);
-        state = AppStateOrder.success(data.data);
-        if (onSuccess != null) onSuccess(data.data);
+        showNotification(message: data.message ?? 'Going to pickup location', isSuccess: true);
+        final previousOrder = _getPreviousDataOrNull();
+        final newOrder = data.data;
+        final mergedOrder = previousOrder != null ? previousOrder.merge(newOrder) : newOrder;
+        state = AppStateOrder.success(mergedOrder);
+        if (onSuccess != null) onSuccess(mergedOrder);
       },
     );
     loadingNotifier.stopLoading();

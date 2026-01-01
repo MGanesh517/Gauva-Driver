@@ -39,6 +39,15 @@ class RideService implements IRideService {
       await dioClient.dio.get('${ApiEndpoints.cancelRide}/$orderId');
 
   @override
+  Future<Response> cancelRideDriver({required int rideId, required String reason}) async {
+    final url = '${ApiEndpoints.cancelRideDriver}/$rideId/cancel/driver';
+    final body = {'declineReason': reason}; // Assuming JSON body structure
+    print('🚫 RideService: Cancelling ride $rideId (driver) with reason: $reason');
+    print('🚫 RideService: URL: $url');
+    return await dioClient.dio.post(url, data: body);
+  }
+
+  @override
   Future<Response> checkActiveTrip() async {
     // Use the new API endpoint: GET /api/v1/driver/rides/started
     // This doesn't require driverId in the path as it's extracted from the token

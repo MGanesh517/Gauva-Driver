@@ -1,4 +1,4 @@
-import 'dart:math';
+ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -132,17 +132,19 @@ void calculateRouteProgress(
   final distanceTravelled = calculateHaversineDistance(pickup, current);
   final progress = (distanceTravelled / totalDistanceInMeters).clamp(0.0, 1.0);
   ref.read(routeProgressProvider.notifier).state = progress;
-  ref
-      .read(sendTravelInfoProvider.notifier)
-      .sendTravelInfo(
-        info: {
-          'order_id': orderId,
-          'minute': routeInfo.durationText,
-          'distance': routeInfo.distanceText,
-          'progress': progress,
-          'destination': destination,
-          'driver_location': current,
-          'polyline': routeInfo.polylinePoints,
-        },
-      );
+
+  // Commented out: API endpoint not available on server (returns 500 error)
+  // ref
+  //     .read(sendTravelInfoProvider.notifier)
+  //     .sendTravelInfo(
+  //       info: {
+  //         'order_id': orderId,
+  //         'minute': routeInfo.durationText,
+  //         'distance': routeInfo.distanceText,
+  //         'progress': progress,
+  //         'destination': destination,
+  //         'driver_location': current,
+  //         'polyline': routeInfo.polylinePoints,
+  //       },
+  //     );
 }

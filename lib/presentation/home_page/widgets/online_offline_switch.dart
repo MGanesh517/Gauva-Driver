@@ -11,6 +11,8 @@ import '../../../core/enums/driver_status.dart';
 
 import '../../../core/utils/localize.dart';
 import '../../booking/provider/driver_providers.dart';
+import '../../profile/provider/profile_providers.dart';
+import '../../subscription/screens/subscription_plans_screen.dart';
 
 // Data model for switch states
 class SwitchState {
@@ -106,6 +108,7 @@ class OnlineOfflineSwitch extends ConsumerStatefulWidget {
 class _OnlineOfflineSwitchState extends ConsumerState<OnlineOfflineSwitch> {
   // Local state for optimistic updates
   late bool _isOnline;
+  bool _isCheckingSubscription = false;
 
   @override
   void initState() {
@@ -149,7 +152,8 @@ class _OnlineOfflineSwitchState extends ConsumerState<OnlineOfflineSwitch> {
     });
 
     final status = ref.watch(driverStatusNotifierProvider);
-    final isLoading = status.maybeWhen(loading: () => true, orElse: () => false);
+    final isDriverLoading = status.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading = isDriverLoading || _isCheckingSubscription;
 
     // If strictly loading, we rely on _isOnline (optimistic or previous).
     // If not loading, _isOnline should match the state (enforced by listener above).
@@ -170,8 +174,55 @@ class _OnlineOfflineSwitchState extends ConsumerState<OnlineOfflineSwitch> {
     );
   }
 
-  void _handleTap(bool isLoading) {
+  Future<void> _handleTap(bool isLoading) async {
     if (isLoading) return;
+
+    // If trying to go online, check subscription first
+    if (!_isOnline) {
+      if (mounted) setState(() => _isCheckingSubscription = true);
+
+      final driverDetailsNotifier = ref.read(driverDetailsNotifierProvider.notifier);
+      await driverDetailsNotifier.getDriverDetails();
+      final driverDetailsState = ref.read(driverDetailsNotifierProvider);
+
+      if (mounted) setState(() => _isCheckingSubscription = false);
+
+      final user = driverDetailsState.maybeWhen(success: (data) => data.data?.user, orElse: () => null);
+
+      print('🔍 OnlineSwitch: State is $driverDetailsState');
+      print('🔍 OnlineSwitch: User is $user');
+      print(
+        '🔍 OnlineSwitch: User subscriptionActive: ${user?.subscriptionActive} (${user?.subscriptionActive.runtimeType})',
+      );
+
+      // Check if subscription exists and is active
+      if (user?.subscriptionActive != true) {
+        print('⛔ OnlineSwitch: Subscription inactive or missing. Showing dialog.');
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Subscription Required'),
+              content: const Text('You do not have an active subscription. Please subscribe to go online.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SubscriptionPlansScreen()));
+                  },
+                  child: const Text('Subscribe Now'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
+    }
 
     // Optimistic Update
     setState(() {

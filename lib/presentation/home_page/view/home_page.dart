@@ -16,7 +16,6 @@ import '../../../data/services/local_storage_service.dart';
 import '../../../core/services/version_check_service.dart';
 import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/home_providers.dart';
-import '../../booking/provider/ride_providers.dart';
 import '../../booking/provider/websocket_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {

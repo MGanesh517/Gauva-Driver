@@ -10,6 +10,7 @@ abstract class IRideRepo {
   Future<Either<Failure, OrderDetailModel>> orderDetails({required int orderId});
   Future<Either<Failure, OrderDetailModel>> saveRideStatus({required int orderId, required String status});
   Future<Either<Failure, CommonResponse>> cancelRide({required int? orderId});
+  Future<Either<Failure, CommonResponse>> cancelRideDriver({required int rideId, required String reason});
   Future<Either<Failure, TripModel>> checkActiveTrip();
 
   // New Driver Ride APIs

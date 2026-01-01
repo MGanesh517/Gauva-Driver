@@ -96,7 +96,10 @@ class Order {
         : null;
 
     driver = json['driver'] != null ? Driver.fromJson(json['driver']) : null;
-    rider = json['rider'] != null ? Rider.fromJson(json['rider']) : null;
+    // Handle both 'rider' and 'user' fields from API
+    rider = json['rider'] != null
+        ? Rider.fromJson(json['rider'])
+        : (json['user'] != null ? Rider.fromJson(json['user']) : null);
     print('📦 Order.fromJson: Rider: ${rider?.name ?? "null"} (${rider?.mobile ?? "no mobile"})');
     vehicle = json['vehicle'] != null ? Vehicle.fromJson(json['vehicle']) : null;
     otp = json['otp'];
@@ -167,6 +170,37 @@ class Order {
     rider: rider ?? this.rider,
     vehicle: vehicle ?? this.vehicle,
   );
+
+  /// Merges this order with another Order object.
+  /// New non-null values will overwrite existing ones.
+  /// Nested objects like Rider and Driver are merged recursively if possible.
+  Order merge(Order? other) {
+    if (other == null) return this;
+    return copyWith(
+      id: other.id,
+      status: other.status,
+      distance: other.distance,
+      duration: other.duration,
+      waitMinutes: other.waitMinutes,
+      points: other.points, // Points usually replaced entirely if updated
+      addresses: other.addresses,
+      startTimestamp: other.startTimestamp,
+      finishTimestamp: other.finishTimestamp,
+      payMethod: other.payMethod,
+      pickupAt: other.pickupAt,
+      payableAmount: other.payableAmount,
+      currency: other.currency,
+      directions: other.directions,
+      rating: other.rating,
+      service: other.service,
+      driver: other.driver,
+      // Merge rider: if current has rider and other has rider, merge them.
+      // If other has no rider, keep current. If current has no rider, take other.
+      rider: rider != null ? rider!.merge(other.rider) : other.rider,
+      vehicle: other.vehicle,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;

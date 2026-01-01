@@ -32,12 +32,15 @@ class BookingModel {
   });
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
+    // Extract user data from nested 'user' object if available
+    final user = json['user'] as Map<String, dynamic>?;
+
     return BookingModel(
       bookingId: json['bookingId'] ?? json['id'],
       bookingCode: json['bookingCode'],
       status: json['status'],
-      passengerName: json['passengerName'],
-      passengerPhone: json['passengerPhone'],
+      passengerName: json['passengerName'] ?? user?['fullName'] ?? user?['name'],
+      passengerPhone: json['passengerPhone'] ?? user?['phone'] ?? user?['mobile'],
       seatsBooked: json['seatsBooked'],
       totalAmount: json['totalAmount']?.toDouble(),
       paymentMethod: json['paymentMethod'],

@@ -63,6 +63,7 @@ class ApiEndpoints {
   static const String startRide = '/v1/ride'; // /{rideId}/start
   static const String completeRide = '/v1/ride'; // /{rideId}/complete
   static const String getRideDetails = '/v1/ride'; // /{rideId}
+  static const String cancelRideDriver = '/v1/ride'; // /{rideId}/cancel/driver
   static const String goToPickup = 'driver/order'; // /{id}/go_to_pickup
   static const String saveFcmToken = '/notifications/token';
   static const String getWebSocketUrl = '/customer/config/websocket-url';
@@ -72,4 +73,11 @@ class ApiEndpoints {
   static const String forgotPassword = '/v1/auth/forgot-password';
   static const String verifyPasswordResetOtp = '/v1/auth/verify-password-reset-otp';
   static const String resetPasswordWithOtp = '/v1/auth/reset-password';
+
+  // Subscription APIs
+  static const String subscriptionPlans = '/v1/driver/subscriptions/plans';
+  static const String currentSubscription = '/v1/driver/subscriptions/current';
+  static const String purchaseSubscription = '/v1/driver/subscriptions/purchase';
+  static const String verifySubscriptionPayment = '/v1/driver/subscriptions/verify-payment';
+  static const String subscriptionHistory = '/v1/driver/subscriptions/history';
 }

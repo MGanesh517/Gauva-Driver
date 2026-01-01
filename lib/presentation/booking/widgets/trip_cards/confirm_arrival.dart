@@ -31,6 +31,85 @@ Widget confirmArrival(BuildContext context, Order? order) => Consumer(
       actions: [
         Expanded(
           child: AppPrimaryButton(
+            color: PrimaryButtonColor.error,
+            onPressed: () async {
+              // Get order ID (Same logic as OK button)
+              int? orderId = order?.id;
+              if (orderId == null) {
+                orderId = rideOrderState.maybeWhen(success: (o) => o?.id, orElse: () => null);
+              }
+              if (orderId == null) {
+                orderId = await LocalStorageService().getOrderId();
+              }
+
+              if (orderId == null) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error: Order ID not found')));
+                }
+                return;
+              }
+
+              if (!context.mounted) return;
+
+              // Show Cancel Dialog
+              final reason = await showDialog<String>(
+                context: context,
+                builder: (dialogContext) {
+                  String enteredReason = '';
+                  return AlertDialog(
+                    title: Text(localize(context).cancel_ride),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Please enter a reason for cancellation:'),
+                        SizedBox(height: 10.h),
+                        TextField(
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            hintText: 'Reason (e.g., Rider not found)',
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (val) {
+                            enteredReason = val;
+                          },
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Back')),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(dialogContext, enteredReason.trim());
+                        },
+                        child: const Text('Confirm Cancel', style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (reason == null || reason.isEmpty) return;
+
+              // Call Cancel API
+              rideOrderNotifier.cancelRideDriver(
+                orderId: orderId,
+                reason: reason,
+                onSuccess: (data) {
+                  print('✅ confirmArrival: Ride cancelled successfully');
+                  rideOrderNotifier.navigateToHome();
+                  onTripNotifier.resetState();
+                },
+              );
+            },
+            child: Text(
+              localize(context).cancel,
+              style: context.bodyMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500, color: Colors.white),
+            ),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: AppPrimaryButton(
             onPressed: () async {
               print('🔘 ==========================================');
               print('🔘 confirmArrival: OK button pressed');

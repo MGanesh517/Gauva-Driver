@@ -25,6 +25,8 @@ class User {
     this.totalRide,
     this.totalDistance,
     this.serviceType,
+    this.subscriptionActive,
+    this.subscriptionType,
   });
 
   User.fromJson(dynamic json) {
@@ -53,6 +55,8 @@ class User {
     totalRide = json['total_ride'];
     totalDistance = json['total_distance'];
     serviceType = json['service_type'];
+    subscriptionActive = json['subscriptionActive'];
+    subscriptionType = json['subscriptionType'];
   }
   num? id;
   String? name;
@@ -79,6 +83,8 @@ class User {
   num? totalRide;
   num? totalDistance;
   String? serviceType;
+  bool? subscriptionActive;
+  String? subscriptionType;
 
   User copyWith({
     num? id,
@@ -106,6 +112,8 @@ class User {
     num? totalRide,
     num? totalDistance,
     String? serviceType,
+    bool? subscriptionActive,
+    String? subscriptionType,
   }) => User(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -132,6 +140,8 @@ class User {
     totalRide: totalRide ?? this.totalRide,
     totalDistance: totalDistance ?? this.totalDistance,
     serviceType: serviceType ?? this.serviceType,
+    subscriptionActive: subscriptionActive ?? this.subscriptionActive,
+    subscriptionType: subscriptionType ?? this.subscriptionType,
   );
 
   Map<String, dynamic> toJson() {
@@ -161,6 +171,8 @@ class User {
     map['total_ride'] = totalRide;
     map['total_distance'] = totalDistance;
     map['service_type'] = serviceType;
+    map['subscriptionActive'] = subscriptionActive;
+    map['subscriptionType'] = subscriptionType;
     return map;
   }
 }

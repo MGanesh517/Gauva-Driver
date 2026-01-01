@@ -131,7 +131,7 @@ Widget rideDetails(BuildContext context, {required Order order, bool showCancelI
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
     Text(
-      order?.status?.capitalize() ?? 'N/A',
+      order.status?.capitalize() ?? 'N/A',
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: context.bodyMedium?.copyWith(

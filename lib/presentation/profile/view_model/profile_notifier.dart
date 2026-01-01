@@ -90,7 +90,7 @@ class DriverDetailsViewModel extends StateNotifier<AppState<DriverDetailsRespons
   Future<void> getDriverDetails() async {
     state = const AppState.loading();
     final result = await authRepo.getDriverDetails();
-    result.fold(
+    await result.fold(
       (failure) {
         state = AppState.error(failure);
         showNotification(message: failure.message);

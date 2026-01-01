@@ -67,6 +67,13 @@ class RideRepoImpl extends BaseRepository implements IRideRepo {
   });
 
   @override
+  Future<Either<Failure, CommonResponse>> cancelRideDriver({required int rideId, required String reason}) async =>
+      await safeApiCall(() async {
+        final response = await rideService.cancelRideDriver(rideId: rideId, reason: reason);
+        return CommonResponse.fromJson(response.data);
+      });
+
+  @override
   Future<Either<Failure, TripModel>> checkActiveTrip() async => await safeApiCall(() async {
     final response = await rideService.checkActiveTrip();
     try {

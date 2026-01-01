@@ -121,6 +121,7 @@ Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
               )
             : Row(
                 children: [
+                  Gap(8.w),
                   // Consumer(
                   //   builder: (context, ref, _) => getBackground(
                   //     icon: Ionicons.chatbubble_ellipses_outline,
@@ -156,7 +157,7 @@ Widget getBackground({
 }) => InkWell(
   onTap: onTap,
   child: Container(
-    padding: EdgeInsets.all(10.r),
+    padding: EdgeInsets.all(12.r),
     decoration: BoxDecoration(
       color: isDarkMode() ? Colors.black12 : backgroundColor,
       borderRadius: BorderRadius.circular(4.r),

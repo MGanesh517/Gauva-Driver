@@ -9,7 +9,7 @@ class Environment {
   static final String _baseUrl = dotenv.env['API_BASE_URL'] ?? _devBaseUrl;
   static final String? _socketIOUrl = dotenv.env['SOCKET_IO_URL'];
 
-  static const EnvironmentType currentEnvironment = EnvironmentType.prod;
+  static const EnvironmentType currentEnvironment = EnvironmentType.dev;
 
   static String? _overrideApiUrl;
 
