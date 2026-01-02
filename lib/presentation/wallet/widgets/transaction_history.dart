@@ -9,15 +9,13 @@ import 'package:gauva_driver/core/theme/color_palette.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/core/widgets/error_view.dart';
-import 'package:gauva_driver/gen/assets.gen.dart';
+
 import 'package:gauva_driver/presentation/wallet/provider/provider.dart';
 
-import '../../../core/utils/build_network_image.dart';
 import '../../../core/utils/custom_date_picker.dart';
 import '../../../core/utils/format_date.dart';
 import '../../../data/models/wallet_model/wallet_transaction_history_model.dart';
 
-ValueNotifier<int> selectedTabIndex = ValueNotifier(0);
 
 Widget transactionHistory(BuildContext context) => Expanded(
   child: Consumer(
@@ -72,79 +70,18 @@ Widget transactionHistory(BuildContext context) => Expanded(
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Container(
-            padding: EdgeInsets.all(8.r),
-            decoration: BoxDecoration(
-              color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Row(
-              children: [
-                buildTabItem(context, localize(context).payment_received, 0),
-                buildTabItem(context, localize(context).withdraw_history, 1),
-              ],
-            ),
-          ),
           const SizedBox(height: 16),
-          ValueListenableBuilder<int>(
-            valueListenable: selectedTabIndex,
-            builder: (context, int v, _) => Expanded(
-              child: selectedTabIndex.value == 0
-                  ? transactionList(context, isPaymentReceive: true)
-                  : transactionList(context, isPaymentReceive: false),
-            ),
-          ),
+          // Tabs removed
+          Expanded(child: transactionList(context)),
         ],
       );
     },
   ),
 );
 
-Widget buildTabItem(BuildContext context, String label, int index) => Consumer(
-  builder: (context, ref, _) {
-    final stateNotifier = ref.read(transactionHistoryProvider.notifier);
-    final isSelected = selectedTabIndex.value == index;
+// Removed buildTabItem
 
-    return Expanded(
-      child: InkWell(
-        onTap: () async {
-          selectedTabIndex.value = index;
-          stateNotifier.updatePaymentMode(index == 0 ? 'received' : 'withdraw');
-          await stateNotifier.getTransactionHistory();
-        },
-        borderRadius: BorderRadius.circular(8.r),
-        child: Container(
-          height: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isSelected
-                ? isDarkMode()
-                      ? Colors.black12
-                      : Colors.white
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(8.r),
-            border: isSelected ? Border.all(color: const Color(0xFFDFDBF9), width: 1.w) : null,
-          ),
-          child: Text(
-            label,
-            style: context.bodyMedium?.copyWith(
-              fontSize: 12.sp,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              color: isSelected
-                  ? ColorPalette.primary50
-                  : isDarkMode()
-                  ? Colors.white
-                  : const Color(0xFF24262D),
-            ),
-          ),
-        ),
-      ),
-    );
-  },
-);
-
-Widget transactionList(BuildContext context, {required bool isPaymentReceive}) => Consumer(
+Widget transactionList(BuildContext context) => Consumer(
   builder: (context, ref, _) {
     final state = ref.watch(transactionHistoryProvider);
     final transactions = state.transactions;
@@ -159,133 +96,84 @@ Widget transactionList(BuildContext context, {required bool isPaymentReceive}) =
         }
         return ListView.builder(
           itemCount: data.length,
-          itemBuilder: (context, index) =>
-              transactionTile(context, transaction: data[index], isPaymentReceive: isPaymentReceive),
+          itemBuilder: (context, index) => transactionTile(context, transaction: data[index]),
         );
       },
     );
   },
 );
 
-Widget transactionTile(BuildContext context, {required Transaction transaction, required bool isPaymentReceive}) =>
-    Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.all(8.r),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
-        border: isDarkMode() ? Border.all(color: Colors.white) : null,
-      ),
-      child: Row(
-        children: [
-          isPaymentReceive
-              ? CircleAvatar(
-                  radius: 25.r,
-                  backgroundColor: ColorPalette.primary50,
-                  child: transaction.rider?.profilePicture != null
-                      ? CircleAvatar(
-                          radius: 24.r,
-                          child: ClipOval(child: buildNetworkImage(imageUrl: transaction.rider?.profilePicture)),
-                        )
-                      : CircleAvatar(
-                          radius: 24.r,
-                          backgroundColor: ColorPalette.primary50,
-                          child: Icon(Icons.account_balance_wallet, color: Colors.white, size: 20.r),
-                        ),
-                )
-              : CircleAvatar(radius: 25.r, backgroundImage: Assets.images.paymentWithdrawCircle.provider()),
-          Gap(8.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isPaymentReceive
-                      ? (transaction.rider?.name ?? transaction.notes ?? 'Payment Received')
-                      : localize(context).payment_withdraw,
-                  style: context.bodyMedium?.copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isDarkMode() ? Colors.white : const Color(0xFF24262D),
-                  ),
-                ),
-                Gap(4.h),
-                Row(
-                  children: [
-                    richTextTransaction(
-                      context,
-                      title: localize(context).id,
-                      value: (transaction.id ?? 'N/A').toString(),
-                    ),
-                    richTextTransaction(
-                      context,
-                      title: localize(context).method,
-                      value: transaction.method ?? transaction.paymentMode ?? 'N/A',
-                    ),
-                  ],
-                ),
-              ],
-            ),
+Widget transactionTile(BuildContext context, {required Transaction transaction}) {
+  final isCredit = transaction.transaction?.toLowerCase() == 'credit';
+
+  return Container(
+    margin: EdgeInsets.only(bottom: 8.h),
+    padding: EdgeInsets.all(12.r),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.r),
+      color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
+      border: isDarkMode() ? Border.all(color: Colors.white) : null,
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(8.r),
+          decoration: BoxDecoration(
+            color: isCredit ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+            shape: BoxShape.circle,
           ),
-          Container(
-            height: 42.h,
-            width: 1.w,
-            color: Colors.grey.shade200,
-            margin: EdgeInsets.only(right: 8.w),
+          child: Icon(
+            isCredit ? Icons.arrow_downward : Icons.arrow_upward,
+            color: isCredit ? Colors.green : Colors.red,
+            size: 20.r,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+        ),
+        Gap(12.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: TextSpan(
-                  text: isPaymentReceive ? '+ ' : '- ',
-                  style: context.bodyMedium?.copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: isPaymentReceive ? Colors.greenAccent : Colors.red,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "₹${transaction.amount?.toStringAsFixed(2) ?? '0.00'}",
-                      style: context.bodyMedium?.copyWith(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: isDarkMode() ? Colors.grey.shade500 : const Color(0xFF24262D),
-                      ),
-                    ),
-                  ],
+              Text(
+                transaction.method ?? 'Transaction',
+                style: context.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDarkMode() ? Colors.white : const Color(0xFF24262D),
                 ),
               ),
+              if (transaction.notes != null && transaction.notes!.isNotEmpty) ...[
+                Gap(4.h),
+                Text(
+                  transaction.notes!,
+                  style: context.bodyMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
               Gap(4.h),
               Text(
                 formatDateEnglish(transaction.createdAt),
                 style: context.bodyMedium?.copyWith(
-                  fontSize: 12.sp,
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.w400,
-                  color: Colors.grey.shade600,
+                  color: Colors.grey.shade500,
                 ),
               ),
             ],
           ),
-        ],
-      ),
-    );
-
-Widget richTextTransaction(BuildContext context, {String? title, String? value}) => Expanded(
-  child: RichText(
-    text: TextSpan(
-      text: title,
-      style: context.bodyMedium?.copyWith(fontSize: 10.sp, fontWeight: FontWeight.w400, color: const Color(0xFF565F73)),
-      children: [
-        TextSpan(
-          text: value,
+        ),
+        Text(
+          "${isCredit ? '+' : '-'} ₹${transaction.amount?.toStringAsFixed(2) ?? '0.00'}",
           style: context.bodyMedium?.copyWith(
-            fontSize: 10.sp,
-            fontWeight: FontWeight.w600,
-            color: ColorPalette.primary50,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w700,
+            color: isCredit ? Colors.green : Colors.red,
           ),
         ),
       ],
     ),
-  ),
-);
+  );
+}

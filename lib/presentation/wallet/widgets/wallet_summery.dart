@@ -72,24 +72,24 @@ Widget walletSummery(BuildContext context) => Consumer(
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    ref.read(paymentMethodsNotifierProvider.notifier).getPaymentMethods();
-                    showWithdrawDialog(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: ColorPalette.primary50),
-                    child: Text(
-                      localize(context).withdraw,
-                      style: context.bodyMedium?.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     ref.read(paymentMethodsNotifierProvider.notifier).getPaymentMethods();
+                //     showWithdrawDialog(context);
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: ColorPalette.primary50),
+                //     child: Text(
+                //       localize(context).withdraw,
+                //       style: context.bodyMedium?.copyWith(
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ],

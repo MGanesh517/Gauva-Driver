@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
-import 'dart:convert';
 import 'package:gauva_driver/data/services/websocket_service.dart';
 import '../../domain/interfaces/config_service_interface.dart';
 

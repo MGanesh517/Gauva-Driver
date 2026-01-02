@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:gauva_driver/presentation/wallet/provider/provider.dart';
 import 'package:gauva_driver/presentation/wallet/widgets/wallet_summery.dart';
+import 'package:gauva_driver/presentation/wallet/widgets/transaction_history.dart';
+import 'package:gap/gap.dart';
 
 import '../../../core/utils/is_dark_mode.dart';
 
@@ -30,12 +32,7 @@ class _WalletState extends ConsumerState<Wallet> {
       body: Container(
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(color: isDarkMode() ? Colors.black : Colors.white),
-        child: Column(
-          children: [
-            walletSummery(context),
-            // Gap(16.h), transactionHistory(context)
-          ],
-        ),
+        child: Column(children: [walletSummery(context), Gap(16.h), transactionHistory(context)]),
       ),
     ),
   );

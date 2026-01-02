@@ -63,7 +63,7 @@ class TransactionHistoryState {
   const TransactionHistoryState({
     this.transactions = const AppState.success([]),
     this.dateTime,
-    this.paymentMode = 'received',
+    this.paymentMode = null,
   });
 
   TransactionHistoryState copyWith({

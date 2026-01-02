@@ -131,7 +131,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
         itemCount: _trips.length,
         itemBuilder: (context, index) {
           final trip = _trips[index];
-          final dt = trip.scheduledDeparture;
+          final dt = trip.scheduledDeparture?.toLocal();
           final dateStr = dt != null ? DateFormat('dd MMM yyyy').format(dt) : 'N/A';
           final timeStr = dt != null ? DateFormat('hh:mm a').format(dt) : 'N/A';
 

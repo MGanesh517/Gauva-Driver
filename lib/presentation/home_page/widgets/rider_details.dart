@@ -1,18 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/extensions/number_extension.dart';
-import 'package:gauva_driver/core/routes/app_routes.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/data/models/order_response/order_model/rider/rider.dart';
-import 'package:gauva_driver/data/services/local_storage_service.dart';
-import 'package:gauva_driver/data/services/navigation_service.dart';
-import 'package:gauva_driver/presentation/booking/provider/driver_providers.dart';
 
 import '../../../core/theme/color_palette.dart';
 import '../../../data/services/url_launch_services.dart';

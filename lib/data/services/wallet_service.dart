@@ -9,24 +9,20 @@ class WalletService implements IWalletService {
   WalletService({required this.dioClient});
 
   @override
-  Future<Response> getWallets() async => await dioClient.dio.get(ApiEndpoints.wallets);
+  Future<Response> getWallets() async => await dioClient.dio.get(ApiEndpoints.walletBalance);
+
   @override
   Future<Response> getWalletsTransaction({String? dateTime, String? paymentMode}) async {
-    // Use new payment transactions endpoint
     final queryParams = <String, dynamic>{};
     if (dateTime != null) {
       queryParams['date'] = dateTime;
     }
-    if (paymentMode != null) {
-      queryParams['paymentMode'] = paymentMode;
-    }
-    // Add pagination parameters if needed
-    queryParams['page'] = 0;
-    queryParams['size'] = 20;
+    // paymentMode might not be supported in new API, but keeping logic if applicable or just ignored
+    // queryParams['paymentMode'] = paymentMode;
 
     return await dioClient.dio.get(
-      ApiEndpoints.paymentTransactions,
-      // queryParameters: queryParams.isEmpty ? null : queryParams,
+      ApiEndpoints.walletTransactions,
+      queryParameters: queryParams.isNotEmpty ? queryParams : null,
     );
   }
 

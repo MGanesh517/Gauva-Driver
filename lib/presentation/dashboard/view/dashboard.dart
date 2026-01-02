@@ -9,7 +9,7 @@ import 'package:gauva_driver/presentation/account_page/view/account_page.dart';
 import 'package:gauva_driver/presentation/dashboard/provider/dashboard_index_provider.dart';
 import 'package:gauva_driver/presentation/intercity/intercity_dashboard.dart';
 import 'package:gauva_driver/presentation/ride_history/view/ride_history_view.dart';
-// import 'package:gauva_driver/presentation/wallet/views/wallet.dart'; // Commented out - Wallet page removed
+import 'package:gauva_driver/presentation/wallet/views/wallet.dart';
 
 import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/websocket_provider.dart';
@@ -97,7 +97,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     }
   }
 
-  List<Widget> get _pages => [HomePage(), IntercityDashboard(), RideHistoryPage(), AccountPage()];
+  List<Widget> get _pages => [
+    HomePage(),
+    IntercityDashboard(),
+    RideHistoryPage(),
+    Wallet(),
+    AccountPage(),
+  ]; // Added Wallet page
 
   void _onItemTapped(int index) {
     ref.read(dashboardIndexProvider.notifier).state = index;

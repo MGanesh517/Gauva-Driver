@@ -10,6 +10,7 @@ import 'package:gauva_driver/core/widgets/buttons/app_primary_button.dart';
 
 import 'package:gauva_driver/data/models/subscription/subscription_plan_model.dart';
 import 'package:gauva_driver/presentation/subscription/provider/subscription_providers.dart';
+import '../../profile/provider/profile_providers.dart';
 
 class SubscriptionPlansScreen extends ConsumerStatefulWidget {
   const SubscriptionPlansScreen({super.key});
@@ -52,11 +53,17 @@ class _SubscriptionPlansScreenState extends ConsumerState<SubscriptionPlansScree
           .verifyPayment(
             orderId: orderIdToVerify,
             paymentId: response.paymentId,
-            onSuccess: () {
+            onSuccess: () async {
               showNotification(message: "Payment Verified & Subscription Activated!", isSuccess: true);
-              // Refresh current subscription and pop
+              // Refresh current subscription
               ref.read(currentSubscriptionNotifierProvider.notifier).getCurrentSubscription();
-              Navigator.pop(context); // Go back to home/online screen
+
+              // Refresh driver profile to update subscription status in app state
+              await ref.read(driverDetailsNotifierProvider.notifier).getDriverDetails();
+
+              if (mounted) {
+                Navigator.pop(context); // Go back to home/online screen
+              }
             },
             onError: (message) {
               showNotification(message: "Payment Verification Failed: $message");

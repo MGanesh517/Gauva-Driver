@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/errors/failure.dart';
 import '../../../core/state/app_state.dart';
 import '../../../data/models/subscription/driver_subscription_model.dart';
 import '../../../data/models/subscription/subscription_plan_model.dart';

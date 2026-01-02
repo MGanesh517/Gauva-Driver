@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:gauva_driver/data/models/common_response.dart';
-import 'package:gauva_driver/data/models/wallet_model/wallet_balance_model.dart';
+import 'package:gauva_driver/data/models/wallet_model/wallet_balance_model.dart' as WalletBalance;
 import 'package:gauva_driver/data/models/wallet_model/wallet_transaction_history_model.dart';
-import 'package:gauva_driver/data/models/wallet_model/payment_transaction_model.dart';
 import 'package:gauva_driver/data/repositories/interfaces/wallet_repo_interface.dart';
 import 'package:gauva_driver/domain/interfaces/wallet_service_interface.dart';
 import '../../core/errors/failure.dart';
@@ -14,9 +13,21 @@ class WalletsRepoImpl extends BaseRepository implements IWalletsRepo {
 
   WalletsRepoImpl({required this.walletService});
   @override
-  Future<Either<Failure, WalletBalanceModel>> getWallets() async => await safeApiCall(() async {
+  Future<Either<Failure, WalletBalance.WalletBalanceModel>> getWallets() async => await safeApiCall(() async {
     final response = await walletService.getWallets();
-    return WalletBalanceModel.fromJson(response.data);
+    // New API returns flat JSON: {"balance": 0, ...}
+    // Map it to existing model structure
+    final data = response.data;
+    final balance = data['balance'] ?? 0;
+
+    return WalletBalance.WalletBalanceModel(
+      message: 'Success',
+      data: WalletBalance.Data(
+        wallet: balance,
+        paymentWithdraw: 0, // Not provided in new API
+        paymentHistory: 0, // Not provided in new API
+      ),
+    );
   });
 
   @override
@@ -26,31 +37,27 @@ class WalletsRepoImpl extends BaseRepository implements IWalletsRepo {
   }) async => await safeApiCall(() async {
     final response = await walletService.getWalletsTransaction(dateTime: dateTime, paymentMode: paymentMode);
 
-    // Parse new payment transactions response
-    final paymentResponse = PaymentTransactionResponse.fromJson(response.data);
+    final data = response.data;
+    List<Transaction> transactions = [];
 
-    // Convert PaymentTransaction list to Transaction list for backward compatibility
-    final transactions =
-        paymentResponse.content?.map((paymentTx) {
-          return Transaction(
-            id: paymentTx.id,
-            orderId: paymentTx.rideId,
-            driverId: paymentTx.driverId,
-            amount: paymentTx.amount,
-            method: paymentTx.provider,
-            paymentMode: paymentTx.type,
-            createdAt: paymentTx.createdAt,
-            transaction: _determineTransactionType(paymentTx.type, paymentTx.status),
-            notes: paymentTx.notes,
-            status: paymentTx.status,
-            type: paymentTx.type,
-            currency: paymentTx.currency,
-            provider: paymentTx.provider,
-          );
-        }).toList() ??
-        [];
+    if (data is List) {
+      transactions = data.map((json) {
+        return Transaction(
+          id: json['id'],
+          orderId: json['referenceId'] != null ? num.tryParse(json['referenceId'].toString()) : null,
+          amount: json['amount'],
+          status: json['status'],
+          type: json['type'],
+          createdAt: json['createdAt'],
+          notes: json['notes'],
+          currency: json['currency'],
+          transaction: _determineTransactionType(json['type'], json['status']),
+          paymentMode: json['type'],
+          method: json['referenceType'], // Use referenceType as method equivalent
+        );
+      }).toList();
+    }
 
-    // Create WalletTransactionHistoryModel with converted transactions
     return WalletTransactionHistoryModel(data: WalletTransactionHistoryModelData(transaction: transactions));
   });
 

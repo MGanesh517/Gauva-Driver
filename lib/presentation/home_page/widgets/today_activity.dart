@@ -26,7 +26,7 @@ Widget todayActivity(BuildContext context) => Padding(
                     child: Text(localize(context).no_rides_today, style: Theme.of(context).textTheme.bodyMedium),
                   );
                 }
-                return activityBuilder(context, orderList: data!.rides!, showPrice: true);
+                return activityBuilder(context, orderList: data.rides!, showPrice: true);
               },
               error: (e) => ErrorView(message: e.message),
             );

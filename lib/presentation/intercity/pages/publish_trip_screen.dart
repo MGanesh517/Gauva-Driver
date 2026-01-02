@@ -470,8 +470,8 @@ class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [Color(0xFF397098), Color(0xFF942FAF)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),

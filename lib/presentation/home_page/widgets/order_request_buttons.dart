@@ -17,6 +17,8 @@ import '../../../data/models/order_response/order_model/order/order.dart';
 import '../../../data/services/local_storage_service.dart';
 import '../../../data/services/pusher_service.dart';
 import '../../booking/provider/driver_providers.dart';
+import '../../profile/provider/profile_providers.dart';
+import '../../subscription/screens/subscription_plans_screen.dart';
 
 Widget orderRequestButtons(BuildContext context, {num? orderId, Order? order}) => Consumer(
   builder: (context, ref, _) {
@@ -74,6 +76,42 @@ Widget orderRequestButtons(BuildContext context, {num? orderId, Order? order}) =
             onPressed: () async {
               if (orderId == null) return;
 
+              // Check Subscription Status
+              final driverDetailsState = ref.read(driverDetailsNotifierProvider);
+              final user = driverDetailsState.maybeWhen(success: (data) => data.data?.user, orElse: () => null);
+
+              if (user?.subscriptionActive != true) {
+                // If details are missing or stale, try fetching one last time?
+                // For now, assume state is up to date since they are online.
+                // If not active, show dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Subscription Required'),
+                    content: const Text('You do not have an active subscription. Please subscribe to accept rides.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // Close the request dialog as well? Maybe not, allow them to come back?
+                          // But typically navigating away closes it.
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SubscriptionPlansScreen()),
+                          );
+                        },
+                        child: const Text('Subscribe Now'),
+                      ),
+                    ],
+                  ),
+                );
+                return;
+              }
+
               // Get OTP from order if available, otherwise ask user
               int? otp;
               if (order?.otp != null) {
@@ -112,9 +150,7 @@ Widget orderRequestButtons(BuildContext context, {num? orderId, Order? order}) =
 
               if (otp == null) {
                 // OTP is required but not available
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('OTP is required to accept ride')),
-                );
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('OTP is required to accept ride')));
                 return;
               }
 
@@ -134,16 +170,16 @@ Widget orderRequestButtons(BuildContext context, {num? orderId, Order? order}) =
                 },
                 onSuccess: (data) async {
                   if (data == null) return;
-                  
+
                   // Save order ID and order data for booking page
                   await LocalStorageService().saveOrderId(data.id ?? orderId.toInt());
-                  
+
                   // Ensure order data is set in state (accept response should have it, but use existing if needed)
                   if (data.points == null && order?.points != null) {
                     // If accept response doesn't have points, use the order details we already fetched
                     orderStatusNotifier.setOrderData(order!);
                   }
-                  
+
                   driverStatusNotifier.onTrip();
                   onTripStatusNotifier.updateOnTripStatus(status: BookingStatus.goForPickup);
                   NavigationService.pop(); // Pop request dialog

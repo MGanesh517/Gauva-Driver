@@ -30,6 +30,8 @@ class ApiEndpoints {
   static const String earnings = '/earning';
   static const String paymentMethods = '/payment-method';
   static const String wallets = '/$mediator/wallet';
+  static const String walletBalance = '/v1/driver/wallet/balance'; // New endpoint
+  static const String walletTransactions = '/v1/driver/wallet/transactions'; // New endpoint
   static const String withdraw = '/$mediator/withdraw';
   static const String addCard = '/$mediator/add-card';
   static const String myCard = '/$mediator/my-card';
