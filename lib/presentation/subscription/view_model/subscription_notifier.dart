@@ -36,11 +36,12 @@ class PurchaseSubscriptionNotifier extends StateNotifier<AppState<PurchaseSubscr
 
   Future<void> purchaseSubscription({
     required int planId,
+    String? couponCode,
     required Function(PurchaseSubscriptionResponse) onSuccess,
     required Function(String) onError,
   }) async {
     state = const AppState.loading();
-    final result = await subscriptionRepo.purchaseSubscription(planId: planId);
+    final result = await subscriptionRepo.purchaseSubscription(planId: planId, couponCode: couponCode);
     result.fold(
       (failure) {
         state = AppState.error(failure);

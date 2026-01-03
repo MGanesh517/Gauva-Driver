@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:gauva_driver/core/extensions/extensions.dart';
-import 'package:gauva_driver/core/extensions/number_extension.dart';
 import 'package:gauva_driver/core/utils/is_dark_mode.dart';
 import 'package:gauva_driver/core/utils/localize.dart';
 import 'package:gauva_driver/data/models/order_response/order_model/rider/rider.dart';
@@ -12,10 +11,7 @@ import 'package:gauva_driver/data/models/order_response/order_model/rider/rider.
 import '../../../core/theme/color_palette.dart';
 import '../../../data/services/url_launch_services.dart';
 
-Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
-  final double height = 60;
-  final double width = 60;
-  return Container(
+Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) => Container(
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8),
@@ -24,30 +20,17 @@ Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
     child: Row(
       children: [
         CircleAvatar(
+          radius: 30,
           backgroundColor: ColorPalette.primary50,
-          child: Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: rider?.profilePicture ?? '',
-                height: height.h,
-                width: width.w,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  height: height.h,
-                  width: width.w,
-                  color: Colors.grey[300],
-                  child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  height: height.h,
-                  width: width.w,
-                  color: Colors.grey,
-                  child: const Icon(Icons.error, color: Colors.white),
-                ),
-              ),
-            ),
-          ),
+          backgroundImage: (rider?.profilePicture?.isNotEmpty ?? false)
+              ? CachedNetworkImageProvider(rider!.profilePicture!)
+              : null,
+          child: (rider?.profilePicture?.isEmpty ?? true)
+              ? Text(
+                  (rider?.name?.isNotEmpty ?? false) ? rider!.name![0].toUpperCase() : 'R',
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                )
+              : null,
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -64,29 +47,29 @@ Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
                   color: isDarkMode() ? const Color(0xFF687387) : const Color(0xFF24262D),
                 ),
               ),
-              Row(
-                children: [
-                  Icon(Icons.directions_car_outlined, size: 13.r, color: const Color(0xFF687387)),
-                  Gap(4.w),
-                  Text(
-                    ((rider?.totalTrip ?? 0)).formattedCount,
-                    style: context.bodyMedium?.copyWith(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF687387),
-                    ),
-                  ),
-                  Gap(4.w),
-                  Text(
-                    localize(context).trips,
-                    style: context.bodyMedium?.copyWith(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF687387),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Icon(Icons.directions_car_outlined, size: 13.r, color: const Color(0xFF687387)),
+              //     Gap(4.w),
+              //     Text(
+              //       ((rider?.totalTrip ?? 0)).formattedCount,
+              //       style: context.bodyMedium?.copyWith(
+              //         fontSize: 10.sp,
+              //         fontWeight: FontWeight.w500,
+              //         color: const Color(0xFF687387),
+              //       ),
+              //     ),
+              //     Gap(4.w),
+              //     Text(
+              //       localize(context).trips,
+              //       style: context.bodyMedium?.copyWith(
+              //         fontSize: 10.sp,
+              //         fontWeight: FontWeight.w600,
+              //         color: const Color(0xFF687387),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -142,7 +125,6 @@ Widget riderDetails(BuildContext context, Rider? rider, {String? amount}) {
       ],
     ),
   );
-}
 
 Widget getBackground({
   required IconData icon,

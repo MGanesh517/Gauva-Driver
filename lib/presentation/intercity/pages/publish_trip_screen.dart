@@ -721,6 +721,8 @@ class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
                           controller: _fareController,
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(AppLocalizations.of(context).intercityTotalFareInput),
+                          validator: (v) =>
+                              v?.isEmpty ?? true ? AppLocalizations.of(context).intercityRequiredError : null,
                         ),
                       ),
                     ],
@@ -733,6 +735,8 @@ class _PublishTripScreenState extends ConsumerState<PublishTripScreen> {
                           controller: _seatsController,
                           keyboardType: TextInputType.number,
                           decoration: _inputDecoration(AppLocalizations.of(context).intercitySeats),
+                          validator: (v) =>
+                              v?.isEmpty ?? true ? AppLocalizations.of(context).intercityRequiredError : null,
                         ),
                       ),
                       const SizedBox(width: 12),

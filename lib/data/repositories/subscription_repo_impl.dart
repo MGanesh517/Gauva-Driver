@@ -4,6 +4,7 @@ import '../../domain/interfaces/subscription_service_interface.dart';
 import '../models/subscription/subscription_plan_model.dart';
 import '../models/subscription/driver_subscription_model.dart';
 import '../models/subscription/purchase_subscription_response.dart';
+import '../models/coupon/coupon_model.dart';
 import '../repositories/base_repository.dart';
 import 'interfaces/subscription_repo_interface.dart';
 
@@ -29,11 +30,13 @@ class SubscriptionRepoImpl extends BaseRepository implements ISubscriptionRepo {
   });
 
   @override
-  Future<Either<Failure, PurchaseSubscriptionResponse>> purchaseSubscription({required int planId}) async =>
-      await safeApiCall(() async {
-        final response = await subscriptionService.purchaseSubscription(planId: planId);
-        return PurchaseSubscriptionResponse.fromJson(response.data);
-      });
+  Future<Either<Failure, PurchaseSubscriptionResponse>> purchaseSubscription({
+    required int planId,
+    String? couponCode,
+  }) async => await safeApiCall(() async {
+    final response = await subscriptionService.purchaseSubscription(planId: planId, couponCode: couponCode);
+    return PurchaseSubscriptionResponse.fromJson(response.data);
+  });
 
   @override
   Future<Either<Failure, bool>> verifyPayment({required String orderId, String? paymentId}) async =>
@@ -58,5 +61,12 @@ class SubscriptionRepoImpl extends BaseRepository implements ISubscriptionRepo {
       return DriverSubscription.fromJson(data['subscription']);
     }
     return null;
+  });
+
+  @override
+  Future<Either<Failure, List<Coupon>>> getCoupons() async => await safeApiCall(() async {
+    final response = await subscriptionService.getCoupons();
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data.map((json) => Coupon.fromJson(json as Map<String, dynamic>)).toList();
   });
 }

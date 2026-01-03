@@ -82,4 +82,5 @@ class ApiEndpoints {
   static const String purchaseSubscription = '/v1/driver/subscriptions/purchase';
   static const String verifySubscriptionPayment = '/v1/driver/subscriptions/verify-payment';
   static const String subscriptionHistory = '/v1/driver/subscriptions/history';
+  static const String coupons = '/v1/driver/subscriptions/coupons';
 }

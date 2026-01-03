@@ -28,6 +28,7 @@ import '../../presentation/home_page/view/home_page.dart';
 import '../../presentation/payout_method/view/add_payment_gateway.dart';
 import '../../presentation/profile/view/profile_info_page.dart';
 import '../../presentation/report_issue/view/report_issue_view.dart';
+import '../../presentation/subscription/screens/subscription_plans_screen.dart';
 import '../widgets/error_view.dart';
 
 class AppRouter {
@@ -96,6 +97,8 @@ class AppRouter {
       case '/reset-password':
         final String email = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => ResetPasswordScreen(email: email));
+      case '/subscription-plans':
+        return MaterialPageRoute(builder: (_) => const SubscriptionPlansScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(body: ErrorView(message: 'No route defined for ${settings.name}')),

@@ -30,7 +30,7 @@ class DriverSubscription {
   factory DriverSubscription.fromJson(Map<String, dynamic> json) {
     return DriverSubscription(
       id: json['id'],
-      driverId: json['driver']['id'],
+      driverId: json['driverId'],
       plan: SubscriptionPlan.fromJson(json['plan']),
       startTime: DateTime.parse(json['startTime']),
       endTime: json['endTime'] != null ? DateTime.parse(json['endTime']) : null,

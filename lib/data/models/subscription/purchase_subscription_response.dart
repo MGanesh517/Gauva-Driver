@@ -7,6 +7,8 @@ class PurchaseSubscriptionResponse {
   final int planId;
   final double amount;
   final String status;
+  final double? discountAmount;
+  final String? appliedCouponCode;
 
   PurchaseSubscriptionResponse({
     required this.orderId,
@@ -17,6 +19,8 @@ class PurchaseSubscriptionResponse {
     required this.planId,
     required this.amount,
     required this.status,
+    this.discountAmount,
+    this.appliedCouponCode,
   });
 
   factory PurchaseSubscriptionResponse.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class PurchaseSubscriptionResponse {
       planId: json['planId'],
       amount: (json['amount'] as num).toDouble(),
       status: json['status'],
+      discountAmount: json['discountAmount'] != null ? (json['discountAmount'] as num).toDouble() : null,
+      appliedCouponCode: json['appliedCouponCode'],
     );
   }
 }

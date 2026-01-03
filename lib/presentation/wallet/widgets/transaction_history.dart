@@ -16,7 +16,6 @@ import '../../../core/utils/custom_date_picker.dart';
 import '../../../core/utils/format_date.dart';
 import '../../../data/models/wallet_model/wallet_transaction_history_model.dart';
 
-
 Widget transactionHistory(BuildContext context) => Expanded(
   child: Consumer(
     builder: (context, ref, _) {
@@ -39,35 +38,35 @@ Widget transactionHistory(BuildContext context) => Expanded(
                   ),
                 ),
               ),
-              Gap(8.w),
-              InkWell(
-                onTap: () async {
-                  final date = await customDatePickerReturnDate(
-                    context,
-                    initialDate: state.dateTime,
-                    lastDate: DateTime.now(),
-                    firstDate: DateTime.now().subtract(const Duration(days: 1000)),
-                  );
-                  notifier.updateDateTime(date);
-                  await Future.delayed(const Duration(milliseconds: 100));
-                  notifier.getTransactionHistory();
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      state.dateTime == null ? '' : DateFormat('dd/MM/yyyy', 'en').format(state.dateTime!),
-                      style: context.bodyMedium?.copyWith(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF687387),
-                      ),
-                    ),
-                    Gap(8.w),
-                    Icon(Icons.calendar_month, color: ColorPalette.primary50, size: 24.h),
-                    Gap(16.w),
-                  ],
-                ),
-              ),
+              // Gap(8.w),
+              // InkWell(
+              //   onTap: () async {
+              //     final date = await customDatePickerReturnDate(
+              //       context,
+              //       initialDate: state.dateTime,
+              //       lastDate: DateTime.now(),
+              //       firstDate: DateTime.now().subtract(const Duration(days: 1000)),
+              //     );
+              //     notifier.updateDateTime(date);
+              //     await Future.delayed(const Duration(milliseconds: 100));
+              //     notifier.getTransactionHistory();
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         state.dateTime == null ? '' : DateFormat('dd/MM/yyyy', 'en').format(state.dateTime!),
+              //         style: context.bodyMedium?.copyWith(
+              //           fontSize: 14.sp,
+              //           fontWeight: FontWeight.w400,
+              //           color: const Color(0xFF687387),
+              //         ),
+              //       ),
+              //       Gap(8.w),
+              //       Icon(Icons.calendar_month, color: ColorPalette.primary50, size: 24.h),
+              //       Gap(16.w),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           const SizedBox(height: 16),

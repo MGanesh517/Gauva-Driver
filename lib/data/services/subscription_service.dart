@@ -19,8 +19,12 @@ class SubscriptionService implements ISubscriptionService {
   }
 
   @override
-  Future<Response> purchaseSubscription({required int planId}) async {
-    return await dioClient.dio.post(ApiEndpoints.purchaseSubscription, data: {'planId': planId});
+  Future<Response> purchaseSubscription({required int planId, String? couponCode}) async {
+    final Map<String, dynamic> data = {'planId': planId};
+    if (couponCode != null && couponCode.isNotEmpty) {
+      data['couponCode'] = couponCode;
+    }
+    return await dioClient.dio.post(ApiEndpoints.purchaseSubscription, data: data);
   }
 
   @override
@@ -35,5 +39,10 @@ class SubscriptionService implements ISubscriptionService {
   @override
   Future<Response> getHistory() async {
     return await dioClient.dio.get(ApiEndpoints.subscriptionHistory);
+  }
+
+  @override
+  Future<Response> getCoupons() async {
+    return await dioClient.dio.get(ApiEndpoints.coupons);
   }
 }

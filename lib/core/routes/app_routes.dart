@@ -26,4 +26,5 @@ class AppRoutes {
   static const String rateCard = '/rate-card';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
+  static const String subscriptionPlans = '/subscription-plans';
 }

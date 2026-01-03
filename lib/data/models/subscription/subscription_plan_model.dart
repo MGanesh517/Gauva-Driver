@@ -10,8 +10,8 @@ class SubscriptionPlan {
   final bool active;
   final String? displayName;
   final String? description;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   SubscriptionPlan({
     required this.id,
@@ -25,8 +25,8 @@ class SubscriptionPlan {
     required this.active,
     this.displayName,
     this.description,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory SubscriptionPlan.fromJson(Map<String, dynamic> json) {
@@ -42,8 +42,8 @@ class SubscriptionPlan {
       active: json['active'],
       displayName: json['displayName'],
       description: json['description'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 }

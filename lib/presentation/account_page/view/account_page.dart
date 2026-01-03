@@ -16,6 +16,7 @@ import 'package:gauva_driver/data/services/navigation_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
+import 'package:gauva_driver/presentation/subscription/provider/subscription_providers.dart';
 
 import '../../../core/routes/app_routes.dart';
 
@@ -43,6 +44,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     loadVersion();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(driverDetailsNotifierProvider.notifier).getDriverDetails();
+      ref.read(currentSubscriptionNotifierProvider.notifier).getCurrentSubscription();
     });
   }
 
@@ -60,6 +62,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
           Container(height: 8.h, width: double.infinity, color: isDarkMode() ? Colors.black12 : const Color(0xFFF6F7F9)),
           userDetails(context),
           Gap(8.h),
+          subscriptionSection(context),
+          Gap(8.h),
           accountDetails(context, ref: ref, version: version),
         ],
       ),
@@ -68,7 +72,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
 }
 
 Future<void> _launchURL(String url) async {
-  print('Launching URL: $url');
+  debugPrint('Launching URL: $url');
   final Uri uri = Uri.parse(url);
   if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
     // Handle error silently or show toast if needed, but simple launch is usually reliable
@@ -245,6 +249,330 @@ Widget driverRideStory(BuildContext context, User? driverDetail) => Row(
   ],
 );
 
+Widget subscriptionSection(BuildContext context) => Padding(
+  padding: EdgeInsets.symmetric(horizontal: 16.w),
+  child: Consumer(
+    builder: (context, ref, _) {
+      final subscriptionState = ref.watch(currentSubscriptionNotifierProvider);
+
+      return subscriptionState.when(
+        initial: () => const SizedBox.shrink(),
+        loading: () => Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
+            border: isDarkMode() ? Border.all(color: Colors.white) : null,
+          ),
+          child: Row(
+            children: [
+              const CircularProgressIndicator(),
+              Gap(16.w),
+              Text(
+                'Loading subscription...',
+                style: context.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: isDarkMode() ? Colors.white : const Color(0xFF363A44),
+                ),
+              ),
+            ],
+          ),
+        ),
+        error: (failure) => Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
+            border: isDarkMode() ? Border.all(color: Colors.white) : null,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.card_membership, size: 24.sp, color: isDarkMode() ? Colors.white : ColorPalette.primary50),
+                  Gap(12.w),
+                  Expanded(
+                    child: Text(
+                      'No Active Subscription',
+                      style: context.bodyMedium?.copyWith(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: isDarkMode() ? Colors.white : const Color(0xFF363A44),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Gap(8.h),
+              Text(
+                'Subscribe to a plan to start accepting rides',
+                style: context.bodyMedium?.copyWith(
+                  fontSize: 12.sp,
+                  color: isDarkMode() ? Colors.white54 : const Color(0xFF687387),
+                ),
+              ),
+              Gap(12.h),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    ref.read(subscriptionPlansNotifierProvider.notifier).getPlans();
+                    NavigationService.pushNamed(AppRoutes.subscriptionPlans);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorPalette.primary50,
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                  ),
+                  child: Text(
+                    'View Plans',
+                    style: context.bodyMedium?.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        success: (subscription) {
+          if (subscription == null) {
+            // No subscription found
+            return Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.r),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+                color: isDarkMode() ? Colors.black : const Color(0xFFF6F7F9),
+                border: isDarkMode() ? Border.all(color: Colors.white) : null,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.card_membership,
+                        size: 24.sp,
+                        color: isDarkMode() ? Colors.white : ColorPalette.primary50,
+                      ),
+                      Gap(12.w),
+                      Expanded(
+                        child: Text(
+                          'No Active Subscription',
+                          style: context.bodyMedium?.copyWith(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: isDarkMode() ? Colors.white : const Color(0xFF363A44),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(8.h),
+                  Text(
+                    'Subscribe to a plan to start accepting rides',
+                    style: context.bodyMedium?.copyWith(
+                      fontSize: 12.sp,
+                      color: isDarkMode() ? Colors.white54 : const Color(0xFF687387),
+                    ),
+                  ),
+                  Gap(12.h),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ref.read(subscriptionPlansNotifierProvider.notifier).getPlans();
+                        NavigationService.pushNamed(AppRoutes.subscriptionPlans);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorPalette.primary50,
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                      ),
+                      child: Text(
+                        'View Plans',
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Active subscription found
+          final isActive = subscription.status == 'ACTIVE';
+          final isExpired = subscription.status == 'EXPIRED';
+          final isBlocked = subscription.status == 'BLOCKED';
+
+          Color statusColor = ColorPalette.primary50;
+          if (isExpired) statusColor = Colors.orange;
+          if (isBlocked) statusColor = Colors.red;
+
+          return Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(16.r),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.r),
+              gradient: LinearGradient(
+                colors: isActive
+                    ? [ColorPalette.primary50, ColorPalette.primary50.withOpacity(0.8)]
+                    : [Colors.grey.shade400, Colors.grey.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: (isActive ? ColorPalette.primary50 : Colors.grey).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.card_membership, size: 24.sp, color: Colors.white),
+                    Gap(12.w),
+                    Expanded(
+                      child: Text(
+                        subscription.plan.displayName ?? subscription.plan.subscriptionType.replaceAll('_', ' '),
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.r)),
+                      child: Text(
+                        subscription.status,
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600,
+                          color: statusColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(12.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Start Date',
+                            style: context.bodyMedium?.copyWith(fontSize: 12.sp, color: Colors.white70),
+                          ),
+                          Gap(4.h),
+                          Text(
+                            '${subscription.startTime.day}/${subscription.startTime.month}/${subscription.startTime.year}',
+                            style: context.bodyMedium?.copyWith(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (subscription.endTime != null)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'End Date',
+                              style: context.bodyMedium?.copyWith(fontSize: 12.sp, color: Colors.white70),
+                            ),
+                            Gap(4.h),
+                            Text(
+                              '${subscription.endTime!.day}/${subscription.endTime!.month}/${subscription.endTime!.year}',
+                              style: context.bodyMedium?.copyWith(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+                if (subscription.plan.subscriptionType == 'EARNING_BASED')
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gap(12.h),
+                      Text(
+                        'Total Earned',
+                        style: context.bodyMedium?.copyWith(fontSize: 12.sp, color: Colors.white70),
+                      ),
+                      Gap(4.h),
+                      Text(
+                        '₹${subscription.totalEarned.toStringAsFixed(2)}',
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                if (!isActive)
+                  Column(
+                    children: [
+                      Gap(12.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            ref.read(subscriptionPlansNotifierProvider.notifier).getPlans();
+                            NavigationService.pushNamed(AppRoutes.subscriptionPlans);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                          ),
+                          child: Text(
+                            'Renew Subscription',
+                            style: context.bodyMedium?.copyWith(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: statusColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  ),
+);
+
 Widget rideStory(
   BuildContext context, {
   String? amount,
@@ -400,7 +728,7 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
               size: 24.sp,
               color: isDarkMode() ? Colors.white : ColorPalette.primary50,
             ),
-            title: "Rate Card",
+            title: 'Rate Card',
             onTap: () => NavigationService.pushNamed(AppRoutes.rateCard),
           ),
           Gap(8.h),

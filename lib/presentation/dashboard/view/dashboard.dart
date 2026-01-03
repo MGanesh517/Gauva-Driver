@@ -15,6 +15,7 @@ import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/websocket_provider.dart';
 import '../../home_page/view/home_page.dart';
 import '../../home_page/widgets/order_request_dialogue.dart';
+import '../../subscription/provider/subscription_providers.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
@@ -97,26 +98,51 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     }
   }
 
-  List<Widget> get _pages => [
-    HomePage(),
-    IntercityDashboard(),
-    RideHistoryPage(),
-    Wallet(),
-    AccountPage(),
-  ]; // Added Wallet page
+  bool _hasIntercitySubscription(ref) {
+    final subscriptionState = ref.watch(currentSubscriptionNotifierProvider);
+    return subscriptionState.maybeWhen(
+      success: (subscription) {
+        return subscription != null &&
+            subscription.status == 'ACTIVE' &&
+            subscription.plan.subscriptionType == 'INTERCITY_EARNING';
+      },
+      orElse: () => false,
+    );
+  }
+
+  List<Widget> _getPages(bool showIntercity) {
+    final pages = <Widget>[HomePage()];
+
+    if (showIntercity) {
+      pages.add(IntercityDashboard());
+    }
+
+    pages.addAll([RideHistoryPage(), Wallet(), AccountPage()]);
+
+    return pages;
+  }
 
   void _onItemTapped(int index) {
     ref.read(dashboardIndexProvider.notifier).state = index;
   }
 
   @override
-  Widget build(BuildContext context) => ExitAppWrapper(
-    child: LocationPermissionWrapper(
-      child: Scaffold(
-        key: _scaffoldKey,
-        body: _pages[ref.watch(dashboardIndexProvider)],
-        bottomNavigationBar: CustomBottomNavBar(currentIndex: ref.watch(dashboardIndexProvider), onTap: _onItemTapped),
+  Widget build(BuildContext context) {
+    final showIntercity = _hasIntercitySubscription(ref);
+    final pages = _getPages(showIntercity);
+
+    return ExitAppWrapper(
+      child: LocationPermissionWrapper(
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: pages[ref.watch(dashboardIndexProvider)],
+          bottomNavigationBar: CustomBottomNavBar(
+            currentIndex: ref.watch(dashboardIndexProvider),
+            onTap: _onItemTapped,
+            showIntercity: showIntercity,
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
