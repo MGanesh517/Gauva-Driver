@@ -48,6 +48,7 @@ class _LocationPermissionWrapperState extends State<LocationPermissionWrapper> w
 
   Future<void> _checkPermission() async {
     final status = await Geolocator.checkPermission();
+    if (!mounted) return;
     setState(() {
       _hasPermission = status == LocationPermission.always || status == LocationPermission.whileInUse;
       _checked = true;
@@ -80,6 +81,7 @@ class _LocationPermissionWrapperState extends State<LocationPermissionWrapper> w
     final status = await Geolocator.requestPermission();
 
     if (status == LocationPermission.always || status == LocationPermission.whileInUse) {
+      if (!mounted) return;
       setState(() {
         NavigationService.pushNamedAndRemoveUntil(widget.pageName ?? AppRoutes.dashboard);
       });
@@ -90,6 +92,7 @@ class _LocationPermissionWrapperState extends State<LocationPermissionWrapper> w
       await openAppSettings();
     } else {
       await openAppSettings();
+      if (!mounted) return;
       setState(() {
         _hasPermission = false;
       });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_overlay_window/flutter_overlay_window.dart';
 
 import 'package:gauva_driver/core/extensions/extensions.dart';
 import 'package:gauva_driver/core/theme/color_palette.dart';
@@ -182,6 +183,33 @@ class _OnlineOfflineSwitchState extends ConsumerState<OnlineOfflineSwitch> {
     setState(() {
       _isOnline = !_isOnline;
     });
+
+    if (_isOnline) {
+      final bool status = await FlutterOverlayWindow.isPermissionGranted();
+      if (!status) {
+        if (mounted) {
+          await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Permission Required'),
+              content: const Text(
+                'Please grant "Display over other apps" permission to use the floating bubble feature while driving.',
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await FlutterOverlayWindow.requestPermission();
+                  },
+                  child: const Text('Open Settings'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
 
     final newStatus = _isOnline ? DriverStatus.online.name : DriverStatus.offline.name;
     ref.read(driverStatusNotifierProvider.notifier).updateOnlineStatus(newStatus);

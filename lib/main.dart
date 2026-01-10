@@ -9,6 +9,8 @@ import 'package:gauva_driver/app.dart';
 import 'package:gauva_driver/core/widgets/connectivity_wrapper.dart';
 import 'data/services/local_storage_service.dart';
 import 'data/services/notification_service.dart';
+// ignore: unused_import
+import 'overlay_widget.dart'; // Ensure entry point is compiled
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

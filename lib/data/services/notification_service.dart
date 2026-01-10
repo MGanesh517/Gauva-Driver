@@ -17,6 +17,8 @@ class NotificationService {
       'high_importance_channel',
       'High Importance Notifications',
       importance: Importance.max,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('noti_sound'),
     );
 
     await flutterLocalNotificationsPlugin
@@ -62,6 +64,8 @@ class NotificationService {
       'High Importance Notifications',
       importance: Importance.max,
       priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('noti_sound'),
     );
 
     const DarwinNotificationDetails iosPlatformChannelSpecifics = DarwinNotificationDetails();

@@ -83,6 +83,7 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
     Function(Order? data)? onSuccess,
     Function(Failure data)? onError,
   }) async {
+    await LocalStorageService().saveOrderId(orderId); // Save ID for bubble/background checks
     currentStatus = 'accepted';
     final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
 
@@ -122,7 +123,8 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
         showNotification(message: failure.message);
         if (onError != null) onError(failure);
       },
-      (data) {
+      (data) async {
+        await LocalStorageService().clearOrderId();
         showNotification(message: data.message ?? 'Ride declined', isSuccess: true);
         if (onSuccess != null) onSuccess(data);
       },
@@ -147,7 +149,8 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
         showNotification(message: failure.message);
         if (onError != null) onError(failure);
       },
-      (data) {
+      (data) async {
+        await LocalStorageService().clearOrderId();
         showNotification(message: data.message ?? 'Ride cancelled successfully', isSuccess: true);
         if (onSuccess != null) onSuccess(data);
       },
@@ -162,6 +165,7 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
     Function(Order? data)? onSuccess,
     Function(Failure data)? onError,
   }) async {
+    await LocalStorageService().saveOrderId(orderId);
     currentStatus = 'started';
     final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
 
@@ -201,7 +205,8 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
         showNotification(message: failure.message);
         if (onError != null) onError(failure);
       },
-      (data) {
+      (data) async {
+        await LocalStorageService().clearOrderId();
         showNotification(message: data.message, isSuccess: true);
         showNotification(message: data.message, isSuccess: true);
         final previousOrder = _getPreviousDataOrNull();
@@ -220,6 +225,7 @@ class RideOrderNotifier extends StateNotifier<AppStateOrder<Order?>> {
     Function(Order? data)? onSuccess,
     Function(Failure data)? onError,
   }) async {
+    await LocalStorageService().saveOrderId(orderId);
     currentStatus = 'go_to_pickup';
     final loadingNotifier = ref.read(loadingProvider.notifier)..startLoading();
 
