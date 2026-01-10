@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gauva_driver/core/extensions/storage_safe_read.dart';
 import 'package:gauva_driver/data/models/remote_message_model/remote_message_model.dart';
 import '../models/hive_models/user_hive_model.dart';
+import 'api/dio_interceptors.dart';
 
 class LocalStorageService {
   static final LocalStorageService _instance = LocalStorageService._internal();
@@ -143,6 +144,10 @@ class LocalStorageService {
     try {
       await _storage.write(key: 'token', value: token);
       print('✅ LocalStorage: Token saved successfully (length: ${token.length})');
+      
+      // Clear token cache so next request will use new token
+      DioInterceptors.clearTokenCache();
+      
       // Verify it was saved
       final savedToken = await _storage.safeRead(key: 'token');
       if (savedToken == null || savedToken.isEmpty) {
@@ -173,6 +178,8 @@ class LocalStorageService {
 
   Future<void> clearToken() async {
     await _storage.delete(key: 'token');
+    // Clear token cache when token is cleared
+    DioInterceptors.clearTokenCache();
   }
 
   Future<void> clearUser() async {

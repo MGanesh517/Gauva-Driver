@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../../../core/config/environment.dart';
 import 'dio_interceptors.dart';
@@ -10,19 +11,44 @@ class DioClient {
   DioClient({String? baseUrl})
     : dio = Dio(
         BaseOptions(
-          sendTimeout: const Duration(seconds: 60),
-          receiveTimeout: const Duration(seconds: 60),
-          connectTimeout: const Duration(seconds: 30),
+          // Reduced timeouts for faster failure detection
+          // If backend is slow, we want to know quickly, not wait 60 seconds
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+          connectTimeout: const Duration(seconds: 15), // Reduced from 30s
           baseUrl: baseUrl ?? Environment.apiUrl,
           contentType: 'application/json',
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            // Enable compression if backend supports it
+            'Accept-Encoding': 'gzip, deflate',
+          },
+          // Enable persistent connections (HTTP keep-alive)
+          persistentConnection: true,
+          followRedirects: true,
+          maxRedirects: 5,
         ),
       ) {
-    // Use BackgroundTransformer for better performance
+    // Use BackgroundTransformer for better performance (JSON parsing in isolate)
     dio.transformer = FlutterComputeTransformer();
 
+    // Add interceptors in order
     dio.interceptors.add(DioInterceptors());
     dio.interceptors.add(InterceptorsWrapper());
-    dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: false, responseBody: false, compact: true));
+    
+    // Only enable PrettyDioLogger in debug mode (not in release builds)
+    // This significantly improves performance in production
+    if (kDebugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: false, // Disabled for performance
+          requestBody: false,
+          responseBody: false,
+          responseHeader: false,
+          compact: true,
+          maxWidth: 100,
+        ),
+      );
+    }
   }
 }
