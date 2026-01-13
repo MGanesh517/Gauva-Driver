@@ -11,11 +11,11 @@ class DioClient {
   DioClient({String? baseUrl})
     : dio = Dio(
         BaseOptions(
-          // Reduced timeouts for faster failure detection
-          // If backend is slow, we want to know quickly, not wait 60 seconds
+          // Optimized timeouts: Fast failure detection, but enough time for normal requests
+          // Postman uses similar timeouts - we should match that for consistency
           sendTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
-          connectTimeout: const Duration(seconds: 15), // Reduced from 30s
+          connectTimeout: const Duration(seconds: 15), // Fast connection timeout
           baseUrl: baseUrl ?? Environment.apiUrl,
           contentType: 'application/json',
           headers: {
@@ -23,7 +23,7 @@ class DioClient {
             // Enable compression if backend supports it
             'Accept-Encoding': 'gzip, deflate',
           },
-          // Enable persistent connections (HTTP keep-alive)
+          // Enable persistent connections (HTTP keep-alive) - reduces connection overhead
           persistentConnection: true,
           followRedirects: true,
           maxRedirects: 5,
@@ -35,7 +35,7 @@ class DioClient {
     // Add interceptors in order
     dio.interceptors.add(DioInterceptors());
     dio.interceptors.add(InterceptorsWrapper());
-    
+
     // Only enable PrettyDioLogger in debug mode (not in release builds)
     // This significantly improves performance in production
     if (kDebugMode) {

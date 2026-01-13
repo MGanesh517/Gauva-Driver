@@ -17,6 +17,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gauva_driver/presentation/profile/provider/profile_providers.dart';
 import 'package:gauva_driver/presentation/subscription/provider/subscription_providers.dart';
+import 'package:gauva_driver/presentation/home_page/provider/notification_providers.dart';
+import 'package:gauva_driver/presentation/notifications/view/notifications_screen.dart';
 
 import '../../../core/routes/app_routes.dart';
 
@@ -45,6 +47,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(driverDetailsNotifierProvider.notifier).getDriverDetails();
       ref.read(currentSubscriptionNotifierProvider.notifier).getCurrentSubscription();
+      // Load unread notification count
+      ref.read(unreadCountNotifierProvider.notifier).refresh();
     });
   }
 
@@ -704,6 +708,61 @@ Widget accountDetails(BuildContext context, {required WidgetRef ref, String? ver
             leading: Assets.images.changePassword.image(height: 24.h, width: 24.w, fit: BoxFit.fill),
             title: localize(context).change_password,
             onTap: () => NavigationService.pushNamed(AppRoutes.changePassword),
+          ),
+          Gap(8.h),
+          Consumer(
+            builder: (context, ref, _) {
+              final unreadCountState = ref.watch(unreadCountNotifierProvider);
+              final unreadCount = unreadCountState.maybeWhen(success: (count) => count, orElse: () => 0);
+
+              return accountButton(
+                context,
+                leading: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Icon(
+                      Icons.notifications_outlined,
+                      size: 24.sp,
+                      color: isDarkMode() ? Colors.white : ColorPalette.primary50,
+                    ),
+                    if (unreadCount > 0)
+                      Positioned(
+                        right: -4,
+                        top: -4,
+                        child: Container(
+                          padding: EdgeInsets.all(3.w),
+                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                          constraints: BoxConstraints(minWidth: 14.w, minHeight: 14.h),
+                          child: Center(
+                            child: Text(
+                              unreadCount > 99 ? '99+' : '$unreadCount',
+                              style: TextStyle(color: Colors.white, fontSize: 8.sp, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                title: 'Notifications',
+                trailing: unreadCount > 0
+                    ? Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10.r)),
+                        child: Text(
+                          '$unreadCount',
+                          style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    : null,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())).then((_) {
+                    // Refresh unread count when returning from notifications screen
+                    ref.read(unreadCountNotifierProvider.notifier).refresh();
+                  });
+                },
+              );
+            },
           ),
           Gap(8.h),
           accountButton(

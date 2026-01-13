@@ -17,6 +17,7 @@ import '../../../core/services/version_check_service.dart';
 import '../../booking/provider/driver_providers.dart';
 import '../../booking/provider/home_providers.dart';
 import '../../booking/provider/websocket_provider.dart';
+import '../provider/notification_providers.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -35,6 +36,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     Future.microtask(() {
       ref.read(homeProvider.notifier).getDashboard();
       // ref.read(tripActivityNotifierProvider.notifier).checkTripActivity();
+
+      // Load unread notification count
+      ref.read(unreadCountNotifierProvider.notifier).refresh();
 
       // Setup WebSocket listener - try immediately, then retry if needed
       _setupWebSocketListener();
@@ -172,7 +176,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           volume: 1.0,
         );
       } else {
-        // Android: Use Rapidosound.mp3 from assets
+        // Android: Use custom notification sound from assets
+        // FlutterRingtonePlayer().play(fromAsset: 'assets/not.wav', looping: false, volume: 1.0, asAlarm: true);
         FlutterRingtonePlayer().play(fromAsset: 'assets/Rapidosound.mp3', looping: false, volume: 1.0, asAlarm: true);
       }
 

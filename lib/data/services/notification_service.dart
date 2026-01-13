@@ -18,7 +18,7 @@ class NotificationService {
       'High Importance Notifications',
       importance: Importance.max,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('noti_sound'),
+      sound: RawResourceAndroidNotificationSound('not'), // Uses not.wav from android/app/src/main/res/raw/
     );
 
     await flutterLocalNotificationsPlugin
@@ -65,7 +65,7 @@ class NotificationService {
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('noti_sound'),
+      sound: RawResourceAndroidNotificationSound('not'), // Uses not.wav from android/app/src/main/res/raw/
     );
 
     const DarwinNotificationDetails iosPlatformChannelSpecifics = DarwinNotificationDetails();
@@ -96,6 +96,8 @@ class NotificationService {
       'High Importance Notifications',
       importance: Importance.max,
       priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('not'), // Uses not.wav from android/app/src/main/res/raw/
     );
 
     const DarwinNotificationDetails iosPlatformChannelSpecifics = DarwinNotificationDetails();

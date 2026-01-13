@@ -40,11 +40,16 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      // App went to background
+    print("📱 Lifecycle State Changed: $state");
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      // App went to background or became inactive
+      print("📱 App paused/inactive, checking overlay...");
+      // Small delay to ensure app is fully in background
+      await Future.delayed(const Duration(milliseconds: 300));
       _checkAndShowOverlay();
     } else if (state == AppLifecycleState.resumed) {
       // App came to foreground
+      print("📱 App resumed, closing overlay...");
       await FlutterOverlayWindow.closeOverlay();
     }
   }
@@ -54,33 +59,58 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       final orderId = await LocalStorageService().getOrderId();
       final isOnline = await LocalStorageService().getOnlineOffline();
 
+      print("🔍 Overlay Check -> OrderID: $orderId, isOnline: $isOnline");
+
       // Show overlay if there is an active order OR if the driver is online
+      // This matches Rapido Captain behavior - always visible when online
       if ((orderId != null && orderId > 0) || isOnline) {
         // Check permission first
         final bool status = await FlutterOverlayWindow.isPermissionGranted();
+        print("🔍 Overlay Permission Granted: $status");
+
         if (!status) {
+          print("❌ Overlay permission NOT granted.");
           return;
         }
 
-        String overlayMessage = 'Online';
-        if (orderId != null && orderId > 0) {
-          overlayMessage = 'Active Ride';
+        // Check if overlay is already showing
+        final bool isActive = await FlutterOverlayWindow.isActive();
+        if (isActive) {
+          print("ℹ️ Overlay already active, skipping show.");
+          return;
         }
 
+        // Double-check app is still in background
+        final currentState = WidgetsBinding.instance.lifecycleState;
+        if (currentState != AppLifecycleState.paused && 
+            currentState != AppLifecycleState.inactive) {
+          print("⚠️ App returned to foreground, aborting overlay show.");
+          return;
+        }
+
+        print("🚀 Attempting to show overlay...");
         await FlutterOverlayWindow.showOverlay(
           enableDrag: true,
-          overlayTitle: "Gauva Driver",
-          overlayContent: overlayMessage,
-          flag: OverlayFlag.defaultFlag,
-          alignment: OverlayAlignment.center,
+          overlayTitle: "Gauva Partner",
+          overlayContent: orderId != null && orderId > 0 ? 'Active Ride' : 'Online',
+          flag: OverlayFlag.focusPointer, // Ensures visibility
+          alignment: OverlayAlignment.centerLeft, // Left side like Rapido
           visibility: NotificationVisibility.visibilityPublic,
-          positionGravity: PositionGravity.none,
-          height: 250,
-          width: 250,
+          positionGravity: PositionGravity.left, // Dock to left side
+          height: 110, // Match overlay_widget.dart size (increased from 80)
+          width: 110,
         );
+        print("✅ FlutterOverlayWindow.showOverlay called successfully.");
+      } else {
+        print("⚠️ Overlay not shown: Driver is Offline and No Active Order.");
+        // Close overlay if driver goes offline
+        final bool isActive = await FlutterOverlayWindow.isActive();
+        if (isActive) {
+          await FlutterOverlayWindow.closeOverlay();
+        }
       }
     } catch (e) {
-      print("Error showing overlay: $e");
+      print("❌ Error showing overlay: $e");
     }
   }
 

@@ -4,7 +4,7 @@ description: "GAUVA Driver App"
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.9+109
+version: 1.0.11+111
 
 environment:
   sdk: ^3.8.1
@@ -87,6 +87,8 @@ dependencies:
   new_version_plus: ^0.0.11
   razorpay_flutter: ^1.4.0
   flutter_overlay_window: ^0.5.0
+  android_intent_plus: ^6.0.0
+  video_player: ^2.10.1
 
 
 
@@ -137,6 +139,9 @@ flutter:
     - assets/notification.mp3
     - assets/notification2.mp3
     - assets/Rapidosound.mp3
+    - assets/not.wav
+    - assets/auto_gif.mp4
+    - assets/bike_gif.mp4
 
   # Fonts are now loaded via Google Fonts package
   # This reduces app size by ~1.5-3MB

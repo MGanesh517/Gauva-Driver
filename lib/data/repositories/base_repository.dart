@@ -1,92 +1,48 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../core/errors/api_error_handler.dart';
 import '../../core/errors/failure.dart';
 import '../../generated/l10n.dart';
 
 abstract class BaseRepository {
-  // Cache connectivity check to avoid 200-500ms delay on every API call
-  static bool? _cachedConnectivityStatus;
-  static DateTime? _lastConnectivityCheck;
-  static const _connectivityCacheDuration = Duration(seconds: 5);
-  
-  // Connectivity instance (reuse same instance)
-  static final Connectivity _connectivity = Connectivity();
+  // REMOVED: Connectivity check adds 200-500ms delay per request
+  // Let Dio handle connection errors directly - it's faster and more reliable
+  // Postman doesn't check connectivity, it just makes the request - we should do the same
 
   // Handle API calls and maps response to [Either].
   Future<Either<Failure, T>> safeApiCall<T>(Future<T> Function() apiCall) async {
     try {
-      // OPTIMIZED: Only check connectivity if cache expired (saves 200-500ms per request)
-      // If we have a recent connectivity check and it was successful, skip the check
-      final now = DateTime.now();
-      final shouldCheckConnectivity = _lastConnectivityCheck == null ||
-          now.difference(_lastConnectivityCheck!) > _connectivityCacheDuration ||
-          _cachedConnectivityStatus != true;
-
-      if (shouldCheckConnectivity) {
-        try {
-          final connectivityResult = await _connectivity.checkConnectivity();
-          _cachedConnectivityStatus = connectivityResult.contains(ConnectivityResult.mobile) ||
-              connectivityResult.contains(ConnectivityResult.wifi) ||
-              connectivityResult.contains(ConnectivityResult.ethernet);
-          _lastConnectivityCheck = now;
-        } catch (e) {
-          // If connectivity check fails, assume we have internet and let Dio handle it
-          if (kDebugMode) {
-            print('⚠️ Connectivity check failed, proceeding with API call: $e');
-          }
-          _cachedConnectivityStatus = true; // Optimistic: try API call anyway
-          _lastConnectivityCheck = now;
-        }
-
-        if (_cachedConnectivityStatus != true) {
-          return Left(Failure(message: AppLocalizations().no_internet_connection));
-        }
-      }
-
-      // Perform the API call
+      // Directly perform the API call - let Dio handle connection errors
+      // This eliminates 200-500ms overhead from connectivity checks
       final result = await apiCall();
-
-      // If API call succeeds, mark connectivity as good
-      _cachedConnectivityStatus = true;
-      _lastConnectivityCheck = DateTime.now();
-
       return Right(result);
     } on DioException catch (dioError) {
-      // Check if it's a connection error
+      // Handle connection errors with user-friendly messages
       if (dioError.type == DioExceptionType.connectionError ||
-          dioError.type == DioExceptionType.connectionTimeout) {
-        // Invalidate connectivity cache on connection error
-        _cachedConnectivityStatus = false;
-        _lastConnectivityCheck = DateTime.now();
-        
-        // Return user-friendly error
+          dioError.type == DioExceptionType.connectionTimeout ||
+          dioError.type == DioExceptionType.receiveTimeout ||
+          dioError.type == DioExceptionType.sendTimeout) {
+        // Return user-friendly error for connection issues
         if (dioError.type == DioExceptionType.connectionError) {
           return Left(Failure(message: AppLocalizations().no_internet_connection));
+        }
+        if (dioError.type == DioExceptionType.connectionTimeout ||
+            dioError.type == DioExceptionType.receiveTimeout ||
+            dioError.type == DioExceptionType.sendTimeout) {
+          return Left(Failure(message: AppLocalizations().request_timed_out_please_try_again));
         }
       }
       
       final failure = ApiErrorHandler.handleDioError(error: dioError);
       return Left(failure);
     } on TimeoutException {
-      // Invalidate connectivity cache on timeout
-      _cachedConnectivityStatus = null;
-      _lastConnectivityCheck = DateTime.now();
-      
       return Left(Failure(message: AppLocalizations().request_timed_out_please_try_again));
     } catch (error) {
       return Left(Failure(message: AppLocalizations().something_went_wrong));
     }
   }
 
-  /// Clear connectivity cache (useful for manual refresh or testing)
-  static void clearConnectivityCache() {
-    _cachedConnectivityStatus = null;
-    _lastConnectivityCheck = null;
-  }
 }

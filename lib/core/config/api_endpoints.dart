@@ -83,4 +83,12 @@ class ApiEndpoints {
   static const String verifySubscriptionPayment = '/v1/driver/subscriptions/verify-payment';
   static const String subscriptionHistory = '/v1/driver/subscriptions/history';
   static const String coupons = '/v1/driver/subscriptions/coupons';
+
+  // Notification APIs
+  // Note: Environment.apiUrl already includes '/api', so endpoints should not start with '/api'
+  static const String notificationsInbox = '/notifications/inbox';
+  static const String notificationsUnreadCount = '/notifications/inbox/unread/count';
+  static const String notificationMarkRead = '/notifications/inbox'; // /{id}/read
+  static const String notificationsMarkAllRead = '/notifications/inbox/read-all';
+  static const String notificationsClearAll = '/notifications/inbox';
 }

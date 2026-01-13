@@ -218,9 +218,7 @@ class OtpVerifyNotifier extends StateNotifier<AppState<OtpVerifyResponse>> {
     final token = response.data?.token;
     final user = response.data?.user?.toJson();
 
-    print(
-      '🔐 Auth: OTP verification successful, token received: ${token != null ? "YES (length: ${token.length})" : "NO"}',
-    );
+    print('🔐 Auth: OTP verification successful, token received: $token');
     if (token != null && token.isNotEmpty) {
       await LocalStorageService().saveToken(token);
     } else {
@@ -684,6 +682,7 @@ class DriverLoginEmailPasswordNotifier extends StateNotifier<AppState<LoginWithP
         // Save accessToken (prefer root level accessToken, fallback to data.token for backward compatibility)
         final token = data.accessToken ?? data.data?.token;
         if (token != null) {
+          print('🔐 Auth: Login successful, API Token: $token');
           await LocalStorageService().saveToken(token);
         }
         // Save refreshToken if available (you may want to add a method to save refreshToken)

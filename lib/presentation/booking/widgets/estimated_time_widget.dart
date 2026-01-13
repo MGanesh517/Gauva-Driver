@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/enums/booking_status.dart';
 import '../../../core/utils/localize.dart';
+import '../../../core/widgets/looping_video_player.dart';
 import '../../../gen/assets.gen.dart';
 import '../provider/driver_providers.dart';
 import '../provider/ride_providers.dart';
@@ -33,7 +34,27 @@ Widget headingToDestination(BuildContext context) => Column(
     Gap(8.h),
     estimatedTimeWidget(context),
 
-    Assets.images.carAnimation.image(height: 200.h, width: 358.w, fit: BoxFit.fill),
+    Consumer(
+      builder: (context, ref, _) {
+        final rideOrderState = ref.watch(rideOrderNotifierProvider);
+        final order = rideOrderState.maybeWhen(success: (o) => o, orElse: () => null);
+
+        String serviceName = '';
+        if (order?.service?.name != null) {
+          serviceName = order!.service!.name!.toLowerCase();
+        } else if (order?.vehicle?.carModel != null) {
+          serviceName = order!.vehicle!.carModel.toString().toLowerCase();
+        }
+
+        if (serviceName.contains('bike') || serviceName.contains('moto') || serviceName.contains('cycle')) {
+          return LoopingVideoPlayer(asset: 'assets/bike_gif.mp4', height: 200.h, width: 358.w, fit: BoxFit.fill);
+        } else if (serviceName.contains('auto') || serviceName.contains('rickshaw')) {
+          return LoopingVideoPlayer(asset: 'assets/auto_gif.mp4', height: 200.h, width: 358.w, fit: BoxFit.fill);
+        } else {
+          return Assets.images.carAnimation.image(height: 200.h, width: 358.w, fit: BoxFit.fill);
+        }
+      },
+    ),
 
     Consumer(
       builder: (context, ref, _) {

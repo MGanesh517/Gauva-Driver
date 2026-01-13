@@ -122,7 +122,7 @@ class PusherNotifier extends StateNotifier<void> {
         volume: 1.0,
       );
     } else {
-      FlutterRingtonePlayer().play(fromAsset: 'assets/noti_sound.mpeg', looping: false, volume: 1.0, asAlarm: true);
+      FlutterRingtonePlayer().play(fromAsset: 'assets/not.wav', looping: false, volume: 1.0, asAlarm: true);
     }
     vibratePhone();
   }

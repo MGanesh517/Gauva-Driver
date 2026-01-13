@@ -9,8 +9,9 @@ import 'package:gauva_driver/app.dart';
 import 'package:gauva_driver/core/widgets/connectivity_wrapper.dart';
 import 'data/services/local_storage_service.dart';
 import 'data/services/notification_service.dart';
-// ignore: unused_import
-import 'overlay_widget.dart'; // Ensure entry point is compiled
+
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -37,9 +38,90 @@ void main() async {
     await handleNotificationTap(initialMessage);
   }
 
+  // Prevent tree-shaking of overlay entry point
+  try {
+    // ignore: unnecessary_statements
+    overlayMain;
+  } catch (e) {
+    // ignore
+  }
+
   runApp(const ProviderScope(child: GlobalConnectivityWrapper(child: MyApp())));
 }
 
 Future<void> initializeFirebase() async {
   await Firebase.initializeApp();
+}
+
+// Overlay entry point
+@pragma('vm:entry-point')
+void overlayMain() {
+  debugPrint('🟢 OV: Starting Overlay Entry Point...');
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: OverlayWidget()));
+}
+
+class OverlayWidget extends StatefulWidget {
+  const OverlayWidget({super.key});
+
+  @override
+  State<OverlayWidget> createState() => _OverlayWidgetState();
+}
+
+class _OverlayWidgetState extends State<OverlayWidget> {
+  @override
+  void initState() {
+    super.initState();
+    debugPrint('🟢 OV: OverlayWidget Initialized');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('🟢 OV: OverlayWidget Building...');
+    return Material(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Center(
+        child: GestureDetector(
+          onTap: () async {
+            // Use AndroidIntent to launch with FLAG_ACTIVITY_NEW_TASK
+            const intent = AndroidIntent(
+              action: 'android.intent.action.VIEW',
+              data: 'gauvadriver://open',
+              flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
+            );
+            await intent.launch();
+            debugPrint("� AndroidIntent launch called");
+          },
+          child: Container(
+            height: 90,
+            width: 90,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.25),
+              //     blurRadius: 10,
+              //     spreadRadius: 2,
+              //     offset: const Offset(0, 0),
+              //   ),
+              // ],
+            ),
+            child: ClipOval(
+              child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: Image.asset(
+                  'assets/images/app-logo.png',
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.local_taxi, color: Colors.black, size: 40),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
